@@ -1,0 +1,150 @@
+.artist{
+  background-color: $red;
+  width: 65vw;
+  height: 100vh;
+  left:-40vw;
+  position: fixed;
+  z-index: $z-artist;
+
+}
+
+
+
+.artist-main{
+  position: absolute;
+  width: 600px;
+  height: auto;
+  left: 50%;
+  margin-left: -300px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  .artist-main-name{
+    position: relative;
+    top: 0;
+    display: block;
+    @include header('white','no');
+  }
+
+  .artist-main-image{
+    position: relative;
+    left:0;
+    width: 300px;
+    height: 300px;
+    float: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .artist-main-links{
+    position: relative;
+    right: 0;
+    width: 285px;
+    height: 300px;
+    float: left;
+    margin-left: 15px;
+    .artist-main-links-li{
+      a{
+        width: 300px;
+        text-align: center;
+        @include header('white','yes');
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+@keyframes slideLeft {
+  0% { @include transform-element(translateX(65vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-webkit-keyframes slideLeft {
+  0% { @include transform-element(translateX(65vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-moz-keyframes slideLeft {
+  0% { @include transform-element(translateX(65vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-ms-keyframes slideLeft {
+  0% { @include transform-element(translateX(65vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-o-keyframes slideLeft {
+  0% { @include transform-element(translateX(65vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+
+
+@keyframes slideRight {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(65vw)); }
+}
+
+@-webkit-keyframes slideRight {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(65vw)); }
+}
+
+@-moz-keyframes slideRight {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(65vw)); }
+}
+
+@-ms-keyframes slideRight {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(65vw)); }
+}
+
+@-o-keyframes slideRight {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(65vw)); }
+}
+
+.artist.ng-hide{
+    @include transform-element(translateX(0vw));
+    // animation: slideUp 0.4s ease;
+}
+
+
+$animation-bezier: ease-in;
+$animation-speed: 0.3s;
+
+.artist{
+  position: fixed;
+  // right: $margin-sides;
+  // bottom: $margin-sides;
+  @include transform-element(translateX(65vw));
+}
+
+
+
+.artist.ng-hide-remove.ng-hide-remove-active{
+  -webkit-animation: slideRight $animation-speed $animation-bezier;
+  -moz-animation: slideRight $animation-speed $animation-bezier;
+  -ms-animation: slideRight $animation-speed $animation-bezier;
+  -o-animation: slideRight $animation-speed $animation-bezier;
+  animation: slideRight $animation-speed $animation-bezier;
+}
+
+.artist.ng-hide-add.ng-hide-add-active{
+  -webkit-animation: slideLeft $animation-speed $animation-bezier;
+  -moz-animation: slideLeft $animation-speed $animation-bezier;
+  -ms-animation: slideLeft $animation-speed $animation-bezier;
+  -o-animation: slideLeft $animation-speed $animation-bezier;
+  animation: slideLeft $animation-speed $animation-bezier;
+}

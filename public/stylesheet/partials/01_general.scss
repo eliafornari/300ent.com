@@ -1,0 +1,371 @@
+/*....................................General settings..................................*/
+
+
+
+
+/*.....................TEXT MARK STYLES......................*/
+
+::-moz-selection {
+    background: $red;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+
+::selection {
+    background: $red;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+/*.........................................................*/
+
+
+
+
+
+
+/*.....................ACTIVE CLASSES......................*/
+
+.active{
+  color: #FF0000 !important;
+  pointer-events: none;
+}
+
+/*.........................................................*/
+
+
+
+
+
+
+/*....................HIDING SCROLLBAR.....................*/
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.....................GENERAL STYLES......................*/
+
+html{
+  font-family: helvetica;
+  width: 100%;
+  height: 100%;
+  margin: 0, 0;
+  padding: 0, 0;
+}
+
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0, 0;
+  padding: 0, 0;
+  text-transform: uppercase;
+/* Set the background color of the HTML page to black */
+background-color: #FFFFFF;
+
+/* Hide oversized content. This prevents the scroll bars. */
+// overflow: hidden;
+}
+
+
+p, a, li {
+  font-size: $font-size-paragraph;
+  list-style-type: none;
+  letter-spacing:$letter-spacing;
+  color: #000000;
+}
+
+
+input, textarea, select, a, li {
+  text-decoration: none;
+}
+
+/*.........................................................*/
+
+
+
+
+
+/*.........................................................*/
+
+
+
+
+
+
+/*.........................MAIN............................*/
+
+
+main {
+  width:  calc(100vw - 100px);
+  height: auto;
+  position: relative;
+  display: block;
+  list-style-type: none;
+  // z-index: $z-main;
+}
+
+/*.............................Loader............................*/
+
+
+
+.page-loader-div{
+  display: block;
+  height: 100vh;
+  opacity: 1;
+  display: block;
+  width: 100vw;
+  float: left;
+  padding: 0;
+  margin: 0;
+  display: list-item;
+  background-color: transparent;
+  z-index: $z-loader;
+
+}
+
+
+
+
+
+/*.............................NG-CLOAK............................*/
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+//
+// #squircle{
+//   position: absolute;
+//   left: 50%;
+//   top: 50%;
+//   width: 64px;
+//   height: 64px;
+//   margin-left: -32px;
+//   margin-top: -32px;
+// }
+// #outer-squircle, #inner-squircle{
+//   position: absolute;
+//   left: 64px;
+//   top: 64px;
+//   width: 128px;
+//   height: 128px;
+//   margin-left: -64px;
+//   margin-top: -64px;
+//   border: 8px solid red;
+//   border-radius: 45px;
+// }
+// #outer-squircle{
+//   animation: rotate 1s linear 0s infinite;
+// }
+// #inner-squircle{
+//   animation: rotate2 2s linear -1s infinite;
+// }
+//
+// @keyframes rotate{
+//   from { tranform: rotate( 0 ) }
+//     to { transform: rotate( 90deg ) }
+// }
+//
+// @keyframes rotate2{
+//   from { tranform: rotate( 0deg ) scale( 1 ) }
+//   50% { transform: rotate( 45deg ) scale( .85 ) }
+//   to { transform: rotate( 90deg ) scale( 1 ) }
+// }
+
+
+//
+//
+// $parts: 6;
+// $angle: 360;
+// $cake: $angle/$parts;
+//
+// .page-loader-wrapper{
+//   /* margin: 10rem; */
+//   width: 300px;
+//   height: 300px;
+//   position: fixed;
+//   left: 50%;
+//   top: 50%;
+//   margin-left: -150px;
+//   z-index: $z-index-loader;
+//   /* margin-top: -150px; */
+//   >div{
+//     animation:
+//       0.8s
+//       rotate
+//       linear
+//       forwards
+//       infinite;
+//     position: relative;
+//     transform-origin: center center;
+//     z-index: $z-index-loader;
+//     >div{
+//       z-index: $z-index-loader;
+//       height: 100px;
+//       width: 100px;
+//       border-radius: 52px;
+//       position: absolute;
+//       top:calc(50% - 52px);
+//       right: -100%;
+//       left: -100%;
+//       margin: 0 auto;
+//       mix-blend-mode: screen;
+//       transform-origin: center center;
+//       border-width: 2px;
+//       border-style: solid;
+//       @for $i from 1 to $parts+1 {
+//         &:nth-child(#{$i}){
+//           transform:
+//             rotate(($cake*($i)) + deg)
+//             scale(1)
+//             translateY(0rem);
+//           border-color: hsl($i*60+10,100%, 60%);
+//           animation:
+//             1.2+$parts*0.1s
+//             flying+($i)
+//             ((0.1 * $i) - 0.1s)
+//             forwards
+//             infinite;
+//         }
+//       }
+//     }
+//   }
+// }
+// @for $i from 1 to $parts+1 {
+//   @keyframes flying#{$i}{
+//     0%{
+//       width: 100px;
+//       transform:
+//         rotate(($cake*($i)) + deg)
+//         scale(1)
+//         translateY(0rem);
+//       border-width: 2px;
+//     }
+//     25%{
+//       width: 120px;
+//       transform:
+//         rotate(($cake*($i)) + deg)
+//         scale(1.5)
+//         translateY(.2rem);
+//       border-width: 5px;
+//     }
+//     50%{
+//       width: 100px;
+//       transform:
+//         rotate(($cake*($i)) + deg)
+//         scale(1)
+//         translateY(0rem);
+//       border-width: 2px;
+//     }
+//   }
+// }
+// @keyframes rotate{
+//   to{
+//     transform: rotate(360deg);
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.images-loader-div{
+  display: block;
+  position: relative;
+  width: 33.333333333333vw !important;
+  height: 33.3333333333vw !important;
+  opacity: 1;
+  display: block;
+  // float: left;
+  padding: 0;
+  margin: 0 0 0 0;
+  display: list-item;
+  background-color: #FFFFFF;
+  // border: 1px solid #FFFFFF;
+  @include respond-to(phone) {
+    width: 100vw !important;
+    height: 100vw !important;
+  }
+  .loader {
+    position: relative;
+    height: 35px !important;
+    width: 35px !important;
+    top: 50% !important;
+    left: 50%;
+    margin-top: -17.5px;
+    margin-left: -17.5px;
+    border: 2px solid #606060;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: rotate .75s linear infinite;
+    animation: rotate .75s linear infinite;
+    z-index: 1;
+    @include respond-to(phone-landscape-device) {
+      left: 50%;
+      top: 56%;
+      margin-left: -25px;
+    }
+  }
+}
+
+.grey-placeholder{
+  display: block;
+  height: 100%;
+  width: 100%;
+
+}

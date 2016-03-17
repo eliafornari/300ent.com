@@ -1,0 +1,24 @@
+<div class="artist" ng-controller="artistCtrl" ng-show="isArtist">
+
+
+
+
+  <div class="artist-main">
+
+      <p class="artist-main-name">{{mainArtist.data['artist.name'].value[0].text}}</p>
+
+      <div class="artist-main-image" style="background-image: url('{{mainArtist.data['artist.image'].value.main.url}}')"></div>
+
+
+      <ul class="artist-main-links">
+        <li class="artist-main-links-li" id="artist-main-website"><a href="{{mainArtist.data['artist.website'].value.url}}" target="_blank">url</a></li>
+        <li class="artist-main-links-li" id="artist-main-instagram"><a href="{{mainArtist.data['artist.instagram'].value.url}}" target="_blank">instagram</a></li>
+        <li class="artist-main-links-li" id="artist-main-facebook"><a href="{{mainArtist.data['artist.facebook'].value.url}}" target="_blank">facebook</a></li>
+        <li class="artist-main-links-li" id="artist-main-soundcloud"><a href="{{mainArtist.data['artist.soundcloud'].value.url}}" target="_blank">soundcloud</a></li>
+        <li class="artist-main-links-li" id="artist-main-tumblr"><a href="{{mainArtist.data['artist.tumblr'].value.url}}" target="_blank">tumblr</a></li>
+        <li class="artist-main-links-li" id="artist-main-twitter"><a href="{{mainArtist.data['artist.twitter'].value.url}}" target="_blank">twitter</a></li>
+      </ul>
+
+  </div>
+
+</div>
