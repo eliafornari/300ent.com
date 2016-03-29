@@ -1,0 +1,157 @@
+
+.journal{
+  position: fixed;
+  left: 100vw;
+  background-color: rgba(255,255,255,1);
+  width:90vw;
+  height: 100vh;
+  z-index: $z-journal;
+  overflow-y: scroll;
+
+}
+
+.journal-ul{
+  width:90vw;
+  height:auto;
+  display: table;
+  .journal-li{
+    float:left;
+  }
+}
+
+
+.journal-li-image-p.journalImageLeft{
+  float: none !important;
+}
+
+.journal-li-image{
+
+  .journal-li-image-element{
+    max-width:20vw;
+    height:auto;
+    padding:4vw;
+  }
+  .journal-li-image-p{
+    width: 50vw;
+    display: inline-block;
+    height: inherit;
+    float: left;
+  }
+
+}
+.journal-li-video{
+
+}
+.journal-li-song{
+
+}
+.journal-li-quote{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes j_slideLeft {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(-90vw)); }
+}
+
+@-webkit-keyframes j_slideLeft {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(-90vw)); }
+}
+
+@-moz-keyframes j_slideLeft {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(-90vw)); }
+}
+
+@-ms-keyframes j_slideLeft {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(-90vw)); }
+}
+
+@-o-keyframes j_slideLeft {
+  0% { @include transform-element(translateX(0vw)); }
+  100% { @include transform-element(translateX(-90vw)); }
+}
+
+
+
+@keyframes j_slideRight {
+  0% { @include transform-element(translateX(-90vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-webkit-keyframes j_slideRight {
+  0% { @include transform-element(translateX(-90vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-moz-keyframes j_slideRight {
+  0% { @include transform-element(translateX(-90vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-ms-keyframes j_slideRight {
+  0% { @include transform-element(translateX(-90vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+@-o-keyframes j_slideRight {
+  0% { @include transform-element(translateX(-90vw)); }
+  100% { @include transform-element(translateX(0vw)); }
+}
+
+
+
+
+
+.journal.ng-hide{
+    @include transform-element(translateX(0vw));
+    // animation: slideUp 0.4s ease;
+}
+
+
+
+
+$animation-bezier: ease-in;
+$animation-speed: 0.3s;
+
+.journal{
+  position: fixed;
+  // right: $margin-sides;
+  // bottom: $margin-sides;
+  @include transform-element(translateX(-90vw));
+}
+
+
+
+.journal.ng-hide-remove.ng-hide-remove-active{
+  -webkit-animation: j_slideLeft $animation-speed $animation-bezier;
+  -moz-animation: j_slideLeft $animation-speed $animation-bezier;
+  -ms-animation: j_slideLeft $animation-speed $animation-bezier;
+  -o-animation: j_slideLeft $animation-speed $animation-bezier;
+  animation: j_slideLeft $animation-speed $animation-bezier;
+}
+
+.journal.ng-hide-add.ng-hide-add-active{
+  -webkit-animation: j_slideRight $animation-speed $animation-bezier;
+  -moz-animation: j_slideRight $animation-speed $animation-bezier;
+  -ms-animation: j_slideRight $animation-speed $animation-bezier;
+  -o-animation: j_slideRight $animation-speed $animation-bezier;
+  animation: j_slideRight $animation-speed $animation-bezier;
+}

@@ -160,16 +160,19 @@ $break-desktop: 50000px;
 
   font-size: $font-size-title;
   line-height: $line-height-title;
-  font-weight: 900;
+  font-family: camptonBold;
 
   @if $hasHover == 'yes'{
             @if $color == 'red' {
                 color: $red;
-                @include hover-effect-color(#bf2127, #ff9999);
+                @include hover-effect-color(#e60000, #ff9999);
                // if width is not passed, or empty do this
             } @else if $color == 'white' {
                  color: #FFFFFF;
-                 @include hover-effect-color(#FFFFFF, #dc373d);
+                 @include hover-effect-color(#FFFFFF, #ec9396);
+            }  @else if $color == 'black' {
+                 color: #000000;
+                 @include hover-effect-color(#000000, #d3d3d3);
             }
   } @else{
             @if $color == 'red' {
@@ -177,6 +180,8 @@ $break-desktop: 50000px;
                // if width is not passed, or empty do this
            } @else if $color == 'white' {
                  color: #FFFFFF;
+           }  @else if $color == 'black' {
+                color: #000000;
            }
   }
 

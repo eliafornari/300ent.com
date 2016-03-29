@@ -16,7 +16,7 @@
       <tr class="home-artists-tr">
         <td class="home-artists-td">
           <ul class="home-artists-ul">
-            <li class="home-artists-li" ng-click="openArtists(a.uid, $index)" ng-repeat="a in Artist"><p>{{a.data['artist.name'].value[0].text}}</p></li>
+            <li class="home-artists-li" ng-click="openArtists(a.uid, $index)" ng-repeat="a in Artist | orderBy:'uid' track by a.uid"><p>{{a.data['artist.name'].value[0].text}}</p></li>
             <!-- <li class="home-artists-li" ng-click="openArtists('astr', '1')"><p>astr</p></li>
             <li class="home-artists-li" ng-click="openArtists('coastmodern', '2')"><p>coast modern</p></li> -->
           </ul>
@@ -26,9 +26,15 @@
 
   </div>
 
-  <div class="home-release">
+  <div class="home-release" ng-init="r_placeholder = false">
+    <div class="home-release-placeholder" ng-mouseover="r_placeholder = false" ng-show="r_placeholder">
+      <p>
+        RELEASES
+      </p>
+    </div>
+
     <ul class="home-release-ul">
-      <li ng-repeat="r in Release" class="home-release-li" ng-click="openRelease(r.uid, $index)">
+      <li ng-repeat="r in Release | orderBy: r.data['release.cover'].value" class="home-release-li" ng-click="openRelease(r.uid, $index)">
         <div class="home-release-cover" ng-mouseenter="flip=true" ng-mouseleave="flip=false">
           <figure class="front" style=" background-image: url('{{r.data['release.cover'].value.main.url}}')" ng-class="{'flipped': flip}"></figure>
           <figure class="back" ng-class="{'flipped': flip}">
@@ -47,17 +53,22 @@
   <div class="home-live">
     <div class="home-live-links">
       <ul class="home-live-links-ul">
-        <li class="home-live-links-li"><a href="https://soundcloud.com/300-entertainment" target="_blank">soundcloud</a></li>
         <li class="home-live-links-li"><a href="https://www.instagram.com/300ent/?hl=en" target="_blank">instagram</a></li>
+        <li class="home-live-links-li"><a href="https://soundcloud.com/300-entertainment" target="_blank">soundcloud</a></li>
         <li class="home-live-links-li"><a href="https://www.facebook.com/300ent/" target="_blank">facebook</a></li>
         <li class="home-live-links-li"><a href="https://twitter.com/300" target="_blank">twitter</a></li>
         <li class="home-live-links-li"><a href="https://www.youtube.com/channel/UClO3VS7C-pHAoRh6fYddbLQ" target="_blank">youtube</a></li>
         <li class="home-live-links-li"><a href="http://300entertainment.tumblr.com/" target="_blank">tumblr</a></li>
 
+        <li class="home-live-links-li"><a href="/contact">contact</a></li>
+        <li class="home-live-links-li"><a href="/about">about</a></li>
+
       </ul>
     </div>
 
     <div class="home-live-widget">
+      <p>{{channel_statistics.viewCount}} channel views</p>
+      <p>{{channel_statistics.subscriberCount}} subscribers</p>
       <iframe src="https://embed.spotify.com/?uri=spotify:user:300ent.:playlist:2sS4afzWcT47yevuw9Sn1f" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
     </div>
   </div>
@@ -66,8 +77,10 @@
 
 
   <div class="home-journal">
-    <ul>
-      <li></li>
+    <ul class="home-journal-ul">
+      <li class="home-journal-li" ng-repeat="j in Journal" ng-click="openJournal(j.uid, $index)">
+        <div class="home-journal-cover" style="background-image: url('{{j.data['journal.cover'].value.main.url}}')"></div>
+      </li>
     </ul>
   </div>
 

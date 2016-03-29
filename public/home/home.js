@@ -2,20 +2,26 @@
 var Home = angular.module('myApp');
 
 
-Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce){
 
 
 
 $rootScope.isArtist = false;
 $rootScope.isRelease = false;
 $rootScope.isJournal = false;
+$rootScope.isContact = false;
+$rootScope.isAbout = false;
 
 
 $rootScope.closeAllSections = function(){
   $rootScope.isArtist = false;
   $rootScope.isRelease = false;
   $rootScope.isJournal = false;
+  $rootScope.isContact = false;
+  $rootScope.isAbout = false;
   $location.path('/', false);
+
+  $rootScope.isReleaseVideo = false;
 }
 
 
@@ -25,6 +31,68 @@ $rootScope.Journal =[];
 
 
 
+
+
+
+
+
+
+
+
+//..........................................................MESSAGE
+$rootScope.thisIndex=0;
+$scope.showingMessage=true;
+$scope.messageArray=[];
+$scope.isDone=false;
+$scope.final_messageArray=[];
+
+$scope.message = "AN INDEPENDENT AMERICAN RECORD LABEL";
+
+$scope.$watch('pageLoading' ,function(){
+
+  for (i =0; i < ($scope.message.length); i++){
+
+
+    // setTimeout(function(){
+        // jQuery("#msg").append($scope.message[i]);
+
+        if($scope.message[i]==" "){
+          $scope.messageArray.push("");
+        }else{
+          $scope.messageArray.push($scope.message[i]);
+
+        }
+
+        $scope.isDone=true;
+
+        // $scope.$apply();
+    // }, 300);
+
+    if($scope.isDone){
+      $scope.final_messageArray =$scope.messageArray;
+    }
+  }
+
+});
+
+
+$scope.enterAppear = false;
+
+
+setTimeout(function(){
+  if ($rootScope.firstLoading == true){
+    $scope.enterAppear = true;
+    // $scope.$apply();
+  }
+}, 3000);
+
+
+
+
+$rootScope.enter=function(){
+  $rootScope.firstLoading = false;
+  $scope.$apply();
+}
 
 //..........................................................GET
 
@@ -40,10 +108,10 @@ $rootScope.getContentType = function(type){
 
                   var Data = response;
 
-                  setTimeout(function(){
-                    $rootScope.firstLoading = false;
-                    $scope.$apply();
-                  }, 200);
+                  // setTimeout(function(){
+                  //   $rootScope.firstLoading = false;
+                  //   $scope.$apply();
+                  // }, 3000);
 
 
                   if (type =='artist'){
@@ -76,7 +144,7 @@ $rootScope.getContentType = function(type){
 
 $rootScope.getContentType('artist');
 $rootScope.getContentType('release');
-
+$rootScope.getContentType('journal');
 
 
 
@@ -109,6 +177,100 @@ $rootScope.getContentType('release');
     $rootScope.thisRelease(release, number);
 
   }
+
+  $rootScope.openJournal = function(journal, number){
+
+    $rootScope.isArtist = false;
+    $rootScope.isRelease = false;
+    $rootScope.isJournal = true;
+    $location.path('journal', false);
+    $rootScope.whatJournal = journal;
+    $rootScope.thisJournal(journal, number);
+
+  }
+
+  $rootScope.openContact = function(){
+    $rootScope.isContact = true;
+    $location.path('contact', false);
+
+    $rootScope.isArtist = false;
+    $rootScope.isRelease = false;
+    $rootScope.isJournal = false;
+    $rootScope.isAbout = false;
+  }
+
+  $rootScope.openAbout = function(){
+    $rootScope.isAbout = true;
+    $location.path('about', false);
+
+    $rootScope.isArtist = false;
+    $rootScope.isRelease = false;
+    $rootScope.isJournal = false;
+    $rootScope.isContact = false;
+  }
+
+
+
+
+// setTimeout(function(){
+//
+//
+//     $rootScope.closeAllSections();
+// }, 1600);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$rootScope.channel_statistics;
+
+
+
+  $.get(
+    "https://www.googleapis.com/youtube/v3/channels?",{
+      part: 'statistics',
+      // maxResults: 50,
+      id: 'UClO3VS7C-pHAoRh6fYddbLQ',
+      key: 'AIzaSyBmZ8Wa0u4cbP_kI_LYDQ-xT521xTeKcFo'
+    },
+      function(data){
+
+        $rootScope.channel_statistics = data.items[0].statistics;
+        console.log($rootScope.channel_statistics);
+
+
+        // $scope.baseUrl = 'https://www.youtube.com/embed/'+$rootScope.channel_data[0].id.videoId+'?rel=0&amp;&autoplay=0&controls=1&loop=1&showinfo=0&modestbranding=1&theme=dark&color=white&wmode=opaque';
+        // $scope.main_video = $sce.trustAsResourceUrl($scope.baseUrl);
+        // $scope.main_title = $rootScope.channel_data[0].title;
+
+// part=subscriberSnippet&channelId=UClO3VS7C-pHAoRh6fYddbLQ&mySubscribers=false&key={YOUR_API_KEY}
+
+      }
+  );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

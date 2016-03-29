@@ -7,6 +7,14 @@
   background-color: $red;
   z-index: $z-header;
 
+  // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.2s ease-in-out;
+
+
+&:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
   .header-wrapper{
     width: 100%;
     height: 100%;
@@ -62,7 +70,7 @@
           float: left;
           .nav-li{
             a{
-              @include header(white,yes);
+              @include header('red',yes);
 
             }
           }
@@ -74,7 +82,7 @@
           float: left;
           .nav-share-li{
             a{
-              @include header(white,yes);
+              @include header('black',yes);
             }
           }
         }
@@ -87,6 +95,30 @@
 
 
 
+.close-right.isRelease{
+  background-color: $red;
+  .close-right-x{
+      background-color: #FFFFFF;
+    svg{
+      line{
+        stroke: $red;
+      }
+    }
+  }
+}
+
+.close-right.isRelease-remove.isRelease-remove-active{
+  transition:all 0.5s linear;
+  background-color: $red;
+  .close-right-x{
+      background-color: #FFFFFF;
+    svg{
+      line{
+        stroke: $red;
+      }
+    }
+  }
+}
 
 .close-right{
   position: fixed;
@@ -140,6 +172,7 @@
       top:50%;
       position: absolute;
       margin-left: -35px;
+      margin-top: -25px;
       background-color: $red;
     svg{
       width: 35px;
@@ -240,4 +273,80 @@ $animation-speed: 0.3s;
   -ms-animation: close_slideRight $animation-speed $animation-bezier;
   -o-animation: close_slideRight $animation-speed $animation-bezier;
   animation: close_slideRight $animation-speed $animation-bezier;
+}
+
+
+
+
+
+
+
+
+//CLOSE LEFT
+
+
+.close-left{
+  position: fixed;
+  display: block;
+  left:-10vw;
+  top:0;
+  width:10vw;
+  height:100vh;
+  background-color: $red-rgba;
+  z-index: $z-close;
+
+
+  .close-left-x{
+      width: 70px;
+      height: 50px;
+      left: 50%;
+      top:50%;
+      position: absolute;
+      margin-top: -25px;
+      margin-left: -35px;
+      background-color: #FFFFFF;
+    svg{
+      width: 35px;
+      position: absolute;
+      height: 35px;
+      top: 50%;
+      left: 50%;
+      margin-left: -17.5px;
+      margin-top: -17.5px;
+      line{
+        stroke: $red;
+      }
+    }
+  }
+}
+
+
+$animation-bezier: ease-in;
+$animation-speed: 0.3s;
+
+.close-left{
+  position: fixed;
+  @include transform-element(translateX(10vw));
+}
+.close-left.ng-hide{
+  @include transform-element(translateX(0vw));
+}
+
+
+.close-left.ng-hide-remove.ng-hide-remove-active{
+  -webkit-animation: close_slideRight $animation-speed $animation-bezier;
+  -moz-animation: close_slideRight $animation-speed $animation-bezier;
+  -ms-animation: close_slideRight $animation-speed $animation-bezier;
+  -o-animation: close_slideRight $animation-speed $animation-bezier;
+  animation: close_slideRight $animation-speed $animation-bezier;
+}
+
+.close-left.ng-hide-add.ng-hide-add-active{
+
+
+  -webkit-animation: close_slideLeft $animation-speed $animation-bezier;
+  -moz-animation: close_slideLeft $animation-speed $animation-bezier;
+  -ms-animation: close_slideLeft $animation-speed $animation-bezier;
+  -o-animation: close_slideLeft $animation-speed $animation-bezier;
+  animation: close_slideLeft $animation-speed $animation-bezier;
 }

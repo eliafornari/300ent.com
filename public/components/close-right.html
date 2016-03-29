@@ -1,4 +1,4 @@
-<div class="close-right" ng-show="isArtist || isRelease" ng-click="closeAllSections()" ng-controller="navCtrl">
+<div class="close-right" ng-class="{'isRelease': isRelease}" ng-show="isArtist || isRelease" ng-click="closeAllSections()" ng-controller="navCtrl">
 
   <!-- <div class="close-right-x" ng-click="closeAllSections()">
     <a><ex-directive></ex-directive></a>

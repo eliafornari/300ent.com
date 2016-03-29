@@ -14,6 +14,15 @@ Release.controller('releaseCtrl', function($scope, $location, $rootScope, $route
   }
 
 
+
+$rootScope.isReleaseVideo = false;
+
+  $scope.flipRelease=function(){
+    $rootScope.isReleaseVideo = !$rootScope.isReleaseVideo;
+  }
+
+
+
 });
 
 

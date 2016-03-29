@@ -19,9 +19,20 @@
   <link rel="stylesheet" href="/stylesheet/css/reset.css">
   <link rel="stylesheet" href="app.css">
 
+<meta name=“author” title=“Elia Fornari | Qual Agency”>
 
 
 
+<!--
+=======================================================================
+
+    Chapter | 2016
+
+    Designed and developed by Elia Fornari | Qual Agency
+
+=======================================================================
+
+-->
 
 
   <!-- <meta name="fragment" content="!"> -->
@@ -50,11 +61,8 @@
 
 <nav-directive></nav-directive>
 
-
-
-
 <header ng-controller="navCtrl" class="header" ng-click="openNav()">
-  <div class="header-wrapper" >
+  <div class="header-wrapper">
     <logo-directive></logo-directive>
   </div>
 </header>
@@ -65,7 +73,11 @@
 
   <div ng-show="pageLoading" class="page-loader-div">
 
-    <p>
+    <div class="time" ng-class="{'timeOn' : showTime}">
+      <p>{{time}}</p>
+    </div>
+
+    <p class="loading-p">
       loading...
     </p>
 
@@ -86,8 +98,10 @@
   <artist-directive></artist-directive>
   <release-directive></release-directive>
   <journal-directive></journal-directive>
-
+  <about-directive></about-directive>
+  <contact-directive></contact-directive>
   <close-right-directive></close-right-directive>
+  <close-left-directive></close-left-directive>
 
 </body>
 

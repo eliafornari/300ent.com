@@ -8,19 +8,34 @@
 
       <div class="release-main">
 
-          <p class="release-main-name">{{mainRelease.data['release.name'].value[0].text}}</p>
-          <p class="release-main-artist">{{mainRelease.data['release.artist'].value[0].text}}</p>
+        <div class="release-main-content" ng-class="{'release_flipped': isReleaseVideo}">
 
-          <div class="release-main-image" style="background-image: url('{{mainRelease.data['release.cover'].value.main.url}}')"></div>
+                    <p class="release-main-name">{{mainRelease.data['release.name'].value[0].text}}</p>
+                    <p class="release-main-artist">{{mainRelease.data['release.artist'].value[0].text}}</p>
+                    <div class="release-main-image" style="background-image: url('{{mainRelease.data['release.cover'].value.main.url}}')"></div>
+                    <ul class="release-main-links">
+                      <li class="release-main-links-li" id="release-main-itunes"><a href="{{mainRelease.data['release.itunes'].value.url}}" target="_blank">itunes</a></li>
+                      <li class="release-main-links-li" id="release-main-spotify"><a href="{{mainRelease.data['release.spotify'].value.url}}" target="_blank">spotify</a></li>
+                      <li class="release-main-links-li" id="release-main-soundcloud"><a href="{{mainRelease.data['release.soundcloud'].value.url}}" target="_blank">soundcloud</a></li>
+                      <div class="release-play" ng-if="mainRelease.data['release.youtube'].value.url">
+                        <a ng-click="flipRelease()">play</a>
+                      </div>
+                    </ul>
 
 
-          <ul class="release-main-links">
-            <li class="release-main-links-li" id="release-main-itunes"><a href="{{mainRelease.data['release.itunes'].value.url}}" target="_blank">itunes</a></li>
-            <li class="release-main-links-li" id="release-main-spotify"><a href="{{mainRelease.data['release.spotify'].value.url}}" target="_blank">spotify</a></li>
-            <li class="release-main-links-li" id="release-main-soundcloud"><a href="{{mainRelease.data['release.soundcloud'].value.url}}" target="_blank">soundcloud</a></li>
-          </ul>
+          </div>
+
+          <div class="release-main-video" ng-class="{'release_flipped': isReleaseVideo}" ng-if="mainRelease.data['release.youtube'].value.url">
+            <div class="release-main-video-close">
+              <ex-directive></ex-directive>
+            </div>
+            <iframe class="release-main-video-iframe" width="auto" height="auto" src="{{mainRelease.data['release.youtube'].value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+          </div>
 
       </div>
+
+
+
 
     </td>
   </tr>

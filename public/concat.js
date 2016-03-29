@@ -31,6 +31,18 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 .run(['$anchorScroll', '$route', '$rootScope', '$location', '$routeParams','$templateCache', function($anchorScroll, $route, $rootScope, $location, $routeParams, $templateCache) {
 
 
+
+  $rootScope.showTime=false;
+  $rootScope.time="";
+  var date = new Date();
+  console.log(date);
+  var n = date.toTimeString();
+  $rootScope.time = n;
+
+
+
+
+
 //a change of path should not reload the page
 
 
@@ -60,6 +72,15 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
   }])
 
+
+
+  .filter('trustUrl', function ($sce) {
+      return function(url) {
+        if (url){
+          return $sce.trustAsResourceUrl(url);
+        }
+      };
+    })
 
 .config(['$routeProvider', '$locationProvider' , function($routeProvider, $locationProvider) {
 
@@ -134,11 +155,47 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
 }])
 
-.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout){
+.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval){
 
   $rootScope.location = $location.path();
 
 $rootScope.firstLoading = true;
+
+
+
+
+
+//.........TIME
+
+  $rootScope.showTime=true;
+
+$interval(function(){
+  var date = new Date();
+  console.log(date);
+  var n = date.toTimeString();
+  $rootScope.time = n;
+}, 1000, 30000);
+// $rootScope.time = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+// console.log($rootScope.time);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -235,7 +292,16 @@ $rootScope.checkDevice = {
     }
   };
 })
+.directive('closeLeftDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'components/close-left.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
 
+    }
+  };
+})
 
 .directive('pageLoadingSpinner', function($rootScope, $location, $window, $routeParams, $timeout) {
   return {
@@ -433,6 +499,23 @@ $rootScope.isNavOpen = false;
     $rootScope.isNavOpen = false;
   }
 
+
+
+
+  $rootScope.navOpenArtist=function(){
+    $rootScope.openArtists($rootScope.Artist[0].uid,0);
+  }
+
+  $rootScope.navOpenRelease=function(){
+    $rootScope.openRelease($rootScope.Release[0].uid,0);
+  }
+
+  $rootScope.navOpenJournal=function(){
+    $rootScope.openJournal($rootScope.Journal[0].uid,0);
+  }
+
+
+
 })
 
 
@@ -474,20 +557,26 @@ $rootScope.isNavOpen = false;
 var Home = angular.module('myApp');
 
 
-Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce){
 
 
 
 $rootScope.isArtist = false;
 $rootScope.isRelease = false;
 $rootScope.isJournal = false;
+$rootScope.isContact = false;
+$rootScope.isAbout = false;
 
 
 $rootScope.closeAllSections = function(){
   $rootScope.isArtist = false;
   $rootScope.isRelease = false;
   $rootScope.isJournal = false;
+  $rootScope.isContact = false;
+  $rootScope.isAbout = false;
   $location.path('/', false);
+
+  $rootScope.isReleaseVideo = false;
 }
 
 
@@ -497,6 +586,68 @@ $rootScope.Journal =[];
 
 
 
+
+
+
+
+
+
+
+
+//..........................................................MESSAGE
+$rootScope.thisIndex=0;
+$scope.showingMessage=true;
+$scope.messageArray=[];
+$scope.isDone=false;
+$scope.final_messageArray=[];
+
+$scope.message = "AN INDEPENDENT AMERICAN RECORD LABEL";
+
+$scope.$watch('pageLoading' ,function(){
+
+  for (i =0; i < ($scope.message.length); i++){
+
+
+    // setTimeout(function(){
+        // jQuery("#msg").append($scope.message[i]);
+
+        if($scope.message[i]==" "){
+          $scope.messageArray.push("");
+        }else{
+          $scope.messageArray.push($scope.message[i]);
+
+        }
+
+        $scope.isDone=true;
+
+        // $scope.$apply();
+    // }, 300);
+
+    if($scope.isDone){
+      $scope.final_messageArray =$scope.messageArray;
+    }
+  }
+
+});
+
+
+$scope.enterAppear = false;
+
+
+setTimeout(function(){
+  if ($rootScope.firstLoading == true){
+    $scope.enterAppear = true;
+    // $scope.$apply();
+  }
+}, 3000);
+
+
+
+
+$rootScope.enter=function(){
+  $rootScope.firstLoading = false;
+  $scope.$apply();
+}
 
 //..........................................................GET
 
@@ -512,10 +663,10 @@ $rootScope.getContentType = function(type){
 
                   var Data = response;
 
-                  setTimeout(function(){
-                    $rootScope.firstLoading = false;
-                    $scope.$apply();
-                  }, 200);
+                  // setTimeout(function(){
+                  //   $rootScope.firstLoading = false;
+                  //   $scope.$apply();
+                  // }, 3000);
 
 
                   if (type =='artist'){
@@ -548,7 +699,7 @@ $rootScope.getContentType = function(type){
 
 $rootScope.getContentType('artist');
 $rootScope.getContentType('release');
-
+$rootScope.getContentType('journal');
 
 
 
@@ -581,6 +732,100 @@ $rootScope.getContentType('release');
     $rootScope.thisRelease(release, number);
 
   }
+
+  $rootScope.openJournal = function(journal, number){
+
+    $rootScope.isArtist = false;
+    $rootScope.isRelease = false;
+    $rootScope.isJournal = true;
+    $location.path('journal', false);
+    $rootScope.whatJournal = journal;
+    $rootScope.thisJournal(journal, number);
+
+  }
+
+  $rootScope.openContact = function(){
+    $rootScope.isContact = true;
+    $location.path('contact', false);
+
+    $rootScope.isArtist = false;
+    $rootScope.isRelease = false;
+    $rootScope.isJournal = false;
+    $rootScope.isAbout = false;
+  }
+
+  $rootScope.openAbout = function(){
+    $rootScope.isAbout = true;
+    $location.path('about', false);
+
+    $rootScope.isArtist = false;
+    $rootScope.isRelease = false;
+    $rootScope.isJournal = false;
+    $rootScope.isContact = false;
+  }
+
+
+
+
+// setTimeout(function(){
+//
+//
+//     $rootScope.closeAllSections();
+// }, 1600);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$rootScope.channel_statistics;
+
+
+
+  $.get(
+    "https://www.googleapis.com/youtube/v3/channels?",{
+      part: 'statistics',
+      // maxResults: 50,
+      id: 'UClO3VS7C-pHAoRh6fYddbLQ',
+      key: 'AIzaSyBmZ8Wa0u4cbP_kI_LYDQ-xT521xTeKcFo'
+    },
+      function(data){
+
+        $rootScope.channel_statistics = data.items[0].statistics;
+        console.log($rootScope.channel_statistics);
+
+
+        // $scope.baseUrl = 'https://www.youtube.com/embed/'+$rootScope.channel_data[0].id.videoId+'?rel=0&amp;&autoplay=0&controls=1&loop=1&showinfo=0&modestbranding=1&theme=dark&color=white&wmode=opaque';
+        // $scope.main_video = $sce.trustAsResourceUrl($scope.baseUrl);
+        // $scope.main_title = $rootScope.channel_data[0].title;
+
+// part=subscriberSnippet&channelId=UClO3VS7C-pHAoRh6fYddbLQ&mySubscribers=false&key={YOUR_API_KEY}
+
+      }
+  );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -729,9 +974,18 @@ Artist.controller('artistCtrl', function($scope, $location, $rootScope, $routePa
 
   $rootScope.mainArtist = [];
 
-  $rootScope.thisArtist = function(thisartist, thisnumber){
-      $rootScope.mainArtist = $rootScope.Artist[thisnumber];
-      console.log($rootScope.mainArtist.uid);
+  $rootScope.thisArtist = function(thisArtist, thisNumber){
+
+    for (a in $rootScope.Artist){
+      if($rootScope.Artist[a].uid==thisArtist){
+        $rootScope.mainArtist = $rootScope.Artist[a];
+        console.log($rootScope.mainArtist.uid);
+      }
+    }
+
+
+
+
   }
 
 
@@ -768,6 +1022,15 @@ Release.controller('releaseCtrl', function($scope, $location, $rootScope, $route
   }
 
 
+
+$rootScope.isReleaseVideo = false;
+
+  $scope.flipRelease=function(){
+    $rootScope.isReleaseVideo = !$rootScope.isReleaseVideo;
+  }
+
+
+
 });
 
 
@@ -787,3 +1050,81 @@ Release.directive('releaseDirective', function($rootScope, $location, $window, $
 
 
 
+var Journal = angular.module('myApp');
+
+
+Journal.controller('journalCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+
+
+  $rootScope.mainJournal = [];
+
+  $rootScope.thisJournal = function(thisJournal, thisnumber){
+      $rootScope.mainJournal = $rootScope.Journal[thisnumber];
+      console.log($rootScope.mainJournal.uid);
+  }
+
+
+});
+
+
+
+
+
+Journal.directive('journalDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'journal/journal.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+});
+
+var About = angular.module('myApp');
+
+About.controller('aboutCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+
+
+
+
+});
+
+
+
+
+
+About.directive('aboutDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'about/about.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+});
+
+var Contact = angular.module('myApp');
+
+Contact.controller('contactCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+
+
+
+
+});
+
+
+
+
+
+Contact.directive('contactDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'contact/contact.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+});

@@ -1,0 +1,38 @@
+<div class="journal" ng-controller="journalCtrl" ng-show="isJournal">
+
+
+
+
+
+
+      <!-- <p class="journal-main-name">{{mainJournal.data['journal.name'].value[0].text}}</p> -->
+
+
+
+      <ul class="journal-ul">
+        <li class="journal-li" style="margin-top:" ng-repeat="j in mainJournal.data['journal.body'].value" >
+
+
+          <div class="journal-li-image" ng-if="j.slice_type == 'image'" ng-repeat="s in j.value.value">
+            <img class="journal-li-image-element" src="{{s.image.value.main.url}}" alt="" />
+            <p class="journal-li-image-p" class="journal-li-image-caption" ng-if="s.caption.value[0].text" ng-class="{'journalImageLeft': s.position.value=='left'}">{{s.caption.value[0].text}}</p>
+          </div>
+
+          <div class="journal-li-quote" ng-if="j.slice_type == 'quote'">
+
+          </div>
+
+          <div class="journal-li-video" ng-if="j.slice_type == 'video'">
+            <iframe width="560" height="315" src="{{j.value.value[0].youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+          </div>
+<!--
+          <div class="journal-li-song" ng-if="j.slice.type == 'quote'">
+
+          </div> -->
+
+        </li>
+      </ul>
+
+
+
+</div>

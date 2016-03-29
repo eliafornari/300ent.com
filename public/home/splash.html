@@ -2,10 +2,20 @@
   <table class="splash-text-table">
     <tr class="splash-text-tr">
       <td class="splash-text-td">
-        <p class="splash-text-p">
-          AN INDEPENDENT AMERICAN RECORD LABEL
-        </p>
+            <div id="msg" ng-show="showingMessage"><p ng-if="isDone" ng-repeat="i in final_messageArray track by $index">{{i}}<b ng-if="i == ''">&nbsp;</b></p></div>
       </td>
     </tr>
   </table>
+
+
+
+  <div class="splash-enter">
+    <figure class="splash-front" style=" background-image: url('{{r.data['release.cover'].value.main.url}}')" ng-class="{'splash_flipped': enterAppear}"></figure>
+    <figure class="splash-back" ng-class="{'splash_flipped': enterAppear}">
+      <a ng-click="enter()">
+        ENTER
+      </a>
+    </figure>
+
+  </div>
 </div>

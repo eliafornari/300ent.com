@@ -9,6 +9,18 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 .run(['$anchorScroll', '$route', '$rootScope', '$location', '$routeParams','$templateCache', function($anchorScroll, $route, $rootScope, $location, $routeParams, $templateCache) {
 
 
+
+  $rootScope.showTime=false;
+  $rootScope.time="";
+  var date = new Date();
+  console.log(date);
+  var n = date.toTimeString();
+  $rootScope.time = n;
+
+
+
+
+
 //a change of path should not reload the page
 
 
@@ -38,6 +50,15 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
   }])
 
+
+
+  .filter('trustUrl', function ($sce) {
+      return function(url) {
+        if (url){
+          return $sce.trustAsResourceUrl(url);
+        }
+      };
+    })
 
 .config(['$routeProvider', '$locationProvider' , function($routeProvider, $locationProvider) {
 
@@ -112,11 +133,47 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
 }])
 
-.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout){
+.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval){
 
   $rootScope.location = $location.path();
 
 $rootScope.firstLoading = true;
+
+
+
+
+
+//.........TIME
+
+  $rootScope.showTime=true;
+
+$interval(function(){
+  var date = new Date();
+  console.log(date);
+  var n = date.toTimeString();
+  $rootScope.time = n;
+}, 1000, 30000);
+// $rootScope.time = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+// console.log($rootScope.time);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -213,7 +270,16 @@ $rootScope.checkDevice = {
     }
   };
 })
+.directive('closeLeftDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'components/close-left.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
 
+    }
+  };
+})
 
 .directive('pageLoadingSpinner', function($rootScope, $location, $window, $routeParams, $timeout) {
   return {

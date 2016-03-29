@@ -8,9 +8,18 @@ Artist.controller('artistCtrl', function($scope, $location, $rootScope, $routePa
 
   $rootScope.mainArtist = [];
 
-  $rootScope.thisArtist = function(thisartist, thisnumber){
-      $rootScope.mainArtist = $rootScope.Artist[thisnumber];
-      console.log($rootScope.mainArtist.uid);
+  $rootScope.thisArtist = function(thisArtist, thisNumber){
+
+    for (a in $rootScope.Artist){
+      if($rootScope.Artist[a].uid==thisArtist){
+        $rootScope.mainArtist = $rootScope.Artist[a];
+        console.log($rootScope.mainArtist.uid);
+      }
+    }
+
+
+
+
   }
 
 

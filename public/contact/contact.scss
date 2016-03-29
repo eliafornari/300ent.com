@@ -1,0 +1,46 @@
+
+.contact{
+  position: fixed;
+  left: 100vw;
+  background-color: rgba(255,255,255,1);
+  width:90vw;
+  height: 100vh;
+  z-index: $z-journal;
+  overflow-y: scroll;
+}
+
+
+
+
+.contact.ng-hide{
+    @include transform-element(translateX(0vw));
+}
+
+
+$animation-bezier: ease-in;
+$animation-speed: 0.3s;
+
+.contact{
+  position: fixed;
+  // right: $margin-sides;
+  // bottom: $margin-sides;
+  @include transform-element(translateX(-90vw));
+}
+
+
+
+.contact.ng-hide-remove.ng-hide-remove-active{
+  -webkit-animation: j_slideLeft $animation-speed $animation-bezier;
+  -moz-animation: j_slideLeft $animation-speed $animation-bezier;
+  -ms-animation: j_slideLeft $animation-speed $animation-bezier;
+  -o-animation: j_slideLeft $animation-speed $animation-bezier;
+  animation: j_slideLeft $animation-speed $animation-bezier;
+}
+
+.contact.ng-hide-add.ng-hide-add-active{
+  -webkit-animation: j_slideRight $animation-speed $animation-bezier;
+  -moz-animation: j_slideRight $animation-speed $animation-bezier;
+  -ms-animation: j_slideRight $animation-speed $animation-bezier;
+  -o-animation: j_slideRight $animation-speed $animation-bezier;
+  animation: j_slideRight $animation-speed $animation-bezier;
+}

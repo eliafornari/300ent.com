@@ -14,6 +14,23 @@ $rootScope.isNavOpen = false;
     $rootScope.isNavOpen = false;
   }
 
+
+
+
+  $rootScope.navOpenArtist=function(){
+    $rootScope.openArtists($rootScope.Artist[0].uid,0);
+  }
+
+  $rootScope.navOpenRelease=function(){
+    $rootScope.openRelease($rootScope.Release[0].uid,0);
+  }
+
+  $rootScope.navOpenJournal=function(){
+    $rootScope.openJournal($rootScope.Journal[0].uid,0);
+  }
+
+
+
 })
 
 

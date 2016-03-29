@@ -37,7 +37,8 @@ $padding-headline-bottom: 20px;
 
 // ........................................................COLORS
 
-$red: #bf2127;
+$red: #e60000;
+$red-rgba: rgba(230, 0, 0, 1);
 $red-opaque: rgba(206, 17, 17, 0.4);
 
 
@@ -70,13 +71,19 @@ $collection-fade-in: 1.4s;
 
 
 $z-loader: 999;
+$z-header: 13;
+$z-nav: 12;
+
+$z-journal:11;
+$z-splash-enter: 11;
 $z-close:10;
-$z-header: 11;
-$z-nav: 10;
 $z-home: 10;
+
+
 $z-home-artist:7;
 $z-main: 6;
 $z-home-live: 6;
 $z-artist: 6;
+$z-home-journal:6;
 
 /*....................................................................................*/
