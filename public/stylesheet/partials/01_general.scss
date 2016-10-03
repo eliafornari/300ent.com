@@ -5,16 +5,33 @@
 
 /*.....................TEXT MARK STYLES......................*/
 
+::-o-selection {
+    background: transparent;
+    color: $red;
+    text-shadow: none;
+}
+::-ms-selection {
+    background: transparent;
+    color: $red;
+    text-shadow: none;
+}
+
 ::-moz-selection {
-    background: $red;
-    color: #FFFFFF;
+    background: transparent;
+    color: $red;
+    text-shadow: none;
+}
+
+::-webkit-selection {
+    background: transparent;
+    color: $red;
     text-shadow: none;
 }
 
 
 ::selection {
-    background: $red;
-    color: #FFFFFF;
+    background: transparent;
+    color: $red;
     text-shadow: none;
 }
 
@@ -22,7 +39,11 @@
 
 
 
-
+@font-face {
+    font-family: camptonBold;
+    src: url('/components/fonts/woff/CamptonBold.woff2') format('woff2'), url('/components/fonts/otf/camptonBold.otf') format('opentype');
+    font-style: normal;
+}
 
 
 /*.....................ACTIVE CLASSES......................*/
@@ -40,21 +61,55 @@
 
 
 /*....................HIDING SCROLLBAR.....................*/
-
 ::-webkit-scrollbar {
     display: none;
+    width: 0 !important;
+}
+
+::-moz-scrollbar {
+    display: none;
+}
+::-ms-scrollbar {
+    display: none;
+}
+::-o-scrollbar {
+    display: none;
+}
+::scrollbar {
+    display: none;
+}
+
+
+body::-webkit-scrollbar {display:none;}
+body::-moz-scrollbar {display:none;}
+body::-o-scrollbar {display:none;}
+body::-google-ms-scrollbar {display:none;}
+body::-khtml-scrollbar {display:none;}
+
+*{
+  -webkit-overflow-scrolling: touch;
+  transform-style: flat;
+  -webkit-transform-style: flat;
+  -o-transform-style: flat;
+  -moz-transform-style: flat;
+  // overflow: -moz-scrollbars-none;
+
+
+  -ms-overflow-style: none;
+
+  @include respond-to(phone-device){
+    -webkit-backface-visibility: hidden;
+  }
+
 }
 
 
 
 
 
-
-
-
-
-
-
+.blockScroll{
+  overflow: hidden !important;
+}
 
 
 
@@ -71,22 +126,32 @@
 /*.....................GENERAL STYLES......................*/
 
 html{
-  font-family: camptonSemiBold;
+  font-family: camptonsemibold;
   width: 100%;
   height: 100%;
   margin: 0, 0;
   padding: 0, 0;
+  @include respond-to(phone-device){
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
 }
 
 
 body {
   width: 100%;
-  height: 100%;
+  height: auto;
   margin: 0, 0;
   padding: 0, 0;
   text-transform: uppercase;
 /* Set the background color of the HTML page to black */
-background-color: #FFFFFF;
+  background-color: #FFFFFF;
+  @include respond-to(phone-device){
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
 
 /* Hide oversized content. This prevents the scroll bars. */
 // overflow: hidden;
@@ -112,6 +177,9 @@ input, textarea, select, a, li {
 
 
 /*.........................................................*/
+.chromium{
+  height: 100vh !important;
+}
 
 
 
@@ -122,12 +190,22 @@ input, textarea, select, a, li {
 
 
 main {
-  width:  calc(100vw - 100px);
-  height: auto;
+  // width:  calc(100vw - 100px);
+  width: 100vw;
+  height: 200vh;
   position: relative;
   display: block;
   list-style-type: none;
-  // z-index: $z-main;
+  @include respond-to(phone-device){
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+}
+
+main.scrolledSplash{
+  height:100vh;
+  overflow-y: scroll;
 }
 
 /*.............................Loader............................*/
@@ -152,10 +230,10 @@ main {
     position: fixed;
     top:50%;
     left:50%;
-    width:100px;
+    width: 200px;
     height:50px;
     margin-top:-25px;
-    margin-left:-50px;
+    margin-left: -100px;
     line-height: 50px;
     vertical-align: middle;
     text-align: center;
@@ -209,6 +287,53 @@ cursor: pointer;
 
 
 
+
+/*...........................LANDSCAPE..............................*/
+.landscape-view-wrapper{
+  position: fixed;
+  display: none;
+  top:0;
+  left:0;
+  background-color: #FFFFFF;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  .landscape-view-div{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: -300px;
+    width: 600px;
+    height: 100px;
+
+    .landscape-view-p{
+      height: 200px;
+      // line-height: 66px;
+      // font-size: 42px;
+      @include title();
+      text-align: center;
+    }
+  }
+}
+
+.logo-landscape{
+    position:absolute;
+    left: 50%;
+    bottom: $margin-sides-mobile;
+    height: 50px;
+    width: 50px;
+    margin-top: 0px;
+    margin-left: -27.5px;
+    svg{
+      width: 100%;
+      height:100%;
+      path{
+        fill: #000000 !important;
+      }
+
+    }
+  }
 
 
 

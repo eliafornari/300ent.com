@@ -7,7 +7,8 @@ angular.module('myApp', [
   'ngRoute',
   'ngResource',
   'ngAnimate',
-  'myApp.routes'
+  'myApp.routes',
+  'myApp.Service'
 ])
 
 .directive('googleAnalytics', function(){
@@ -35,7 +36,6 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
   $rootScope.showTime=false;
   $rootScope.time="";
   var date = new Date();
-  console.log(date);
   var n = date.toTimeString();
   $rootScope.time = n;
 
@@ -61,7 +61,7 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
             $templateCache.remove(currentPageTemplate);
 
         var un = $rootScope.$on('$locationChangeSuccess', function () {
-              $route.current = 'worldoftheblonds/'+$routeParams.category+'/'+$routeParams.event;
+              $route.current = '/'+$routeParams.category+'/'+$routeParams.event;
               un();
               $route.reload();
           });
@@ -70,7 +70,7 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
     };
 
 
-  }])
+}])
 
 
 
@@ -93,28 +93,39 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
 
   // $locationChangeStart
+  // .when('/journal', {
+  //   templateUrl: 'home/home.html',
+  //   controller: 'journalCtrl',
+  //   resolve: {
+  //       resolveObject: function($route){
+  //        //**here you cannot use $routeParam to get "yourRouteParam"** property
+  //       // you must use : $route.current.params
+  //       }
+  //   }
+  // })
+
     .when('/journal', {
-      // templateUrl: 'release/release.html',
+      templateUrl: 'home/home.html',
       controller: 'journalCtrl'
-      })
+    })
 
     .when('/release', {
-      // templateUrl: 'release/release.html',
+      templateUrl: 'home/home.html',
       controller: 'releaseCtrl'
       })
 
     .when('/artist', {
-      // templateUrl: 'artist/artist.html',
+      templateUrl: 'home/home.html',
       controller: 'artistCtrl'
       })
 
     .when('/contact', {
-      templateUrl: 'contact/contact.html',
+      templateUrl: 'home/home.html',
       controller: 'contactCtrl'
       })
 
     .when('/about', {
-      templateUrl: 'about/about.html',
+      templateUrl: 'home/home.html',
       controller: 'aboutCtrl'
       })
 
@@ -132,15 +143,16 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
       // redirectTo: 'matthew30matthew30matthew'
       templateUrl: 'home/home.html',
       controller: 'homeCtrl',
-      resolve: {
-             function($q, $timeout) {
-                var deferred = $q.defer();
-                $timeout(function(){
-                    return deferred.resolve();
-                }, 200);
-                return deferred.promise;
-            }
-        }
+      reloadOnSearch: true,
+      // resolve: {
+      //        function($q, $timeout) {
+      //           var deferred = $q.defer();
+      //           $timeout(function(){
+      //               return deferred.resolve();
+      //           }, 200);
+      //           return deferred.promise;
+      //       }
+      //   }
 
     })
 
@@ -155,12 +167,12 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
 }])
 
-.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval){
+.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval, $window){
 
   $rootScope.location = $location.path();
 
 $rootScope.firstLoading = true;
-
+$rootScope.isChrome = false;
 
 
 
@@ -171,22 +183,24 @@ $rootScope.firstLoading = true;
 
 $interval(function(){
   var date = new Date();
-  console.log(date);
   var n = date.toTimeString();
   $rootScope.time = n;
 }, 1000, 30000);
 // $rootScope.time = new Date(year, month, day, hours, minutes, seconds, milliseconds);
-// console.log($rootScope.time);
 
 
 
 
 
+jQuery($window).resize(function(){
+  $rootScope.windowHeight = $window.innerHeight;
+  $rootScope.splashScroll = $rootScope.windowHeight;
+  // windowHeight = angular.element($window).height(); // Window Height
+  $rootScope.checkSize();
+  $scope.landscapeFunction();
 
-
-
-
-
+    $scope.$apply();
+});
 
 
 
@@ -200,81 +214,130 @@ $interval(function(){
 
 
 //..............................................................................mobile
-
-
 //....this is the function that checks the header of the browser and sees what device it is
+var test = navigator.userAgent.match('GSA');
 
-$rootScope.checkDevice = {
-      Android: function() {
-          return navigator.userAgent.match(/Android/i);
-      },
-      BlackBerry: function() {
-          return navigator.userAgent.match(/BlackBerry/i);
-      },
-      iOS: function() {
-          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-      },
-      Opera: function() {
-          return navigator.userAgent.match(/Opera Mini/i);
-      },
-      Windows: function() {
-          return navigator.userAgent.match(/IEMobile/i);
-      },
-      any: function() {
-          return ($rootScope.checkDevice.Android() || $rootScope.checkDevice.BlackBerry() || $rootScope.checkDevice.iOS() || $rootScope.checkDevice.Opera() || $rootScope.checkDevice.Windows());
+if (test == 'GSA'){
+  $rootScope.isChrome = true;
+}
+
+
+$rootScope.isMobile, $rootScope.isDevice, $rootScope.isMobileDevice;
+$rootScope.checkSize = function(){
+
+
+    $rootScope.checkDevice = {
+          Android: function() {
+              return navigator.userAgent.match(/Android/i);
+          },
+          BlackBerry: function() {
+              return navigator.userAgent.match(/BlackBerry/i);
+          },
+          iOS: function() {
+              return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+          },
+          Opera: function() {
+              return navigator.userAgent.match(/Opera Mini/i);
+          },
+          Windows: function() {
+              return navigator.userAgent.match(/IEMobile/i);
+          },
+          any: function() {
+              return ($rootScope.checkDevice.Android() || $rootScope.checkDevice.BlackBerry() || $rootScope.checkDevice.iOS() || $rootScope.checkDevice.Opera() || $rootScope.checkDevice.Windows());
+          },
+          chromeMobile: function(){
+            return navigator.userAgent.match('CriOS');
+          }
+      };
+
+    //........checks the width
+
+      $scope.mobileQuery=window.matchMedia( "(max-width: 767px)" );
+      $rootScope.isMobile=$scope.mobileQuery.matches;
+
+
+    //.........returning true if device
+
+      if ($scope.checkDevice.any()){
+        $rootScope.isDevice= true;
+
+      }else{
+          $rootScope.isDevice=false;
       }
-  };
 
-//........checks the width
-
-  $scope.mobileQuery=window.matchMedia( "(max-width: 767px)" );
-  $rootScope.isMobile=$scope.mobileQuery.matches;
-
-
-//.........returning true if device
-
-  if ($scope.checkDevice.any()){
-    $rootScope.isDevice= true;
-
-  }else{
-      $rootScope.isDevice=false;
-  }
-
-  if (($rootScope.isDevice==true)&&($scope.isMobile==true)){
-    $rootScope.isMobileDevice= true;
-  }else{
-      $rootScope.isMobileDevice=false;
-  }
+      if (($rootScope.isDevice==true)&&($scope.isMobile==true)){
+        $rootScope.isMobileDevice= true;
+      }else{
+          $rootScope.isMobileDevice=false;
+      }
 
 
 
 
-    if ($rootScope.isDevice){
+        if ($rootScope.isDevice){
 
-        $rootScope.mobileLocation = function(url){
-          $location.path(url).search();
-        }
+            $rootScope.mobileLocation = function(url){
+              $location.path(url).search();
+            }
 
-        $rootScope.mobileExternalLocation = function(url){
-          $window.open(url, '_blank');
+            $rootScope.mobileExternalLocation = function(url){
+              $window.open(url, '_blank');
+            }
+
+
+        } else if (!$rootScope.isDevice){
+
+
+            $rootScope.mobileLocation = function(url){
+              return false;
+            }
+
+            $rootScope.mobileExternalLocation = function(url){
+              return false;
+            }
         }
 
 
-    } else if (!$rootScope.isDevice){
 
 
-        $rootScope.mobileLocation = function(url){
-          return false;
-        }
 
-        $rootScope.mobileExternalLocation = function(url){
-          return false;
+
+  }//checkSize
+
+
+$rootScope.checkSize();
+
+
+
+
+ $rootScope.landscapeView = false;
+ $rootScope.pageLoading = false;
+
+
+ //function removing website if landscape
+
+  $scope.landscapeFunction = function(){
+
+    if ($rootScope.isMobile==true){
+        if(window.innerHeight < window.innerWidth){
+          $rootScope.landscapeView = true;
+          $rootScope.pageLoading = true;
+          jQuery(".landscape-view-wrapper").css({
+            "width":"100vw",
+            "height": "100vh",
+            "display": "block"
+        });
+
+        }else{
+          $rootScope.landscapeView = false;
+          $rootScope.pageLoading = false;
+
         }
     }
 
+  }
 
-
-
+$scope.landscapeFunction();
 
 
 
@@ -336,7 +399,7 @@ $rootScope.checkDevice = {
 'use strict';
 
 /* Services */
-var Service = angular.module('myapp.Service', ['ngResource']);
+var Service = angular.module('myApp.Service', ['ngResource']);
 
 Service.factory('resourceService', function($resource, $routeParams, $q, $cacheFactory){
 
@@ -484,6 +547,243 @@ Service.service('MetaInformation', function() {
     });
 
 
+
+
+
+
+
+
+
+    Service.service('anchorSmoothScroll', function($location, $rootScope, $window){
+
+        // this.scrollTo = function(eID) {
+        //
+        //     // This scrolling function
+        //     // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
+        //
+        //     var startY = currentYPosition();
+        //     var stopY = elmYPosition(eID);
+        //     var distance = stopY > startY ? stopY - startY : startY - stopY;
+        //     if (distance < 100) {
+        //         scrollTo(0, stopY); return;
+        //     }
+        //     var speed = Math.round(distance / 100);
+        //     if (speed >= 20) speed = 20;
+        //     var step = Math.round(distance / 25);
+        //     var leapY = stopY > startY ? startY + step : startY - step;
+        //     var timer = 0;
+        //     if (stopY > startY) {
+        //         for ( var i=startY; i<stopY; i+=step ) {
+        //             setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+        //             leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+        //         } return;
+        //     }
+        //     for ( var i=startY; i>stopY; i-=step ) {
+        //         setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+        //         leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+        //     }
+        //
+        //     function currentYPosition() {
+        //         // Firefox, Chrome, Opera, Safari
+        //         if (self.pageYOffset) return self.pageYOffset;
+        //         // Internet Explorer 6 - standards mode
+        //         if (document.documentElement && document.documentElement.scrollTop)
+        //             return document.documentElement.scrollTop;
+        //         // Internet Explorer 6, 7 and 8
+        //         if (document.body.scrollTop) return document.body.scrollTop;
+        //         return 0;
+        //     }
+        //
+        //     function elmYPosition(eID) {
+        //         var elm = document.getElementById(eID);
+        //         var y = elm.offsetTop;
+        //         var node = elm;
+        //         while (node.offsetParent && node.offsetParent != document.body) {
+        //             node = node.offsetParent;
+        //             y += node.offsetTop;
+        //         } return y;
+        //     }
+        //
+        // };
+
+
+
+
+        this.scrollOneViewport = function() {
+
+
+
+            setTimeout(function(){
+              var number, element, scroll, scrollPosition, windowheight;
+
+
+
+                      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                     element = jQuery('html,body');
+                    //  scrollPosition =  jQuery('.artist').scrollTop();
+                    //  scrollLength = document.getElementById("artist").scrollHeight;
+                     windowheight = window.innerHeight;
+                     if ($rootScope.isMobile && $rootScope.isDevice){
+                        windowheight = $window.innerHeight + 130;
+                     }
+
+
+
+
+                      // event.preventDefault();
+
+                      element.stop().animate({
+                        scrollTop: windowheight
+                      },1000,
+                        'easeInOutQuart'
+                        // function() {
+                        //   // $location.path(section, false);
+                        //   // console.log($location.path());
+                        // }
+                      );
+                    }, 100);
+
+          }
+
+
+
+
+
+        this.scrollTo = function(id) {
+
+
+
+            setTimeout(function(){
+              var number, element, scroll, scrollPosition, windowheight;
+                      number =  jQuery('#'+id).offset().top;
+                      console.log("number: "+number);
+
+
+                      // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                     element = jQuery('.artist');
+                     scrollPosition =  jQuery('.artist').scrollTop();
+                     scrollLength = document.getElementById("artist").scrollHeight;
+                     windowheight = $rootScope.windowHeight;
+
+
+                     scroll = scrollPosition + number;
+
+
+
+
+                      element.stop().animate({
+                        scrollTop: scroll
+                      },1000,
+                        'easeInOutQuart'
+                        // function() {
+                        //   // $location.path(section, false);
+                        //   // console.log($location.path());
+                        // }
+                      );
+                    }, 200);
+
+          }
+
+
+
+
+
+
+
+
+
+
+
+//............RELEASE
+
+
+          this.scrollToRelease = function(id) {
+
+
+              setTimeout(function(){
+                  var number, element, scroll, scrollPosition, windowheight;
+                        number =  jQuery('#'+id).offset().top;
+                        console.log("number: "+number);
+
+
+                        // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                       element = jQuery('.release');
+                       scrollPosition =  jQuery('.release').scrollTop();
+                      //  scrollLength = document.getElementById("release").scrollHeight;
+                       windowheight = $rootScope.windowheight;
+
+
+                       scroll = scrollPosition + number;
+
+
+                        // event.preventDefault();
+
+                        element.stop().animate({
+                          scrollTop: scroll
+                        },1000,
+                          'easeInOutQuart'
+                          // function() {
+                          //   // $location.path(section, false);
+                          //   // console.log($location.path());
+                          // }
+                        );
+                      }, 200);
+
+            }
+
+
+
+
+            this.scrollJournalTop = function(id) {
+
+
+                setTimeout(function(){
+                  var number, element, scroll, scrollPosition, windowheight;
+
+
+                          // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                         element = jQuery('.journal');
+
+                          element.stop().animate({
+                            scrollTop: 0
+                          },1000,
+                            'easeInOutQuart'
+
+                          );
+                              //
+                        }, 200);
+
+              }
+
+
+
+              this.scrollToTop = function(id) {
+
+
+                  setTimeout(function(){
+                    var number, element, scroll, scrollPosition, windowheight;
+
+
+                            // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
+                           element = jQuery('#'+id);
+
+                            element.stop().animate({
+                              scrollTop: 0
+                            },1000,
+                              'easeInOutQuart'
+
+                            );
+                                //
+                          }, 200);
+
+                }
+
+// easeInOutQuart
+
+
+    });
+
+
 angular.module('myApp')
 
 
@@ -493,6 +793,16 @@ $rootScope.isNavOpen = false;
 
   $scope.openNav = function(){
     $rootScope.isNavOpen = !$rootScope.isNavOpen;
+    if($rootScope.firstLoading==true){
+      $rootScope.scrollToHome();
+    }
+    $rootScope.removeSplashMobile = true;
+
+  }
+
+
+  if($rootScope.isMobile){
+    $rootScope.isNavOpen = false;
   }
 
   $scope.closeNav = function(){
@@ -513,6 +823,47 @@ $rootScope.isNavOpen = false;
   $rootScope.navOpenJournal=function(){
     $rootScope.openJournal($rootScope.Journal[0].uid,0);
   }
+
+
+
+
+
+
+
+
+  $rootScope.navOpenArtist_m = function(){
+    $rootScope.hideHomeArtist=false;
+    $rootScope.hideHomeRelease=true;
+    $rootScope.hideHomeJournal=true;
+
+    $rootScope.closeAllSections();
+
+  }
+  $rootScope.navOpenRelease_m=function(){
+    $rootScope.hideHomeArtist=true;
+    $rootScope.hideHomeRelease=false;
+    $rootScope.hideHomeJournal=true;
+
+    $rootScope.closeAllSections();
+
+
+  }
+
+  $rootScope.navOpenJournal_m=function(){
+    $rootScope.hideHomeArtist=true;
+    $rootScope.hideHomeRelease=true;
+    $rootScope.hideHomeJournal=false;
+
+    $rootScope.closeAllSections();
+
+
+  }
+
+
+
+
+
+
 
 
 
@@ -541,6 +892,50 @@ $rootScope.isNavOpen = false;
   };
 })
 
+.directive('arrowDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'components/icons/arrow.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+})
+
+
+.directive('mailDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'components/icons/mail.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+})
+
+.directive('flagDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'components/icons/flag.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+})
+
+.directive('navMobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'components/nav-mobile.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+})
 
 .directive('navDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
   return {
@@ -557,9 +952,9 @@ $rootScope.isNavOpen = false;
 var Home = angular.module('myApp');
 
 
-Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce){
+Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $templateCache, $route, $window, anchorSmoothScroll){
 
-
+$scope.isSplash = true;
 
 $rootScope.isArtist = false;
 $rootScope.isRelease = false;
@@ -569,14 +964,32 @@ $rootScope.isAbout = false;
 
 
 $rootScope.closeAllSections = function(){
+
+
   $rootScope.isArtist = false;
   $rootScope.isRelease = false;
   $rootScope.isJournal = false;
   $rootScope.isContact = false;
   $rootScope.isAbout = false;
+  $rootScope.mainArtist = "";
   $location.path('/', false);
+  $rootScope.openSare = false;
+  // $rootScope.toggleVideo('hide');
+  setTimeout(function(){
+    $rootScope.mainJournal = [];
+    $rootScope.journalLoading = true;
+  }, 300);
+
+
 
   $rootScope.isReleaseVideo = false;
+}
+
+
+
+$rootScope.refreshTemplate = function(){
+  var currentPageTemplate = $route.current.templateUrl;
+  $templateCache.remove(currentPageTemplate);
 }
 
 
@@ -634,13 +1047,6 @@ $scope.$watch('pageLoading' ,function(){
 $scope.enterAppear = false;
 
 
-setTimeout(function(){
-  if ($rootScope.firstLoading == true){
-    $scope.enterAppear = true;
-    // $scope.$apply();
-  }
-}, 3000);
-
 
 
 
@@ -649,17 +1055,24 @@ $rootScope.enter=function(){
   $scope.$apply();
 }
 
+
+
+
+
 //..........................................................GET
 
 
 
-
-$rootScope.getContentType = function(type){
+$rootScope.getContentType = function(type, orderField){
 
       Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
           Api.form('everything')
               .ref(Api.master())
-              .query(Prismic.Predicates.at("document.type", type)).submit(function (err, response) {
+
+              .query(Prismic.Predicates.at("document.type", type))
+              .orderings('['+orderField+']')
+              .pageSize(100)
+              .submit(function (err, response) {
 
                   var Data = response;
 
@@ -671,16 +1084,18 @@ $rootScope.getContentType = function(type){
 
                   if (type =='artist'){
                     $rootScope.Artist = response.results;
+                    $scope.$broadcast('artistReady');
                   }else if(type=='release'){
                     $rootScope.Release = response.results;
+                    $scope.$broadcast('releaseReady');
                   }else if(type =='journal'){
                     $rootScope.Journal = response.results;
+                    $scope.$broadcast('journalReady');
                   }
 
                   // The documents object contains a Response object with all documents of type "product".
                   var page = response.page; // The current page number, the first one being 1
                   var results = response.results; // An array containing the results of the current page;
-                  console.log(results);
                   // you may need to retrieve more pages to get all results
                   var prev_page = response.prev_page; // the URL of the previous page (may be null)
                   var next_page = response.next_page; // the URL of the next page (may be null)
@@ -697,9 +1112,9 @@ $rootScope.getContentType = function(type){
 
 
 
-$rootScope.getContentType('artist');
-$rootScope.getContentType('release');
-$rootScope.getContentType('journal');
+$rootScope.getContentType('artist', 'my.artist.index');
+$rootScope.getContentType('release', 'my.release.date desc');
+$rootScope.getContentType('journal', 'my.journal.date desc');
 
 
 
@@ -715,9 +1130,14 @@ $rootScope.getContentType('journal');
     $rootScope.isArtist = true;
     $rootScope.isRelease = false;
     $rootScope.isJournal = false;
+    $rootScope.isAbout = false;
+    $rootScope.isContact = false;
+
     $location.path('artist', false);
     $rootScope.whatArtist = artist;
     $rootScope.thisArtist(artist, number);
+
+    $rootScope.gotoAnchorArtist('artist-content-'+artist);
 
   }
 
@@ -727,9 +1147,14 @@ $rootScope.getContentType('journal');
     $rootScope.isArtist = false;
     $rootScope.isRelease = true;
     $rootScope.isJournal = false;
+    $rootScope.isAbout = false;
+    $rootScope.isContact = false;
+
     $location.path('release', false);
     $rootScope.whatRelease = release;
     $rootScope.thisRelease(release, number);
+
+    $rootScope.gotoAnchorRelease('release-item-'+release);
 
   }
 
@@ -738,9 +1163,20 @@ $rootScope.getContentType('journal');
     $rootScope.isArtist = false;
     $rootScope.isRelease = false;
     $rootScope.isJournal = true;
+    $rootScope.isAbout = false;
+    $rootScope.isContact = false;
+
     $location.path('journal', false);
     $rootScope.whatJournal = journal;
-    $rootScope.thisJournal(journal, number);
+    $scope.$watch('jorunalReady' ,function(){
+      console.log("jorunalReady");
+      setTimeout(function(){
+
+        $rootScope.thisJournal(journal, number);
+
+
+      }, 600);
+    });
 
   }
 
@@ -767,11 +1203,7 @@ $rootScope.getContentType('journal');
 
 
 
-// setTimeout(function(){
-//
-//
-//     $rootScope.closeAllSections();
-// }, 1600);
+
 
 
 
@@ -800,14 +1232,10 @@ $rootScope.channel_statistics;
       function(data){
 
         $rootScope.channel_statistics = data.items[0].statistics;
-        console.log($rootScope.channel_statistics);
-
-
         // $scope.baseUrl = 'https://www.youtube.com/embed/'+$rootScope.channel_data[0].id.videoId+'?rel=0&amp;&autoplay=0&controls=1&loop=1&showinfo=0&modestbranding=1&theme=dark&color=white&wmode=opaque';
         // $scope.main_video = $sce.trustAsResourceUrl($scope.baseUrl);
         // $scope.main_title = $rootScope.channel_data[0].title;
-
-// part=subscriberSnippet&channelId=UClO3VS7C-pHAoRh6fYddbLQ&mySubscribers=false&key={YOUR_API_KEY}
+        // part=subscriberSnippet&channelId=UClO3VS7C-pHAoRh6fYddbLQ&mySubscribers=false&key={YOUR_API_KEY}
 
       }
   );
@@ -815,6 +1243,60 @@ $rootScope.channel_statistics;
 
 
 
+$rootScope.splashScroll=0;
+$rootScope.windowHeight = $window.innerHeight;
+if ($rootScope.isMobile && $rootScope.isDevice){
+  $rootScope.firstLoading = false;
+  $rootScope.windowHeight = $window.innerHeight + 60;
+}else{
+
+
+  angular.element($window).bind("scroll", function() {
+
+
+      var scroll = this.pageYOffset;
+      $rootScope.splashScroll = scroll;
+
+
+      if(scroll>=$rootScope.windowHeight){
+        $rootScope.firstLoading = false;
+        angular.element($window).unbind("scroll");
+      }
+
+
+      $scope.$apply();
+  });
+
+
+}
+
+
+$rootScope.removeSplashMobile = false;
+
+$rootScope.scrollToHome = function(){
+  anchorSmoothScroll.scrollOneViewport();
+  $rootScope.removeSplashMobile = true;
+
+}
+
+
+
+          $rootScope.getArtistType = function(id){
+
+                Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+                    Api.form('everything')
+                        .ref(Api.master())
+                        .query(Prismic.Predicates.at("document.id", id))
+                        .submit(function (err, response) {
+
+
+                        });
+                  });
+
+
+          };
+
+$rootScope.getArtistType("VvppaiMAACUAQUu1");
 
 
 
@@ -826,6 +1308,45 @@ $rootScope.channel_statistics;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 
+//
+// var previewToken = 'V31lbScAAIHkBbp9*V31_eicAABXmBlcw';
+//
+// Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+//     var stPatrickRef = Api.ref("1-records");
+//     // Now we'll use this reference for all our calls
+//     Api.form('everything')
+//         .ref(stPatrickRef)
+//         .query(Prismic.Predicates.at("document.type", "journal")).submit(function (err, response) {
+//             if (err) {
+//                 console.log(err);
+//                 done();
+//           }
+//
+//           console.log(response);
+//             // The documents object contains a Response object with all documents of type "product"
+//             // including the new "Saint-Patrick's Cupcake"
+//         });
+//
+//
+//
+// }, previewToken);
 
 
 
@@ -839,6 +1360,18 @@ Home.directive('splashDirective', function($rootScope, $location, $window, $rout
   return {
     restrict: 'E',
     templateUrl: 'home/splash.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+});
+
+
+Home.directive('homeMobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'home/homeMobile.html',
     replace: true,
     link: function(scope, elem, attrs) {
 
@@ -969,24 +1502,85 @@ Home.directive('splashDirective', function($rootScope, $location, $window, $rout
 var Artist = angular.module('myApp');
 
 
-Artist.controller('artistCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+Artist.controller('artistCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $window){
 
 
-  $rootScope.mainArtist = [];
+  $rootScope.mainArtist = "";
 
   $rootScope.thisArtist = function(thisArtist, thisNumber){
-
-    for (a in $rootScope.Artist){
-      if($rootScope.Artist[a].uid==thisArtist){
-        $rootScope.mainArtist = $rootScope.Artist[a];
-        console.log($rootScope.mainArtist.uid);
-      }
-    }
+    $rootScope.mainArtist = thisArtist;
+  }
 
 
+var scroll,windowheight;
 
+windowheight = window.innerHeight;
+
+setTimeout(function(){
+
+
+$scope.artistPositions=[];
+
+  for (i in $rootScope.Artist){
+    var artistPosition =  jQuery('#artist-content-'+$rootScope.Artist[i].uid).offset().top;
+    artistPosition = windowheight*i;
+    var object = {
+                    "name": $rootScope.Artist[i].uid,
+                    "offset":artistPosition
+                  }
+
+    $scope.artistPositions = $scope.artistPositions.concat(object);
 
   }
+
+
+
+
+    jQuery('.artist').bind("scroll.artist", function(event) {
+
+        scroll =  jQuery('.artist').scrollTop();
+
+        for (i in $scope.artistPositions){
+
+          if((scroll > ($scope.artistPositions[i].offset - 1)) && (scroll < ($scope.artistPositions[i].offset + windowheight -1 ))){
+            $rootScope.mainArtist = $scope.artistPositions[i].name;
+          }else{
+
+          }
+
+
+       }//for loop
+
+
+        $scope.$apply();
+
+    });//scroll bind
+
+
+
+}, 2500);
+
+
+
+
+
+
+
+
+
+//..................................................changing anchor link on click
+$rootScope.gotoAnchorArtist = function(x) {
+  anchorSmoothScroll.scrollTo(x);
+};
+
+
+
+
+
+
+
+
+
 
 
 });
@@ -1011,14 +1605,13 @@ Artist.directive('artistDirective', function($rootScope, $location, $window, $ro
 var Release = angular.module('myApp');
 
 
-Release.controller('releaseCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+Release.controller('releaseCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll){
 
 
   $rootScope.mainRelease = [];
 
   $rootScope.thisRelease = function(thisRelease, thisnumber){
       $rootScope.mainRelease = $rootScope.Release[thisnumber];
-      console.log($rootScope.mainRelease.uid);
   }
 
 
@@ -1028,6 +1621,26 @@ $rootScope.isReleaseVideo = false;
   $scope.flipRelease=function(){
     $rootScope.isReleaseVideo = !$rootScope.isReleaseVideo;
   }
+
+
+
+
+
+
+
+
+
+
+  //..................................................changing anchor link on click
+  $rootScope.gotoAnchorRelease = function(x) {
+    anchorSmoothScroll.scrollToRelease(x);
+  };
+
+
+
+
+
+
 
 
 
@@ -1053,18 +1666,130 @@ Release.directive('releaseDirective', function($rootScope, $location, $window, $
 var Journal = angular.module('myApp');
 
 
-Journal.controller('journalCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+Journal.controller('journalCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', '$route' ,function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $route){
 
 
   $rootScope.mainJournal = [];
+  $rootScope.openSare = false;
+  $scope.journalLength;
+  $rootScope.journalLoading = true;
+
 
   $rootScope.thisJournal = function(thisJournal, thisnumber){
-      $rootScope.mainJournal = $rootScope.Journal[thisnumber];
-      console.log($rootScope.mainJournal.uid);
+    // setTimeout(function(){
+    //   console.log($route.current.params);
+    //
+    // }, 900);
+      for (i in $rootScope.Journal){
+
+        if( thisJournal == $rootScope.Journal[i].uid){
+
+          $rootScope.mainJournal = $rootScope.Journal[i];
+            console.log($rootScope.mainJournal);
+        }
+      }
+      anchorSmoothScroll.scrollJournalTop();
+
+      setTimeout(function(){
+        $rootScope.journalLoading = false;
+        $rootScope.$apply();
+      }, 1000);
   }
 
 
-});
+// setTimeout(function(){
+//
+// }, 600);
+
+
+
+$rootScope.getNextJournal = function(uid){
+
+
+  $scope.journalLength = $scope.Journal.length;
+
+
+  for (j in $rootScope.Journal){
+    if(uid == $rootScope.Journal[j].uid){
+
+      if(j < ($scope.journalLength-1)){
+        j++;
+        $rootScope.mainJournal = $rootScope.Journal[j];
+      }else if(j >= ($scope.journalLength-1)){
+        j++;
+        $rootScope.mainJournal = $rootScope.Journal[0];
+      }
+
+      anchorSmoothScroll.scrollJournalTop();
+
+    }
+
+  }
+
+  $rootScope.openSare = false;
+
+
+}
+
+
+
+$rootScope.openShare =function(){
+    $rootScope.openSare = !$rootScope.openSare;
+}
+
+
+
+
+
+
+
+//
+// //DETAIL CHECK
+//
+// if ($location.path() == '/journal/'+$routeParams.id){
+//
+// console.log("$routeParams.id: "+$routeParams.id);
+//
+//
+//   $scope.$watch('jorunalReady' ,function(){
+//     console.log("jorunalReady");
+//     setTimeout(function(){
+//
+//
+//
+//     }, 600);
+//   });
+//
+// };
+//
+
+
+// $scope.$on('journalReady', function() {
+//
+//
+// console.log('changed');
+//
+//   if($location.path() == '/journal'){
+//   console.log($location.path());
+//     console.log('now');
+//
+//     setTimeout(function(){
+//       $scope.journalLoading = false;
+//       $scope.$apply();
+//     }, 2000);
+//   }
+ //
+ //
+ // });
+
+
+
+
+
+
+
+
+}]); //controller
 
 
 
@@ -1076,6 +1801,20 @@ Journal.directive('journalDirective', function($rootScope, $location, $window, $
     templateUrl: 'journal/journal.html',
     replace: true,
     link: function(scope, elem, attrs) {
+
+    }
+  };
+});
+
+
+
+Journal.directive('journalLoaderDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'A',
+    link: function(scope, elem, attrs) {
+
+
+
 
     }
   };

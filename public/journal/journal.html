@@ -1,37 +1,96 @@
-<div class="journal" ng-controller="journalCtrl" ng-show="isJournal">
+<div class="journal" ng-controller="journalCtrl" ng-show="isJournal" journalLoaderDirective>
 
-
-
-
-
-
-      <!-- <p class="journal-main-name">{{mainJournal.data['journal.name'].value[0].text}}</p> -->
 
 
 
       <ul class="journal-ul">
-        <li class="journal-li" style="margin-top:" ng-repeat="j in mainJournal.data['journal.body'].value" >
+        <li class="journal-li"  ng-repeat="j in mainJournal.data['journal.body'].value" ng-class="{'lonely': j.value.value[0].lonely.value}" >
 
-
-          <div class="journal-li-image" ng-if="j.slice_type == 'image'" ng-repeat="s in j.value.value">
-            <img class="journal-li-image-element" src="{{s.image.value.main.url}}" alt="" />
-            <p class="journal-li-image-p" class="journal-li-image-caption" ng-if="s.caption.value[0].text" ng-class="{'journalImageLeft': s.position.value=='left'}">{{s.caption.value[0].text}}</p>
+          <div class="journal-li-image" ng-if="j.slice_type == 'image'" ng-repeat="s in j.value.value" ng-show="!journalLoading">
+            <div class="journal-li-image-element" ng-class="{'journalImageLeft': s.position.value=='left', 'journalImageRight': s.position.value=='right', 'journalImageCentral': s.position.value=='central'}">
+              <table>
+                <tr>
+                  <td>
+                    <img class="journal-li-image-element-img" src="{{s.image.value.main.url}}" alt="" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="journal-li-image-text" ng-if="s.caption.value[0].text" ng-class="{'journalImageLeft': s.position.value=='left', 'journalImageRight': s.position.value=='right', 'journalImageCentral': s.position.value=='central'}">
+              <table><tr><td>
+                    <p>{{s.caption.value[0].text}}</p>
+              </td></tr></table>
+            </div>
           </div>
 
-          <div class="journal-li-quote" ng-if="j.slice_type == 'quote'">
-
+          <div class="journal-li-quote" ng-if="j.slice_type == 'Quote'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
+            <table><tr><td>
+              <p class="journal-li-quote-header" ng-repeat="q in j.value.value">{{q.header.value[0].text}}</p>
+            </td></tr></table>
           </div>
 
-          <div class="journal-li-video" ng-if="j.slice_type == 'video'">
-            <iframe width="560" height="315" src="{{j.value.value[0].youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
-          </div>
-<!--
-          <div class="journal-li-song" ng-if="j.slice.type == 'quote'">
+          <div class="journal-li-text" ng-if="j.slice_type == 'text'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
+            <table><tr><td>
+              <div class="" ng-repeat="t in j.value.value">
+                <h2 class="journal-li-text-header">
+                  {{t.heading2.value[0].text}}
+                </h2>
+                <p class="journal-li-text-paragraph">
+                  {{t.paragraph.value[0].text}}
+                </p>
+              </div>
 
-          </div> -->
+            </td></tr></table>
+          </div>
+
+
+          <div class="journal-li-video" ng-if="j.slice_type == 'video'" ng-repeat="s in j.value.value" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!journalLoading">
+            <table><tr><td>
+              <iframe width="560" height="315" src="{{s.youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+            </td></tr></table>
+          </div>
+
+          <div class="journal-li-soundcloud" ng-if="j.slice_type == 'soundcloud'" ng-repeat="s in j.value.value" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!journalLoading">
+            <table><tr><td>
+              <iframe width="560" height="315" src="{{s.youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+            </td></tr></table>
+          </div>
+
+          <div class="journal-li-weblink" ng-if="j.slice_type == 'weblink'" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!journalLoading">
+              <a href="{{j.value.value[0].link.value.url}}" target="_blank">{{j.value.value[0].linkName.value[0].text}}</a>
+          </div>
+
+
+
+
+
+          <div class="journal-loading" ng-show="journalLoading" ng-class="{'chromium': isChrome}">
+            <p>
+              loading...
+            </p>
+
+          </div>
 
         </li>
       </ul>
+
+
+      <div class="journal-footer" ng-show="!journalLoading">
+          <div class="journal-next">
+            <a ng-click="getNextJournal(mainJournal.uid)">NEXT</a>
+          </div>
+
+
+          <div class="journal-share">
+            <ul class="journal-share-ul" ng-show="openSare">
+              <li class="journal-share-li"><a target="_blank" href="http://www.facebook.com/share.php?u=300ent.com&title=300+ent">FACEBOOK</a></li>
+              <li class="journal-share-li"><a target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F300ent.com%2F&via=300&related=twitterapi%2Ctwitter">TWITTER</a></li>
+              <li class="journal-share-li"><a target="_blank" href="http://tumblr.com/widgets/share/tool?canonicalUrl=300ent.com/">TUMBLR</a></li>
+            </ul>
+            <a class="journal-share-button" ng-click="openShare()">SHARE</a>
+          </div>
+        </div>
+
 
 
 

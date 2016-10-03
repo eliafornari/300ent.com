@@ -10,25 +10,12 @@ module.exports = function (grunt) {
         //   }
         // }
         concat: {
-
             js: {
                 src: [
-                    // 'bower_components/angular/angular.min.js',
                      'bower_components/modernizer/modernizr.js',
-                    //  'bower_components/jquery/jquery.js',
-                    //  'bower_components/angular-touch/angular-touch.min.js',
-                    //  'bower_components/angular-sanitize/angular-sanitize.min.js',
-                    //  'bower_components/angular-route/angular-route.min.js',
-                    //  'bower_components/angular-resource/angular-resource.min.js',
-                    //  'bower_components/angular-animate/angular-animate.min.js',
-                    //  'bower_components/video.js/dist/video-js/video.dev.js',
+
                      'bower_components/soundcloud.min.js',
                      'https://connect.soundcloud.com/sdk/sdk-3.0.0.js',
-                    //  'bower_components/mrdoob-three.js-f381aa4/build/three.min.js',
-                    //  'bower_components/mrdoob-three.js-f381aa4/examples/js/controls/OrbitControls.js',
-                    //  'bower_components/mrdoob-three.js-f381aa4/examples/js/Detector.js',
-                    //  'bower_components/mrdoob-three.js-f381aa4/examples/js/renderers/Projector.js',
-                    //  'bower_components/mrdoob-three.js-f381aa4/examples/js/renderers/CanvasRenderer.js',
                     'app.js',
                     'routes.js',
                     'services.js',
@@ -40,21 +27,23 @@ module.exports = function (grunt) {
                     'about/about.js',
                     'contact/contact.js'
                     ],
-                dest: 'concat.js'
+                dest: 'js/concat.js'
             }
         },
-        // uglify: {
-        //   options: {
-        //     report: 'min',
-        //     mangle: false,
-        //     compress: true
-        //   },
-        //   js: {
-        //         files: {
-        //             'app.min.js': ['concat.js']
-        //         }
-        //     }
-        // },
+        uglify: {
+          options: {
+            report: 'min',
+            mangle: false,
+            compress: true
+          },
+          js: {
+            src:['js/concat.js'],
+            dest: 'js/app.min.js'
+            // files: {
+            //     'app.min.js': ['concat.js']
+            // }
+            }
+        },
         watch: {
                 js: {
                   files: [
@@ -71,11 +60,6 @@ module.exports = function (grunt) {
                      'bower_components/soundcloud.min.js',
                      'https://connect.soundcloud.com/sdk/sdk-3.0.0.js',
 
-                     'bower_components/mrdoob-three.js-f381aa4/build/three.min.js',
-                     'bower_components/mrdoob-three.js-f381aa4/examples/js/controls/OrbitControls.js',
-                     'bower_components/mrdoob-three.js-f381aa4/examples/js/Detector.js',
-                     'bower_components/mrdoob-three.js-f381aa4/examples/js/renderers/Projector.js',
-                     'bower_components/mrdoob-three.js-f381aa4/examples/js/renderers/CanvasRenderer.js',
 
                     'app.js',
                     'routes.js',
@@ -117,7 +101,7 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
-    // grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // grunt.loadNpmTasks('grunt-contrib-cssmin');

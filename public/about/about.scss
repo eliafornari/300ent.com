@@ -1,13 +1,65 @@
 .about{
   position: fixed;
   left: 100vw;
+  top:0;
   background-color: rgba(255,255,255,1);
   width:90vw;
   height: 100vh;
-  z-index: $z-journal;
+  z-index: $z-about;
   overflow-y: scroll;
+  @include respond-to(phone-device){
+    width:100vw;
+    height: calc(100vh - 130px);
+  }
+  @include respond-to(phone){
+    width:100vw;
+    height: calc(100vh - 70px);
+  }
 
 }
+
+
+
+.about-table{
+  width:100%;
+  height:100%;
+  tr{
+    td{
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+.about-text{
+  width: 50vw;
+  margin: auto;
+  @include respond-to(phone){
+    width:70vw;
+    margin-left: 15vw;
+  }
+  h1{
+    color: $red;
+    text-align: center;
+    @include subtitle();
+  }
+  p{
+    color: $black;
+    text-align: center;
+    @include paragraph();
+    @include respond-to(phone){
+      text-align: justify;
+    }
+    &:nth-child(2){
+      margin-top: 20px;
+    }
+  }
+
+}
+
+
+
+
 
 
 
@@ -24,22 +76,26 @@ $animation-speed: 0.3s;
   // right: $margin-sides;
   // bottom: $margin-sides;
   @include transform-element(translateX(-90vw));
+  @include respond-to(phone){
+    @include transform-element(translateX(-100vw));
+  }
+
 }
 
 
 
 .about.ng-hide-remove.ng-hide-remove-active{
-  -webkit-animation: j_slideLeft $animation-speed $animation-bezier;
-  -moz-animation: j_slideLeft $animation-speed $animation-bezier;
-  -ms-animation: j_slideLeft $animation-speed $animation-bezier;
-  -o-animation: j_slideLeft $animation-speed $animation-bezier;
-  animation: j_slideLeft $animation-speed $animation-bezier;
+  -webkit-animation: c_slideRight $animation-speed $animation-bezier;
+  -moz-animation: c_slideRight $animation-speed $animation-bezier;
+  -ms-animation: c_slideRight $animation-speed $animation-bezier;
+  -o-animation: c_slideRight $animation-speed $animation-bezier;
+  animation: c_slideRight $animation-speed $animation-bezier;
 }
 
 .about.ng-hide-add.ng-hide-add-active{
-  -webkit-animation: j_slideRight $animation-speed $animation-bezier;
-  -moz-animation: j_slideRight $animation-speed $animation-bezier;
-  -ms-animation: j_slideRight $animation-speed $animation-bezier;
-  -o-animation: j_slideRight $animation-speed $animation-bezier;
-  animation: j_slideRight $animation-speed $animation-bezier;
+  -webkit-animation: c_slideRight $animation-speed $animation-bezier;
+  -moz-animation: c_slideRight $animation-speed $animation-bezier;
+  -ms-animation: c_slideRight $animation-speed $animation-bezier;
+  -o-animation: c_slideRight $animation-speed $animation-bezier;
+  animation: c_slideRight $animation-speed $animation-bezier;
 }

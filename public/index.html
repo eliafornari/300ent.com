@@ -10,17 +10,52 @@
 <head>
   <!-- <link rel="stylesheet" href="css/reset.css"> -->
   <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
-  <title>300 ent</title>
-  <meta name="description" content="">
 
+  <title>300 Entertainment</title>
+  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 
-  <link rel="stylesheet" href="/stylesheet/css/reset.css">
-  <link rel="stylesheet" href="app.css">
 
-<meta name=“author” title=“Elia Fornari | Qual Agency”>
+  <meta name="msapplication-TileColor" content="#e60000">
+  <meta name="msapplication-TileImage" content="http://300ent/public/assets/300_social_logo.jpg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:creator" content="@">
+  <meta name="twitter:site" content="@300">
+  <meta name="twitter:title" content="300 Entertainment">
+  <meta name="twitter:description" content="It's A New Day. 300 is a new kind of record label. We're an experience focused on passion, lifestyle, culture and creativity. Come along with us">
+  <meta name="twitter:image" content="http://300ent/public/assets/300_social_logo.jpg">
+  <meta name="description" content="It's A New Day. 300 is a new kind of record label. We're an experience focused on passion, lifestyle, culture and creativity. Come along with us">
+  <meta name="robots" content="noodp">
+  <meta name="keywords" content="FETTY WAP, YOUNG THUG, COHEED AND CAMBRIA, CONRAD SEWELL, HIGHLY SUSPECT, MIGOS (QC), THE HUNNA, MAINLAND, T WAYNE, COAST MODERN (+1 RECORDS), TATE KOBANG, DEMO TAPED, DAE DAE, MEG MAC, REJJIE SNOW, TK N CASH, ANNA OF THE NORTH (+1 RECORDS), ASTR, ALEX WINSTON, RICH THE KID (QC), COBI, RIFF RAFF, ERIC BELLINGER, RAZ SIMONE, SHY GLIZZY, ROBB BANKS, JOHNNY CINCO, SLAPTOP (+1 RECORDS), KIRKO BANGZ, PANAMA, PHONY PPL, CHUCK ADAMS, DP, MIKE STUD, DEREK KING, LOONI">
+  <link rel="canonical" href="http://300ent.com/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="300 Entertainment">
+  <meta property="og:description" content="It's A New Day. 300 is a new kind of record label. We're an experience focused on passion, lifestyle, culture and creativity. Come along with us">
+  <meta property="og:url" content="http://300ent.com/">
+  <meta property="og:site_name" content="300 Entertainment">
 
+
+
+
+
+  <meta name=“author” title=“Elia Fornari | Qual Agency”>
+  <link rel=”author” href=”https://plus.google.com/u/1/+eliafornarichannel”/>
+
+
+  <link async rel="stylesheet" type="text/css" href="/stylesheet/css/reset.css"/>
+  <link async rel="stylesheet" type="text/css" href="/stylesheet/app.css"/>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51241224-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 
 <!--
@@ -35,18 +70,13 @@
 -->
 
 
+
+<!-- FAVICON FOR ALL KINDS OF DEVICES AND BROWSERS -->
+<link rel="icon" type="image/x-icon" href="components/icons/300_favicon.ico" />
+
   <!-- <meta name="fragment" content="!"> -->
 
   <base href="/">
-
-  <!-- .........................<span app-version></span> ....................-->
-
-
-  <script>
-    //google analytics
-
-  </script>
-
 
 
 </head>
@@ -58,7 +88,7 @@
 <body ng-controller="routeController" page-loading-spinner>
 
 
-
+<nav-mobile-directive></nav-mobile-directive>
 <nav-directive></nav-directive>
 
 <header ng-controller="navCtrl" class="header" ng-click="openNav()">
@@ -89,10 +119,20 @@
 
   <!-- .................................. Main ...............................-->
 
-  <main ng-view class='main' autoscroll="true">
+  <main ng-view class='main' autoscroll="true" ng-class="{scrolledSplash: !firstLoading}">
   </main>
 
 
+
+
+  <div class="landscape-view-wrapper" ng-show="landscapeView">
+
+    <div class="landscape-view-div"><p class="landscape-view-p">please rotate the device for the best website experience</p></div>
+      <div class = "logo-landscape" >
+        <!-- ng-click="gotoAnchor('body')" -->
+      <logo-directive></logo-directive>
+      </div>
+  </div>
 
 
   <artist-directive></artist-directive>
@@ -106,18 +146,21 @@
 </body>
 
 
-<script type="text/javascript" src="/node_modules/prismic.io/dist/prismic.io.js"></script>
+<script async type="text/javascript" src="/node_modules/prismic.io/dist/prismic.io.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-loader.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-touch.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-touch.min.js"></script>
 
 
-  <script type="text/javascript" src="/concat.js"></script>
+  <script type="text/javascript" src="js/concat.js"></script>
 
 </html>

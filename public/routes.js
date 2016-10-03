@@ -13,7 +13,6 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
   $rootScope.showTime=false;
   $rootScope.time="";
   var date = new Date();
-  console.log(date);
   var n = date.toTimeString();
   $rootScope.time = n;
 
@@ -39,7 +38,7 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
             $templateCache.remove(currentPageTemplate);
 
         var un = $rootScope.$on('$locationChangeSuccess', function () {
-              $route.current = 'worldoftheblonds/'+$routeParams.category+'/'+$routeParams.event;
+              $route.current = '/'+$routeParams.category+'/'+$routeParams.event;
               un();
               $route.reload();
           });
@@ -48,7 +47,7 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
     };
 
 
-  }])
+}])
 
 
 
@@ -71,28 +70,39 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
 
   // $locationChangeStart
+  // .when('/journal', {
+  //   templateUrl: 'home/home.html',
+  //   controller: 'journalCtrl',
+  //   resolve: {
+  //       resolveObject: function($route){
+  //        //**here you cannot use $routeParam to get "yourRouteParam"** property
+  //       // you must use : $route.current.params
+  //       }
+  //   }
+  // })
+
     .when('/journal', {
-      // templateUrl: 'release/release.html',
+      templateUrl: 'home/home.html',
       controller: 'journalCtrl'
-      })
+    })
 
     .when('/release', {
-      // templateUrl: 'release/release.html',
+      templateUrl: 'home/home.html',
       controller: 'releaseCtrl'
       })
 
     .when('/artist', {
-      // templateUrl: 'artist/artist.html',
+      templateUrl: 'home/home.html',
       controller: 'artistCtrl'
       })
 
     .when('/contact', {
-      templateUrl: 'contact/contact.html',
+      templateUrl: 'home/home.html',
       controller: 'contactCtrl'
       })
 
     .when('/about', {
-      templateUrl: 'about/about.html',
+      templateUrl: 'home/home.html',
       controller: 'aboutCtrl'
       })
 
@@ -110,15 +120,16 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
       // redirectTo: 'matthew30matthew30matthew'
       templateUrl: 'home/home.html',
       controller: 'homeCtrl',
-      resolve: {
-             function($q, $timeout) {
-                var deferred = $q.defer();
-                $timeout(function(){
-                    return deferred.resolve();
-                }, 200);
-                return deferred.promise;
-            }
-        }
+      reloadOnSearch: true,
+      // resolve: {
+      //        function($q, $timeout) {
+      //           var deferred = $q.defer();
+      //           $timeout(function(){
+      //               return deferred.resolve();
+      //           }, 200);
+      //           return deferred.promise;
+      //       }
+      //   }
 
     })
 
@@ -133,12 +144,12 @@ angular.module('myApp.routes', ['ngRoute', 'ngAnimate', 'ngResource'])
 
 }])
 
-.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval){
+.controller('routeController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval, $window){
 
   $rootScope.location = $location.path();
 
 $rootScope.firstLoading = true;
-
+$rootScope.isChrome = false;
 
 
 
@@ -149,22 +160,24 @@ $rootScope.firstLoading = true;
 
 $interval(function(){
   var date = new Date();
-  console.log(date);
   var n = date.toTimeString();
   $rootScope.time = n;
 }, 1000, 30000);
 // $rootScope.time = new Date(year, month, day, hours, minutes, seconds, milliseconds);
-// console.log($rootScope.time);
 
 
 
 
 
+jQuery($window).resize(function(){
+  $rootScope.windowHeight = $window.innerHeight;
+  $rootScope.splashScroll = $rootScope.windowHeight;
+  // windowHeight = angular.element($window).height(); // Window Height
+  $rootScope.checkSize();
+  $scope.landscapeFunction();
 
-
-
-
-
+    $scope.$apply();
+});
 
 
 
@@ -178,81 +191,130 @@ $interval(function(){
 
 
 //..............................................................................mobile
-
-
 //....this is the function that checks the header of the browser and sees what device it is
+var test = navigator.userAgent.match('GSA');
 
-$rootScope.checkDevice = {
-      Android: function() {
-          return navigator.userAgent.match(/Android/i);
-      },
-      BlackBerry: function() {
-          return navigator.userAgent.match(/BlackBerry/i);
-      },
-      iOS: function() {
-          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-      },
-      Opera: function() {
-          return navigator.userAgent.match(/Opera Mini/i);
-      },
-      Windows: function() {
-          return navigator.userAgent.match(/IEMobile/i);
-      },
-      any: function() {
-          return ($rootScope.checkDevice.Android() || $rootScope.checkDevice.BlackBerry() || $rootScope.checkDevice.iOS() || $rootScope.checkDevice.Opera() || $rootScope.checkDevice.Windows());
+if (test == 'GSA'){
+  $rootScope.isChrome = true;
+}
+
+
+$rootScope.isMobile, $rootScope.isDevice, $rootScope.isMobileDevice;
+$rootScope.checkSize = function(){
+
+
+    $rootScope.checkDevice = {
+          Android: function() {
+              return navigator.userAgent.match(/Android/i);
+          },
+          BlackBerry: function() {
+              return navigator.userAgent.match(/BlackBerry/i);
+          },
+          iOS: function() {
+              return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+          },
+          Opera: function() {
+              return navigator.userAgent.match(/Opera Mini/i);
+          },
+          Windows: function() {
+              return navigator.userAgent.match(/IEMobile/i);
+          },
+          any: function() {
+              return ($rootScope.checkDevice.Android() || $rootScope.checkDevice.BlackBerry() || $rootScope.checkDevice.iOS() || $rootScope.checkDevice.Opera() || $rootScope.checkDevice.Windows());
+          },
+          chromeMobile: function(){
+            return navigator.userAgent.match('CriOS');
+          }
+      };
+
+    //........checks the width
+
+      $scope.mobileQuery=window.matchMedia( "(max-width: 767px)" );
+      $rootScope.isMobile=$scope.mobileQuery.matches;
+
+
+    //.........returning true if device
+
+      if ($scope.checkDevice.any()){
+        $rootScope.isDevice= true;
+
+      }else{
+          $rootScope.isDevice=false;
       }
-  };
 
-//........checks the width
-
-  $scope.mobileQuery=window.matchMedia( "(max-width: 767px)" );
-  $rootScope.isMobile=$scope.mobileQuery.matches;
-
-
-//.........returning true if device
-
-  if ($scope.checkDevice.any()){
-    $rootScope.isDevice= true;
-
-  }else{
-      $rootScope.isDevice=false;
-  }
-
-  if (($rootScope.isDevice==true)&&($scope.isMobile==true)){
-    $rootScope.isMobileDevice= true;
-  }else{
-      $rootScope.isMobileDevice=false;
-  }
+      if (($rootScope.isDevice==true)&&($scope.isMobile==true)){
+        $rootScope.isMobileDevice= true;
+      }else{
+          $rootScope.isMobileDevice=false;
+      }
 
 
 
 
-    if ($rootScope.isDevice){
+        if ($rootScope.isDevice){
 
-        $rootScope.mobileLocation = function(url){
-          $location.path(url).search();
-        }
+            $rootScope.mobileLocation = function(url){
+              $location.path(url).search();
+            }
 
-        $rootScope.mobileExternalLocation = function(url){
-          $window.open(url, '_blank');
+            $rootScope.mobileExternalLocation = function(url){
+              $window.open(url, '_blank');
+            }
+
+
+        } else if (!$rootScope.isDevice){
+
+
+            $rootScope.mobileLocation = function(url){
+              return false;
+            }
+
+            $rootScope.mobileExternalLocation = function(url){
+              return false;
+            }
         }
 
 
-    } else if (!$rootScope.isDevice){
 
 
-        $rootScope.mobileLocation = function(url){
-          return false;
-        }
 
-        $rootScope.mobileExternalLocation = function(url){
-          return false;
+
+  }//checkSize
+
+
+$rootScope.checkSize();
+
+
+
+
+ $rootScope.landscapeView = false;
+ $rootScope.pageLoading = false;
+
+
+ //function removing website if landscape
+
+  $scope.landscapeFunction = function(){
+
+    if ($rootScope.isMobile==true){
+        if(window.innerHeight < window.innerWidth){
+          $rootScope.landscapeView = true;
+          $rootScope.pageLoading = true;
+          jQuery(".landscape-view-wrapper").css({
+            "width":"100vw",
+            "height": "100vh",
+            "display": "block"
+        });
+
+        }else{
+          $rootScope.landscapeView = false;
+          $rootScope.pageLoading = false;
+
         }
     }
 
+  }
 
-
-
+$scope.landscapeFunction();
 
 
 

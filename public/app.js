@@ -5,7 +5,8 @@ angular.module('myApp', [
   'ngRoute',
   'ngResource',
   'ngAnimate',
-  'myApp.routes'
+  'myApp.routes',
+  'myApp.Service'
 ])
 
 .directive('googleAnalytics', function(){

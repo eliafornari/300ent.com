@@ -1,21 +1,34 @@
-<div class="splash-text">
+<div class="splash-text" ng-click="scrollToHome()">
   <table class="splash-text-table">
     <tr class="splash-text-tr">
       <td class="splash-text-td">
-            <div id="msg" ng-show="showingMessage"><p ng-if="isDone" ng-repeat="i in final_messageArray track by $index">{{i}}<b ng-if="i == ''">&nbsp;</b></p></div>
+            <div ng-if="!isMobile" id="msg" ng-show="showingMessage">
+              <p>
+                <span>Fuck The Cake, We Want The Bands</span>
+              </p>
+              <p>An Independent american record label</p>
+              <!-- <p><span ng-if="isDone" ng-repeat="i in final_messageArray track by $index">{{i}}<b ng-if="i == ''">&nbsp;</b></span></p> -->
+
+            </div>
+
+
+            <div ng-if="isMobile" id="msg" ng-show="showingMessage">
+              <p>
+                <span>Fuck The Cake, We Want The Bands</span>
+              </p>
+              <p>An Independent american record label</p>
+              <!-- <p>An<br> Independent<br> american<br> record<br> label<br><b>&nbsp;</b></p> -->
+
+            </div>
+
       </td>
     </tr>
   </table>
 
 
 
-  <div class="splash-enter">
-    <figure class="splash-front" style=" background-image: url('{{r.data['release.cover'].value.main.url}}')" ng-class="{'splash_flipped': enterAppear}"></figure>
-    <figure class="splash-back" ng-class="{'splash_flipped': enterAppear}">
-      <a ng-click="enter()">
-        ENTER
-      </a>
-    </figure>
+<div class="splash-arrow" ng-class="{'chromium-arrow': isChrome}">
+  <arrow-directive></arrow-directive>
+</div>
 
-  </div>
 </div>

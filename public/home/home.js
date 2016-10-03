@@ -2,9 +2,9 @@
 var Home = angular.module('myApp');
 
 
-Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce){
+Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $templateCache, $route, $window, anchorSmoothScroll){
 
-
+$scope.isSplash = true;
 
 $rootScope.isArtist = false;
 $rootScope.isRelease = false;
@@ -14,14 +14,32 @@ $rootScope.isAbout = false;
 
 
 $rootScope.closeAllSections = function(){
+
+
   $rootScope.isArtist = false;
   $rootScope.isRelease = false;
   $rootScope.isJournal = false;
   $rootScope.isContact = false;
   $rootScope.isAbout = false;
+  $rootScope.mainArtist = "";
   $location.path('/', false);
+  $rootScope.openSare = false;
+  // $rootScope.toggleVideo('hide');
+  setTimeout(function(){
+    $rootScope.mainJournal = [];
+    $rootScope.journalLoading = true;
+  }, 300);
+
+
 
   $rootScope.isReleaseVideo = false;
+}
+
+
+
+$rootScope.refreshTemplate = function(){
+  var currentPageTemplate = $route.current.templateUrl;
+  $templateCache.remove(currentPageTemplate);
 }
 
 
@@ -79,13 +97,6 @@ $scope.$watch('pageLoading' ,function(){
 $scope.enterAppear = false;
 
 
-setTimeout(function(){
-  if ($rootScope.firstLoading == true){
-    $scope.enterAppear = true;
-    // $scope.$apply();
-  }
-}, 3000);
-
 
 
 
@@ -94,38 +105,40 @@ $rootScope.enter=function(){
   $scope.$apply();
 }
 
+
+
+
+
 //..........................................................GET
 
 
 
-
-$rootScope.getContentType = function(type){
+$rootScope.getContentType = function(type, orderField){
 
       Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
           Api.form('everything')
               .ref(Api.master())
-              .query(Prismic.Predicates.at("document.type", type)).submit(function (err, response) {
+
+              .query(Prismic.Predicates.at("document.type", type))
+              .orderings('['+orderField+']')
+              .pageSize(100)
+              .submit(function (err, response) {
 
                   var Data = response;
-
-                  // setTimeout(function(){
-                  //   $rootScope.firstLoading = false;
-                  //   $scope.$apply();
-                  // }, 3000);
-
-
                   if (type =='artist'){
                     $rootScope.Artist = response.results;
+                    $scope.$broadcast('artistReady');
                   }else if(type=='release'){
                     $rootScope.Release = response.results;
+                    $scope.$broadcast('releaseReady');
                   }else if(type =='journal'){
                     $rootScope.Journal = response.results;
+                    $scope.$broadcast('journalReady');
                   }
 
                   // The documents object contains a Response object with all documents of type "product".
                   var page = response.page; // The current page number, the first one being 1
                   var results = response.results; // An array containing the results of the current page;
-                  console.log(results);
                   // you may need to retrieve more pages to get all results
                   var prev_page = response.prev_page; // the URL of the previous page (may be null)
                   var next_page = response.next_page; // the URL of the next page (may be null)
@@ -142,9 +155,9 @@ $rootScope.getContentType = function(type){
 
 
 
-$rootScope.getContentType('artist');
-$rootScope.getContentType('release');
-$rootScope.getContentType('journal');
+$rootScope.getContentType('artist', 'my.artist.index');
+$rootScope.getContentType('release', 'my.release.date desc');
+$rootScope.getContentType('journal', 'my.journal.date desc');
 
 
 
@@ -160,9 +173,14 @@ $rootScope.getContentType('journal');
     $rootScope.isArtist = true;
     $rootScope.isRelease = false;
     $rootScope.isJournal = false;
+    $rootScope.isAbout = false;
+    $rootScope.isContact = false;
+
     $location.path('artist', false);
     $rootScope.whatArtist = artist;
     $rootScope.thisArtist(artist, number);
+
+    $rootScope.gotoAnchorArtist('artist-content-'+artist);
 
   }
 
@@ -172,9 +190,14 @@ $rootScope.getContentType('journal');
     $rootScope.isArtist = false;
     $rootScope.isRelease = true;
     $rootScope.isJournal = false;
+    $rootScope.isAbout = false;
+    $rootScope.isContact = false;
+
     $location.path('release', false);
     $rootScope.whatRelease = release;
     $rootScope.thisRelease(release, number);
+
+    $rootScope.gotoAnchorRelease('release-item-'+release);
 
   }
 
@@ -183,9 +206,20 @@ $rootScope.getContentType('journal');
     $rootScope.isArtist = false;
     $rootScope.isRelease = false;
     $rootScope.isJournal = true;
+    $rootScope.isAbout = false;
+    $rootScope.isContact = false;
+
     $location.path('journal', false);
     $rootScope.whatJournal = journal;
-    $rootScope.thisJournal(journal, number);
+    $scope.$watch('jorunalReady' ,function(){
+      console.log("jorunalReady");
+      setTimeout(function(){
+
+        $rootScope.thisJournal(journal, number);
+
+
+      }, 600);
+    });
 
   }
 
@@ -212,11 +246,7 @@ $rootScope.getContentType('journal');
 
 
 
-// setTimeout(function(){
-//
-//
-//     $rootScope.closeAllSections();
-// }, 1600);
+
 
 
 
@@ -245,14 +275,10 @@ $rootScope.channel_statistics;
       function(data){
 
         $rootScope.channel_statistics = data.items[0].statistics;
-        console.log($rootScope.channel_statistics);
-
-
         // $scope.baseUrl = 'https://www.youtube.com/embed/'+$rootScope.channel_data[0].id.videoId+'?rel=0&amp;&autoplay=0&controls=1&loop=1&showinfo=0&modestbranding=1&theme=dark&color=white&wmode=opaque';
         // $scope.main_video = $sce.trustAsResourceUrl($scope.baseUrl);
         // $scope.main_title = $rootScope.channel_data[0].title;
-
-// part=subscriberSnippet&channelId=UClO3VS7C-pHAoRh6fYddbLQ&mySubscribers=false&key={YOUR_API_KEY}
+        // part=subscriberSnippet&channelId=UClO3VS7C-pHAoRh6fYddbLQ&mySubscribers=false&key={YOUR_API_KEY}
 
       }
   );
@@ -260,6 +286,60 @@ $rootScope.channel_statistics;
 
 
 
+$rootScope.splashScroll=0;
+$rootScope.windowHeight = $window.innerHeight;
+if ($rootScope.isMobile && $rootScope.isDevice){
+  $rootScope.firstLoading = false;
+  $rootScope.windowHeight = $window.innerHeight + 60;
+}else{
+
+
+  angular.element($window).bind("scroll", function() {
+
+
+      var scroll = this.pageYOffset;
+      $rootScope.splashScroll = scroll;
+
+
+      if(scroll>=$rootScope.windowHeight){
+        $rootScope.firstLoading = false;
+        angular.element($window).unbind("scroll");
+      }
+
+
+      $scope.$apply();
+  });
+
+
+}
+
+
+$rootScope.removeSplashMobile = false;
+
+$rootScope.scrollToHome = function(){
+  anchorSmoothScroll.scrollOneViewport();
+  $rootScope.removeSplashMobile = true;
+
+}
+
+
+
+          $rootScope.getArtistType = function(id){
+
+                Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+                    Api.form('everything')
+                        .ref(Api.master())
+                        .query(Prismic.Predicates.at("document.id", id))
+                        .submit(function (err, response) {
+
+
+                        });
+                  });
+
+
+          };
+
+$rootScope.getArtistType("VvppaiMAACUAQUu1");
 
 
 
@@ -271,6 +351,45 @@ $rootScope.channel_statistics;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 
+//
+// var previewToken = 'V31lbScAAIHkBbp9*V31_eicAABXmBlcw';
+//
+// Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+//     var stPatrickRef = Api.ref("1-records");
+//     // Now we'll use this reference for all our calls
+//     Api.form('everything')
+//         .ref(stPatrickRef)
+//         .query(Prismic.Predicates.at("document.type", "journal")).submit(function (err, response) {
+//             if (err) {
+//                 console.log(err);
+//                 done();
+//           }
+//
+//           console.log(response);
+//             // The documents object contains a Response object with all documents of type "product"
+//             // including the new "Saint-Patrick's Cupcake"
+//         });
+//
+//
+//
+// }, previewToken);
 
 
 
@@ -284,6 +403,18 @@ Home.directive('splashDirective', function($rootScope, $location, $window, $rout
   return {
     restrict: 'E',
     templateUrl: 'home/splash.html',
+    replace: true,
+    link: function(scope, elem, attrs) {
+
+    }
+  };
+});
+
+
+Home.directive('homeMobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'home/homeMobile.html',
     replace: true,
     link: function(scope, elem, attrs) {
 

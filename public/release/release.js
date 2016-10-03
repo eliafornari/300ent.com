@@ -3,14 +3,13 @@
 var Release = angular.module('myApp');
 
 
-Release.controller('releaseCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+Release.controller('releaseCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll){
 
 
   $rootScope.mainRelease = [];
 
   $rootScope.thisRelease = function(thisRelease, thisnumber){
       $rootScope.mainRelease = $rootScope.Release[thisnumber];
-      console.log($rootScope.mainRelease.uid);
   }
 
 
@@ -20,6 +19,26 @@ $rootScope.isReleaseVideo = false;
   $scope.flipRelease=function(){
     $rootScope.isReleaseVideo = !$rootScope.isReleaseVideo;
   }
+
+
+
+
+
+
+
+
+
+
+  //..................................................changing anchor link on click
+  $rootScope.gotoAnchorRelease = function(x) {
+    anchorSmoothScroll.scrollToRelease(x);
+  };
+
+
+
+
+
+
 
 
 

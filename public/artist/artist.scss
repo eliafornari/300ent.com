@@ -1,14 +1,34 @@
 .artist{
-  background-color: $red;
-  width: 65vw;
+  background-color: $black;
+  width: 65.5vw;
   height: 100vh;
-  left:-40vw;
+  left:-40.5vw;
   position: fixed;
   z-index: $z-artist;
+  top: 0;
+  overflow-y: scroll;
+  @include respond-to(phone){
+    width: 100vw;
+    left:-100vw;
+    // transform: none;
+    // transform: translateZ(0) !important;
+    // -webkit-transform: translateZ(0) !important;
+    // -moz-transform: translateZ(0) !important;
+    // -o-transform: translateZ(0) !important;
+
+  }
 
 }
 
-
+.artist-content{
+  width: 65vw;
+  height: 100vh;
+  position: relative;
+  @include respond-to(phone){
+    width: 100vw;
+    height: calc(100vh - 70px);
+  }
+}
 
 .artist-main{
   position: absolute;
@@ -17,13 +37,23 @@
   left: 50%;
   margin-left: -300px;
   top: 50%;
-  transform: translateY(-50%);
+  height: 350px;
+  margin-top: -150px;
+  @include transform-transition(-50%);
+  @include respond-to(phone){
+    width: 80vw;
+    height:auto;
+    margin-left: -40vw;
+    top:0;
+    margin-top:$margin-sides-mobile;
+  }
 
   .artist-main-name{
     position: relative;
     top: 0;
     display: block;
-    @include header('white','no');
+    @include title();
+    color:#FFFFFF;
   }
 
   .artist-main-image{
@@ -35,6 +65,14 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    -o-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    @include respond-to(phone){
+      width: 60vw;
+      height: 60vw;
+    }
   }
 
   .artist-main-links{
@@ -44,11 +82,16 @@
     height: 300px;
     float: left;
     margin-left: 15px;
+    @include respond-to(phone){
+      margin-left: 0px;
+    }
     .artist-main-links-li{
       a{
         width: 300px;
         text-align: center;
         @include header('white','yes');
+        @include title();
+        color:#FFFFFF;
       }
     }
   }
@@ -61,62 +104,89 @@
 
 
 
-
-
-@keyframes slideLeft {
-  0% { @include transform-element(translateX(65vw)); }
-  100% { @include transform-element(translateX(0vw)); }
-}
-
-@-webkit-keyframes slideLeft {
-  0% { @include transform-element(translateX(65vw)); }
-  100% { @include transform-element(translateX(0vw)); }
-}
-
-@-moz-keyframes slideLeft {
-  0% { @include transform-element(translateX(65vw)); }
-  100% { @include transform-element(translateX(0vw)); }
-}
-
-@-ms-keyframes slideLeft {
-  0% { @include transform-element(translateX(65vw)); }
-  100% { @include transform-element(translateX(0vw)); }
-}
-
-@-o-keyframes slideLeft {
-  0% { @include transform-element(translateX(65vw)); }
-  100% { @include transform-element(translateX(0vw)); }
-}
-
-
-
-@keyframes slideRight {
-  0% { @include transform-element(translateX(0vw)); }
-  100% { @include transform-element(translateX(65vw)); }
-}
-
-@-webkit-keyframes slideRight {
-  0% { @include transform-element(translateX(0vw)); }
-  100% { @include transform-element(translateX(65vw)); }
-}
-
-@-moz-keyframes slideRight {
-  0% { @include transform-element(translateX(0vw)); }
-  100% { @include transform-element(translateX(65vw)); }
-}
-
-@-ms-keyframes slideRight {
-  0% { @include transform-element(translateX(0vw)); }
-  100% { @include transform-element(translateX(65vw)); }
-}
-
-@-o-keyframes slideRight {
-  0% { @include transform-element(translateX(0vw)); }
-  100% { @include transform-element(translateX(65vw)); }
-}
+@include keyframes('slideRight', 'slideLeft', 'translateX(0vw)', 'translateX(65vw)', 'translateX(0vw)', 'translateX(10vw)');
+//
+// @keyframes slideLeft {
+//   0% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//   100% { @include transform-element(translateX(0vw)); }
+// }
+//
+// @-webkit-keyframes slideLeft {
+//   0% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//   100% { @include transform-element(translateX(0vw)); }
+// }
+//
+// @-moz-keyframes slideLeft {
+//   0% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//   100% { @include transform-element(translateX(0vw)); }
+// }
+//
+// @-ms-keyframes slideLeft {
+//   0% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//   100% { @include transform-element(translateX(0vw)); }
+// }
+//
+// @-o-keyframes slideLeft {
+//   0% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//   100% { @include transform-element(translateX(0vw)); }
+// }
+//
+//
+//
+// @keyframes slideRight {
+//   0% { @include transform-element(translateX(0vw)); }
+//   100% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//
+// }
+//
+// @-webkit-keyframes slideRight {
+//   0% { @include transform-element(translateX(0vw)); }
+//   100% {
+//     @include transform-element(translateX(65vw));
+//     @include respond-to(phone){ @include transform-element(translateX(100vw)); }
+//   }
+//
+// }
+//
+// @-moz-keyframes slideRight {
+//   0% { @include transform-element(translateX(0vw)); }
+//   100% { @include transform-element(translateX(65vw)); }
+//
+// }
+//
+// @-ms-keyframes slideRight {
+//   0% { @include transform-element(translateX(0vw)); }
+//   100% { @include transform-element(translateX(65vw)); }
+//
+// }
+//
+// @-o-keyframes slideRight {
+//   0% { @include transform-element(translateX(0vw)); }
+//   100% { @include transform-element(translateX(65vw)); }
+//
+// }
 
 .artist.ng-hide{
     @include transform-element(translateX(0vw));
+
     // animation: slideUp 0.4s ease;
 }
 
@@ -129,6 +199,9 @@ $animation-speed: 0.3s;
   // right: $margin-sides;
   // bottom: $margin-sides;
   @include transform-element(translateX(65vw));
+  @include respond-to(phone){
+    @include transform-element(translateX(100vw));
+  }
 }
 
 
