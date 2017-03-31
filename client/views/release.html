@@ -1,0 +1,46 @@
+<div class="release" id="release" ng-show="isView=='release'">
+
+  <div class="release-item" id="release-item-{{r.uid}}" ng-repeat="r in Release">
+
+    <table class="release-table">
+      <tr class="release-tr">
+        <td class="release-td">
+
+
+          <div class="release-main">
+
+            <div class="release-main-content" ng-class="{'release_flipped': isReleaseVideo}">
+
+                        <p class="release-main-name">{{r.data['release.name'].value[0].text}}</p>
+                        <p class="release-main-artist">{{r.data['release.artistName'].value[0].text}}</p>
+                        <div class="release-main-image" style="background-image: url('{{r.data['release.cover'].value.main.url}}')"></div>
+                        <ul class="release-main-links">
+                          <li class="release-main-links-li" id="release-main-itunes" ng-if="r.data['release.itunes'].value.url">
+                            <a href="{{r.data['release.itunes'].value.url}}" target="_blank">itunes</a>
+                          </li>
+                          <li class="release-main-links-li" id="release-main-spotify" ng-if="r.data['release.spotify'].value.url">
+                            <a href="{{r.data['release.spotify'].value.url}}" target="_blank">spotify</a>
+                          </li>
+                          <li class="release-main-links-li" id="release-main-soundcloud" ng-if="r.data['release.soundcloud'].value.url">
+                            <a href="{{r.data['release.soundcloud'].value.url}}" target="_blank">soundcloud</a>
+                          </li>
+                          <!-- <div class="release-play" ng-if="mainRelease.data['release.youtube'].value.url">
+                            <a ng-click="flipRelease()">play</a>
+                          </div> -->
+                        </ul>
+              </div>
+              <!-- <div class="release-main-video" ng-class="{'release_flipped': isReleaseVideo}" ng-if="mainRelease.data['release.youtube'].value.url">
+                <div class="release-main-video-close">
+                  <ex-directive></ex-directive>
+                </div>
+                <iframe class="release-main-video-iframe" width="auto" height="auto" src="{{mainRelease.data['release.youtube'].value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+              </div> -->
+
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+</div>

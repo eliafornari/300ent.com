@@ -1,0 +1,97 @@
+<div class="journal" ng-controller="journalCtrl" ng-show="isView=='journal'" journalLoaderDirective>
+
+
+
+
+      <ul class="slice-ul slice-ul-journal">
+        <li class="slice-li"  ng-repeat="j in mainJournal.data['journal.body'].value" ng-class="{'lonely': j.value.value[0].lonely.value}" >
+
+          <div class="slice-li-image" ng-if="j.slice_type == 'image'" ng-repeat="s in j.value.value" ng-show="!journalLoading">
+            <div class="slice-li-image-element" ng-class="{'sliceImageLeft': s.position.value=='left', 'sliceImageRight': s.position.value=='right', 'sliceImageCentral': s.position.value=='central'}">
+              <table>
+                <tr>
+                  <td>
+                    <img class="slice-li-image-element-img" src="{{s.image.value.main.url}}" alt="" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="slice-li-image-text" ng-if="s.caption.value[0].text" ng-class="{'sliceImageLeft': s.position.value=='left', 'sliceImageRight': s.position.value=='right', 'sliceImageCentral': s.position.value=='central'}">
+              <table><tr><td>
+                    <p>{{s.caption.value[0].text}}</p>
+              </td></tr></table>
+            </div>
+          </div>
+
+          <div class="slice-li-quote journal" ng-if="j.slice_type == 'Quote'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
+            <table><tr><td>
+              <p class="slice-li-quote-header" ng-repeat="q in j.value.value">{{q.header.value[0].text}}</p>
+            </td></tr></table>
+          </div>
+
+          <div class="slice-li-text" ng-if="j.slice_type == 'text'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
+            <table><tr><td>
+              <div class="" ng-repeat="t in j.value.value">
+                <h2 class="slice-li-text-header">
+                  {{t.heading2.value[0].text}}
+                </h2>
+                <p class="slice-li-text-paragraph">
+                  {{t.paragraph.value[0].text}}
+                </p>
+              </div>
+
+            </td></tr></table>
+          </div>
+
+
+          <div class="slice-li-video" ng-if="j.slice_type == 'video'" ng-repeat="s in j.value.value" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!journalLoading">
+            <table><tr><td>
+              <iframe width="560" height="315" src="{{s.youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+            </td></tr></table>
+          </div>
+
+          <div class="slice-li-soundcloud" ng-if="j.slice_type == 'soundcloud'" ng-repeat="s in j.value.value" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!journalLoading">
+            <table><tr><td>
+              <iframe width="560" height="315" src="{{s.youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+            </td></tr></table>
+          </div>
+
+          <div class="slice-li-weblink" ng-if="j.slice_type == 'weblink'" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!journalLoading">
+              <a href="{{j.value.value[0].link.value.url}}" target="_blank">{{j.value.value[0].linkName.value[0].text}}</a>
+          </div>
+
+
+
+
+
+          <div class="slice-loading" ng-show="journalLoading" ng-class="{'chromium': isChrome}">
+            <p>
+              loading...
+            </p>
+
+          </div>
+
+        </li>
+      </ul>
+
+
+      <div class="slice-footer" ng-show="!journalLoading">
+          <div class="slice-next">
+            <a ng-click="getNextJournal(mainJournal.uid)">NEXT</a>
+          </div>
+
+
+          <div class="slice-share slice-share-journal">
+            <ul class="slice-share-ul slice-share-ul-journal" ng-show="isShare">
+              <li class="slice-share-li"><a target="_blank" href="http://www.facebook.com/share.php?u=300ent.com&title=300+ent">FACEBOOK</a></li>
+              <li class="slice-share-li"><a target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F300ent.com%2F&via=300&related=twitterapi%2Ctwitter">TWITTER</a></li>
+              <li class="slice-share-li"><a target="_blank" href="http://tumblr.com/widgets/share/tool?canonicalUrl=300ent.com/">TUMBLR</a></li>
+            </ul>
+            <a class="slice-share-button" ng-click="openShare()">SHARE</a>
+          </div>
+        </div>
+
+
+
+
+</div>

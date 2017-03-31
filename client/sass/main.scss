@@ -1,0 +1,22 @@
+
+
+// IMPORT PARTIALS
+@import "base/reset";
+@import "base/04_variables";
+@import "base/03_mixins";
+@import "base/02_nav";
+@import "base/01_general";
+@import "base/05_fonts";
+
+
+
+
+// IMPORT PAGES
+@import "partials/splash";
+@import "partials/home";
+@import "partials/artist";
+@import "partials/release";
+@import "partials/journal";
+@import "partials/contact";
+@import "partials/about";
+@import "partials/press";

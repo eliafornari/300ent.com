@@ -1,0 +1,34 @@
+<div class="splash-text" ng-click="scrollToHome()">
+  <table class="splash-text-table">
+    <tr class="splash-text-tr">
+      <td class="splash-text-td">
+            <div ng-if="!isMobile" id="msg" ng-show="showingMessage">
+              <p>
+                <span>An Independent american record label</span>
+              </p>
+              <!-- <p></p> -->
+              <!-- <p><span ng-if="isDone" ng-repeat="i in final_messageArray track by $index">{{i}}<b ng-if="i == ''">&nbsp;</b></span></p> -->
+
+            </div>
+
+
+            <div ng-if="isMobile" id="msg" ng-show="showingMessage">
+              <p>
+                <span>An Independent american record label</span>
+              </p>
+              <!-- <p></p> -->
+              <!-- <p>An<br> Independent<br> american<br> record<br> label<br><b>&nbsp;</b></p> -->
+
+            </div>
+
+      </td>
+    </tr>
+  </table>
+
+
+
+<div class="splash-arrow" ng-class="{'chromium-arrow': isChrome}">
+  <arrow-directive></arrow-directive>
+</div>
+
+</div>

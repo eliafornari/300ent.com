@@ -1,0 +1,127 @@
+<div class="detail-press">
+
+  <div class="close-left">
+    <a href="/press">
+      <div class="close-left-x">
+        <ex-directive></ex-directive>
+      </div>
+    </a>
+  </div>
+
+
+  <ul class="slice-ul detail-press">
+    <li class="slice-li"  ng-repeat="p in pressDetail.data['press.body'].value" ng-class="{'lonely': p.value.value[0].lonely.value}" >
+
+
+      <div class="slice-li-header" ng-if="p.slice_type == 'header'" ng-show="!pressLoading" ng-class="{'chromium': isChrome}">
+        <table><tr><td>
+          <h1>{{p.value.value[0].text}}</h1>
+        </td></tr></table>
+      </div>
+
+
+      <div class="slice-li-image" ng-if="p.slice_type == 'image'" ng-repeat="s in p.value.value" ng-show="!pressLoading">
+        <div class="slice-li-image-element" ng-class="{'sliceImageLeft': s.position.value=='left', 'sliceImageRight': s.position.value=='right', 'sliceImageCentral': s.position.value=='central'}">
+          <table>
+            <tr>
+              <td>
+                <img class="slice-li-image-element-img" src="{{s.image.value.main.url}}" alt="{{s.caption.value[0].text}}" />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="slice-li-image-text" ng-if="s.caption.value[0].text" ng-class="{'sliceImageLeft': s.position.value=='left', 'sliceImageRight': s.position.value=='right', 'sliceImageCentral': s.position.value=='central'}">
+          <table><tr><td>
+                <p>{{s.caption.value[0].text}}</p>
+          </td></tr></table>
+        </div>
+      </div>
+
+      <div class="slice-li-quote" ng-if="p.slice_type == 'Quote'" ng-show="!pressLoading" ng-class="{'chromium': isChrome}">
+        <table><tr><td>
+          <p class="slice-li-quote-header" ng-repeat="q in p.value.value">{{q.header.value[0].text}}</p>
+        </td></tr></table>
+      </div>
+
+      <div class="slice-li-text" ng-if="p.slice_type == 'text'" ng-show="!pressLoading" ng-class="{'chromium': isChrome}">
+        <table><tr><td>
+          <div class="" ng-repeat="t in p.value.value">
+            <h2 class="slice-li-text-header">
+              {{t.header.value[0].text}}
+            </h2>
+            <p class="slice-li-text-paragraph">
+              <span ng-repeat="span in t.paragraph.value">
+                {{span.text}}
+              </span>
+            <br>
+            </p>
+          </div>
+
+        </td></tr></table>
+      </div>
+
+
+      <div class="slice-li-video" ng-if="p.slice_type == 'video'" ng-repeat="s in p.value.value" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!pressLoading">
+        <table><tr><td>
+          <!-- <iframe width="560" height="315" src="{{s.embed_url | trustUrl}}" frameborder="0" allowfullscreen></iframe> -->
+        </td></tr></table>
+      </div>
+
+      <div class="slice-li-tiwttervideo" ng-if="p.slice_type == 'twitter_video'">
+        <table><tr><td>
+              <blockquote class="twitter-video" data-lang="it">
+                <a href="{{p.value.value.url}}">21 settembre 2016</a>
+              </blockquote>
+                <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </td></tr></table>
+      </div>
+
+      <div class="slice-li-soundcloud" ng-if="p.slice_type == 'soundcloud'" ng-repeat="s in p.value.value" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!pressLoading">
+        <table><tr><td>
+          <iframe width="560" height="315" src="{{s.youtube.value.url | trustUrl}}" frameborder="0" allowfullscreen></iframe>
+        </td></tr></table>
+      </div>
+
+      <div class="slice-li-weblink" ng-if="p.slice_type == 'weblink'" ng-class="{'lonely': s.lonely.value, 'chromium': isChrome}" ng-show="!pressLoading">
+          <a href="{{p.value.value[0].link.value.url}}" target="_blank">{{p.value.value[0].linkName.value[0].text}}</a>
+      </div>
+
+
+
+
+
+      <div class="slice-loading" ng-show="pressLoading" ng-class="{'chromium': isChrome}">
+        <p>
+          loading...
+        </p>
+
+      </div>
+
+    </li>
+  </ul>
+
+
+
+
+
+  <div class="slice-footer" ng-show="!pressLoading">
+      <div class="slice-next">
+        <a ng-click="getNextPress(mainPress.uid)">NEXT</a>
+      </div>
+
+
+      <div class="slice-share">
+        <ul class="slice-share-ul" ng-show="isShare">
+          <li class="slice-share-li"><a target="_blank" href="http://www.facebook.com/share.php?u=300ent.com&title=300+ent">FACEBOOK</a></li>
+          <li class="slice-share-li"><a target="_blank" href="https://twitter.com/share?url=http%3A%2F%2F300ent.com%2F&via=300&related=twitterapi%2Ctwitter">TWITTER</a></li>
+          <li class="slice-share-li"><a target="_blank" href="http://tumblr.com/widgets/share/tool?canonicalUrl=300ent.com/">TUMBLR</a></li>
+        </ul>
+        <a class="slice-share-button" ng-click="openShare()">SHARE</a>
+      </div>
+    </div>
+
+
+
+
+
+</div>

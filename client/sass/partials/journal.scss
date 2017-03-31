@@ -1,0 +1,539 @@
+
+.journal{
+  position: fixed;
+  background-color: rgba(255,255,255,1);
+  width:90vw;
+  height: 100vh;
+  z-index: $z-journal;
+  overflow-y: scroll;
+  top: 0;
+  @include respond-to(phone){
+    width: 100vw;
+  }
+}
+
+
+
+
+.slice-ul{
+  width:100%;
+  height:auto;
+  display: table;
+  @include respond-to(phone){
+    width: 100vw;
+  }
+
+  &.slice-ul-journal{
+    width:90vw;
+  }
+
+  .slice-li{
+    // float:left;
+    width:100%;
+    display:block;
+    margin-bottom:$margin-bottom;
+    clear:both;
+    &:nth-child(1){
+      margin-top: $margin-bottom;
+    }
+    &:last-child{
+      padding-bottom: $margin-bottom;
+    }
+    @include respond-to(phone){
+      width: 100vw;
+      margin-bottom:$margin-bottom-mobile;
+    }
+
+    .slice-loading{
+      width: 100%;
+      height: 100vh;
+      clear: both;
+      position: relative;
+      top: 0;
+      left: 0;
+      margin-top: -100px;
+      @include respond-to(phone){
+        height:calc(100vh - 60px);
+      }
+      p{
+        width:200px;
+        height:50px;
+        position: absolute;
+        text-align: center;
+        top:50%;
+        left:50%;
+        margin-left: -100px;
+        margin-top:-25px;
+        @include subtitle();
+      }
+
+    }
+
+
+  }
+}
+
+
+
+.slice-li-header{
+  width:60vw;
+  display: block;
+  margin: auto;
+  h1{
+    @include title();
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+.slice-li-image-element.sliceImageLeft{
+  float: left !important;
+  height:65vh;
+  img{
+    max-width:30vw;
+  }
+}
+.slice-li-image-element.sliceImageRight{
+  float: right !important;
+  height:65vh;
+  img{
+    max-width:30vw;
+  }
+}
+.slice-li-image-element.sliceImageCentral{
+  float: none !important;
+}
+
+.slice-li-image-text.sliceImageLeft p{
+  float: left !important;
+  text-align: left;
+
+}
+.slice-li-image-text.sliceImageRight p{
+  float: right !important;
+  text-align: right;
+}
+.slice-li-image-text.sliceImageCentral p{
+  float: none !important;
+  text-align: center;
+}
+
+table{
+  height:100%;
+  width: 100%;
+  tr{
+    td{
+      vertical-align: middle;
+      height:100%;
+    }
+  }
+}
+
+.slice-li-image{
+  width: 100%;
+  // margin: auto;
+  clear:both;
+
+  .slice-li-image-element{
+    width:50vw;
+    margin: auto;
+    display: block;
+    @include respond-to(phone){
+      height:auto !important;
+      width:100%;
+    }
+    img{
+      display: block;
+      margin: auto;
+      max-width:50vw;
+      @include respond-to(phone){
+        width:100vw;
+        max-width:100vw;
+      }
+    }
+  }
+  .slice-li-image-text{
+    width: 50vw;
+    height: 50vh;
+    max-width: 50vw;
+    display: inline-block;
+    @include paragraph();
+    @include respond-to(phone){
+      width: 100%;
+      max-width: 100%;
+      height:$line-height-subtitle-mobile;
+    }
+    p{
+      height:auto;
+      width:100%;
+      overflow-wrap: break-word;
+    }
+  }
+}
+
+//text when image is central
+.sliceImageCentral.slice-li-image-text{
+    width: 50%;
+    height:auto;
+    margin: auto;
+    display: block;
+}
+
+.slice-li-video{
+  width: 100%;
+  clear:both;
+  iframe{
+    margin: auto;
+    display: block;
+    padding:10vw;
+    @include respond-to(phone){
+      width: 100vw;
+      padding: 10vw 0;
+    }
+  }
+}
+.slice-li-song{
+  margin: auto;
+  clear:both;
+}
+
+
+
+.slice-li-quote{
+  margin: auto;
+  clear:both;
+  max-width: 50vw;
+  @include respond-to(phone){
+    width: 90vw;
+    max-width: 90vw;
+  }
+  .slice-li-quote-header{
+    @include subtitle();
+    width:100%;
+    display:block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+    line-height: 40px;
+  }
+}
+
+
+
+.slice-li-text{
+  margin: auto;
+  clear:both;
+  max-width: 50vw;
+  @include respond-to(phone){
+    width: 90vw;
+    max-width: 90vw;
+  }
+  .slice-li-text-header{
+    @include subtitle();
+    width:100%;
+  }
+  .slice-li-text-paragraph{
+    @include paragraph();
+    width:100%;
+    span{
+      clear: both;
+      width: 100%;
+      display: block;
+    }
+  }
+}
+
+.slice-li-weblink{
+  margin: auto;
+  clear:both;
+  max-width: 50vw;
+  @include respond-to(phone){
+    width: 90vw;
+    max-width: 90vw;
+  }
+  a{
+    @include subtitle();
+    @include hover-effect-color($black, $red);
+    width:100%;
+    text-align: center;
+    display: block;
+  }
+  .slice-li-text-header{
+
+  }
+}
+
+
+
+.slice-li.lonely{
+  margin-bottom: 0;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.slice-li-video.lonely{
+  height:100vh;
+  @include respond-to(phone){
+    height:calc(100vh - 130px);
+  }
+}
+
+
+.slice-footer{
+  position: fixed;
+  width:100%;
+  height:100px;
+  bottom:0;
+  left:0;
+
+  @include respond-to(phone-device){
+    position: relative;
+    bottom:initial;
+    left:initial;
+    margin-bottom:70px;
+    -webkit-transition-delay: 2s; /* Safari */
+    transition-delay: 2s;
+  }
+}
+
+.slice-next{
+  position: absolute;
+  width:100px;
+  right: $margin-sides;
+  bottom: $margin-sides;
+  @include respond-to(phone){
+    right: $margin-sides-mobile;
+      bottom: 85px;
+  }
+  a{
+    @include subtitle();
+    @include hover-effect-color($black, $red);
+    line-height: $font-size-subtitle;
+    display:block;
+    text-align: right;
+    width:100%;
+  }
+}
+
+.slice-share{
+  width:100px;
+  position: absolute;
+  // left: 10vw;
+  bottom: $margin-sides;
+  &.slice-share-journal{
+    left: 10vw;
+  }
+  @include respond-to(phone){
+    left: 0;
+    bottom: 85px;
+  }
+
+  a{
+    text-align: left;
+    @include subtitle();
+    @include hover-effect-color($black, $red);
+    line-height: $font-size-subtitle;
+  }
+  .slice-share-button{
+    position: relative;
+    left: $margin-sides;
+    @include respond-to(phone){
+      left: $margin-sides-mobile;
+    }
+  }
+  .slice-share-ul{
+    position: fixed;
+    bottom: 55px;
+    left:0;
+    &.slice-share-ul-journal{
+      left: 10vw;
+    }
+    @include respond-to(phone){
+      left: 0;
+    }
+    .slice-share-li{
+      width:100%;
+      height:$line-height-subtitle;
+      position:relative;
+      left:$margin-sides;
+      @include respond-to(phone){
+        left: $margin-sides-mobile;
+      }
+      a{
+        text-align: left;
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+}
+
+
+
+
+
+// @include keyframes('j_slideLeft', 'j_slideRight', 'translateX(0vw)', 'translateX(-90vw)', 'translateX(0vw)', 'translateX(-100vw)');
+
+// @include keyframes-notransform('j_slideLeft', 'j_slideRight', '100vw', '10vw', '100vw', '0vw');
+
+@keyframes j_slideLeft {
+  0% {left:100vw}
+  100% {left:10vw}
+}
+
+@-webkit-keyframes j_slideLeft {
+  0% {left:100vw}
+  100% {left:10vw}
+}
+
+@-moz-keyframes j_slideLeft {
+  0% {left:100vw}
+  100% {left:10vw}
+}
+
+@-ms-keyframes j_slideLeft {
+  0% {left:100vw}
+  100% {left:10vw}
+}
+
+@-o-keyframes j_slideLeft {
+  0% {left:100vw}
+  100% {left:10vw}
+}
+
+
+
+
+
+@keyframes j_slideRight {
+  0% {left:10vw}
+  100% {left:100vw}
+}
+
+@-webkit-keyframes j_slideRight {
+  0% {left:10vw}
+  100% {left:100vw}
+}
+
+@-moz-keyframes j_slideRight {
+  0% {left:10vw}
+  100% {left:100vw}
+}
+
+@-ms-keyframes j_slideRight {
+  0% {left:10vw}
+  100% {left:100vw}
+}
+
+@-o-keyframes j_slideRight {
+  0% {left:10vw}
+  100% {left:100vw}
+}
+
+
+
+@include respond-to(phone){
+    @keyframes j_slideLeft {
+      0% {left:100vw}
+      100% {left:0vw}
+    }
+
+    @-webkit-keyframes j_slideLeft {
+      0% {left:100vw}
+      100% {left:0vw}
+    }
+
+    @-moz-keyframes j_slideLeft {
+      0% {left:100vw}
+      100% {left:0vw}
+    }
+
+    @-ms-keyframes j_slideLeft {
+      0% {left:100vw}
+      100% {left:0vw}
+    }
+
+    @-o-keyframes j_slideLeft {
+      0% {left:100vw}
+      100% {left:0vw}
+    }
+
+
+
+    @keyframes j_slideRight {
+      0% {left:0vw}
+      100% {left:100vw}
+    }
+
+    @-webkit-keyframes j_slideRight {
+      0% {left:0vw}
+      100% {left:100vw}
+    }
+
+    @-moz-keyframes j_slideRight {
+      0% {left:0vw}
+      100% {left:100vw}
+    }
+
+    @-ms-keyframes j_slideRight {
+      0% {left:0vw}
+      100% {left:100vw}
+    }
+
+    @-o-keyframes j_slideRight {
+      0% {left:0vw}
+      100% {left:100vw}
+    }
+
+}
+
+
+.journal.ng-hide{
+    left:100vw;
+    // animation: slideUp 0.4s ease;
+}
+
+
+
+
+$animation-bezier: ease-in;
+$animation-speed: 0.3s;
+
+.journal{
+  position: fixed;
+  // right: $margin-sides;
+  // bottom: $margin-sides;
+  left:10vw;
+  @include respond-to(phone){
+    left:0vw;
+  }
+}
+
+
+
+.journal.ng-hide-remove.ng-hide-remove-active{
+  -webkit-animation: j_slideLeft $animation-speed $animation-bezier;
+  -moz-animation: j_slideLeft $animation-speed $animation-bezier;
+  -ms-animation: j_slideLeft $animation-speed $animation-bezier;
+  -o-animation: j_slideLeft $animation-speed $animation-bezier;
+  animation: j_slideLeft $animation-speed $animation-bezier;
+}
+
+.journal.ng-hide-add.ng-hide-add-active{
+  -webkit-animation: j_slideRight $animation-speed $animation-bezier;
+  -moz-animation: j_slideRight $animation-speed $animation-bezier;
+  -ms-animation: j_slideRight $animation-speed $animation-bezier;
+  -o-animation: j_slideRight $animation-speed $animation-bezier;
+  animation: j_slideRight $animation-speed $animation-bezier;
+}
+
+
+
+.journal-footer.ng-hide-remove.ng-hide-remove-active{
+  -webkit-transition-delay:1s;
+  -moz-transition-delay: 1s;
+  -ms-transition-delay: 1s;
+  -o-transition-delay: 1s;
+  transition-delay: 1s;
+
+}
