@@ -6,8 +6,9 @@ About.controller('aboutCtrl', function($scope, $location, $rootScope, $routePara
     $rootScope.scrollToHome();
   }
   console.log("aboutCtrl");
-  $rootScope.View = 'about';
 
+  $rootScope.isView='about';
+  console.log($rootScope.isView);
 
 });
 
