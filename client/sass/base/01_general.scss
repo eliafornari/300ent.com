@@ -196,6 +196,7 @@ main {
   position: relative;
   display: block;
   list-style-type: none;
+
   @include respond-to(phone-device){
     height: 100vh;
     overflow: hidden;
@@ -204,6 +205,11 @@ main {
 }
 
 main.scrolledSplash{
+  height:auto;
+  overflow-y: scroll;
+}
+
+main.scrolledSplash.noscroll{
   height:100vh;
   overflow-y: scroll;
 }

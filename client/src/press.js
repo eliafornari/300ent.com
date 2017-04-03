@@ -3,18 +3,20 @@ import Prismic from 'prismic.io'
 var Press = angular.module('myApp');
 
 
-Press.controller('pressCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', '$route' ,function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $route){
+Press.controller('pressCtrl', ['$scope', '$location', '$rootScope', '$routeParams',	'$http', 'anchorSmoothScroll', '$route', '$window', function($scope, $location, $rootScope, $routeParams, $http, anchorSmoothScroll, $route, $window){
 
 
   $rootScope.mainPress = {};
+  $rootScope.isView='press';
 
   $scope.pressLength;
   $scope.pressLoading = true;
-  $rootScope.scrollToHome();
+  // $rootScope.scrollToHome();
   $rootScope.firstLoading=false;
   // $rootScope.closeAllSections();
-
-$scope.currentImage='';
+  $scope.currentImage='';
+  $rootScope.paginationInProcess=false;
+  $rootScope.Press;
 
 
 $rootScope.swapImage=(url)=>{
@@ -30,35 +32,42 @@ $rootScope.swapImage=(url)=>{
 
 
 
-  $scope.getPressList = function(type, orderField){
+  $scope.getPressList = function(type, orderField, page){
+
+    console.log("page:", page);
+    $rootScope.paginationInProcess=true;
 
         Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
             Api.form('everything')
                 .ref(Api.master())
-
                 .query(Prismic.Predicates.at("document.type", type))
                 .orderings('['+orderField+']')
-                .pageSize(10)
+                .pageSize(5)
+                .page(page)
                 .submit(function (err, response) {
 
                     var Data = response;
+                    console.log($rootScope.Press);
+                    if(!$rootScope.Press){
+                      $rootScope.Press=response;
+                    }else{
+                      $rootScope.Press.results=$rootScope.Press.results.concat(response.results);
+                    }
 
-                      $rootScope.Press = response;
-                      $scope.$broadcast('pressReady');
-                      console.log($rootScope.Press);
-
-
+                    $scope.$broadcast('pressReady');
+                    console.log($rootScope.Press);
+                    $rootScope.paginationInProcess=false;
 
                     // The documents object contains a Response object with all documents of type "product".
-                    var page = response.page; // The current page number, the first one being 1
+                    $rootScope.Press.page = response.page; // The current page number, the first one being 1
                     var results = response.results; // An array containing the results of the current page;
                     // you may need to retrieve more pages to get all results
-                    var prev_page = response.prev_page; // the URL of the previous page (may be null)
-                    var next_page = response.next_page; // the URL of the next page (may be null)
-                    var results_per_page = response.results_per_page; // max number of results per page
-                    var results_size = response.results_size; // the size of the current page
-                    var total_pages = response.total_pages; // the number of pages
-                    var total_results_size = response.total_results_size; // the total size of results across all pages
+                    $rootScope.Press.prev_page = response.prev_page; // the URL of the previous page (may be null)
+                    $rootScope.Press.next_page = response.next_page; // the URL of the next page (may be null)
+                    $rootScope.Press.results_per_page = response.results_per_page; // max number of results per page
+                    $rootScope.Press.results_size = response.results_size; // the size of the current page
+                    $rootScope.Press.total_pages = response.total_pages; // the number of pages
+                    $rootScope.Press.total_results_size = response.total_results_size; // the total size of results across all pages
                       return results;
                 });
           });
@@ -68,7 +77,6 @@ $rootScope.swapImage=(url)=>{
 
 
 
-  $scope.getPressList('press', 'my.press.date');
 
 
 
@@ -86,6 +94,38 @@ $rootScope.swapImage=(url)=>{
   //       $rootScope.$apply();
   //     }, 600);
   // }
+
+
+
+  if(!$rootScope.Press){
+    $scope.getPressList('press', 'my.press.date', 0);
+    // $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
+  }else{
+    // $scope.getPressList('press', 'my.press.date', 0);
+  }
+
+
+
+    setTimeout(function(){
+      angular.element($window).bind("scroll.press", function() {
+          var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+          var body = document.body, html = document.documentElement;
+          var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+          var windowBottom = windowHeight + window.pageYOffset;
+
+          console.log(windowBottom, docHeight);
+
+          if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
+              // alert('bottom reached');
+              if($rootScope.Press.next_page){
+                var next = $rootScope.Press.page +1;
+                $scope.getPressList('press', 'my.press.date', next);
+                console.log($rootScope.Press.next_page);
+              }
+
+          }
+      });
+    }, 1000);
 
 
 
@@ -112,6 +152,7 @@ Press.controller('pressDetailCtrl', ['$scope', '$location', '$rootScope', '$rout
   $rootScope.scrollToHome();
   $rootScope.firstLoading=false;
   $scope.pressDetail = {}
+  $rootScope.isView='press';
 
 
   $rootScope.getNextPress = function(uid){
@@ -159,6 +200,11 @@ Press.controller('pressDetailCtrl', ['$scope', '$location', '$rootScope', '$rout
 
 
   $scope.getSingle('my.press.uid', $routeParams.press);
+
+
+
+
+
 
 
 

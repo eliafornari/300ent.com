@@ -23,7 +23,7 @@
             </div>
           </div>
 
-          <div class="slice-li-quote journal" ng-if="j.slice_type == 'Quote'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
+          <div class="slice-li-quote slice-li-quote-journal" ng-if="j.slice_type == 'Quote'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
             <table><tr><td>
               <p class="slice-li-quote-header" ng-repeat="q in j.value.value">{{q.header.value[0].text}}</p>
             </td></tr></table>

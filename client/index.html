@@ -118,7 +118,7 @@
 
   <!-- .................................. Main ...............................-->
 
-  <main ng-view class='main' autoscroll="true" ng-class="{scrolledSplash: !firstLoading}">
+  <main ng-view class='main' ng-class="{'scrolledSplash': !firstLoading, 'noscroll': isView!='press'}" autoscroll="">
   </main>
 
 
@@ -127,7 +127,7 @@
   <div class="landscape-view-wrapper" ng-show="landscapeView">
 
     <div class="landscape-view-div"><p class="landscape-view-p">please rotate the device for the best website experience</p></div>
-      <div class = "logo-landscape" >
+      <div class="logo-landscape" >
         <!-- ng-click="gotoAnchor('body')" -->
       <logo-directive></logo-directive>
       </div>
