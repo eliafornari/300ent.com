@@ -1,23 +1,26 @@
 
-
+import Prismic from 'prismic.io'
 var Journal = angular.module('myApp');
 
 
 Journal.controller('journalCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', '$route' ,function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $route){
 
 
-  $rootScope.mainJournal = [];
+console.log("journalCtrl");
+
+  $rootScope.mainJournal = {};
   $scope.isShare = false;
   $scope.journalLength;
   $rootScope.journalLoading = true;
 
 
   $rootScope.thisJournal = function(thisJournal){
-    for (var i in $rootScope.Journal){
-      if( thisJournal == $rootScope.Journal[i].uid){
-        $rootScope.mainJournal = $rootScope.Journal[i];
-      }
-    }
+    $scope.getSingle('my.journal.uid', $routeParams.journal);
+    // for (var i in $rootScope.Journal.results){
+    //   if( thisJournal == $rootScope.Journal.results[i].uid){
+    //     $rootScope.mainJournal = $rootScope.Journal.results[i];
+    //   }
+    // }
     anchorSmoothScroll.scrollTopElement('journal');
 
     setTimeout(function(){
@@ -29,18 +32,49 @@ Journal.controller('journalCtrl', ['$scope', '$location', '$rootScope', '$routeP
 
 
 
+  $scope.getSingle=(queryString, uid)=>{
+
+    Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+
+        Api.form('everything')
+            .ref(Api.master())
+            .query(Prismic.Predicates.at(queryString, uid))
+            .submit(function (err, response) {
+              console.log(err);
+              // console.log(response);
+              $rootScope.mainJournal=response.results[0];
+              $scope.pressLoading = false;
+              console.log(response.results[0]);
+
+            });
+      });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 $rootScope.getNextJournal = function(uid){
-  $scope.journalLength = $scope.Journal.length;
-  for (var j in $rootScope.Journal){
-    if(uid == $rootScope.Journal[j].uid){
+  $scope.journalLength = $rootScope.Journal.results.length;
+  for (var j in $rootScope.Journal.results){
+    if(uid == $rootScope.Journal.results[j].uid){
       if(j < ($scope.journalLength-1)){
         j++;
-        $rootScope.mainJournal = $rootScope.Journal[j];
+        $rootScope.mainJournal = $rootScope.Journal.results[j];
       }else if(j >= ($scope.journalLength-1)){
         j++;
-        $rootScope.mainJournal = $rootScope.Journal[0];
+        $rootScope.mainJournal = $rootScope.Journal.results[0];
       }
       anchorSmoothScroll.scrollTopElement('journal');
     }
@@ -53,52 +87,6 @@ $rootScope.getNextJournal = function(uid){
 $scope.openShare =function(){
   $scope.isShare = !$scope.isShare;
 }
-
-
-
-
-
-
-
-//
-// //DETAIL CHECK
-//
-// if ($location.path() == '/journal/'+$routeParams.id){
-//
-// console.log("$routeParams.id: "+$routeParams.id);
-//
-//
-//   $scope.$watch('jorunalReady' ,function(){
-//     console.log("jorunalReady");
-//     setTimeout(function(){
-//
-//
-//
-//     }, 600);
-//   });
-//
-// };
-//
-
-
-// $scope.$on('journalReady', function() {
-//
-//
-// console.log('changed');
-//
-//   if($location.path() == '/journal'){
-//   console.log($location.path());
-//     console.log('now');
-//
-//     setTimeout(function(){
-//       $scope.journalLoading = false;
-//       $scope.$apply();
-//     }, 2000);
-//   }
- //
- //
- // });
-
 
 
 

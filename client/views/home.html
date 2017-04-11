@@ -36,7 +36,7 @@
     </div>
 
     <ul class="home-release-ul" >
-      <li ng-repeat="r in Release | orderBy: r.data['release.cover'].value" class="home-release-li">
+      <li ng-repeat="r in Release.results | orderBy: r.data['release.cover'].value" class="home-release-li">
         <a href="/release/{{r.uid}}">
           <div class="home-release-cover" ng-mouseenter="flip=true" ng-mouseleave="flip=false">
             <figure class="front" style=" background-image: url('{{r.data['release.cover'].value.main.url}}')" ></figure>
@@ -62,7 +62,7 @@
 
   <div class="home-journal" ng-class="{blockScroll: firstLoading, 'chromium': isChrome}" ng-hide="isMobile && hideHomeJournal">
     <ul class="home-journal-ul">
-      <li class="home-journal-li" ng-repeat="j in Journal">
+      <li class="home-journal-li" ng-repeat="j in Journal.results">
         <a href="/journal/{{j.uid}}">
           <div class="home-journal-cover" style="background-image: url('{{j.data['journal.cover'].value.main.url}}')"></div>
         </a>

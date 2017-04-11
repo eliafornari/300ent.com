@@ -243,8 +243,8 @@ $rootScope.scrollToHome = function(){
 //..........................................................GET
 
 $rootScope.Artist =[];
-$rootScope.Release =[];
-$rootScope.Journal =[];
+$rootScope.Release ={results:[]};
+$rootScope.Journal ={results:[]};
 
 $rootScope.getContentType = function(type, orderField){
 
@@ -257,7 +257,7 @@ $rootScope.getContentType = function(type, orderField){
               .pageSize(100)
               .submit(function (err, response) {
 
-                  var Data = response;
+
                   if (type =='artist'){
                     $rootScope.Artist = response.results;
                     $scope.$broadcast('artistReady');
@@ -289,29 +289,210 @@ $rootScope.getContentType = function(type, orderField){
 
 
 $rootScope.getContentType('artist', 'my.artist.index');
-$rootScope.getContentType('release', 'my.release.date desc');
-$rootScope.getContentType('journal', 'my.journal.date desc');
 
 
 
 
 
+$rootScope.getPaginatedList = function(type, orderField, page){
+
+  console.log("page:", page);
+  $rootScope.paginationInProcess=true;
+
+      Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+          Api.form('everything')
+              .ref(Api.master())
+              .query(Prismic.Predicates.at("document.type", type))
+              .orderings('['+orderField+']')
+              .pageSize(10)
+              .page(page)
+              .submit(function (err, response) {
+
+                if (type =='release'){
+                  console.log("release");
+                  console.log($rootScope.Release);
+
+                  if(!$rootScope.Release){
+                    $rootScope.Release=response;
+                    $scope.$broadcast('releaseReady');
+                  }else{
+                    $rootScope.Release.results=$rootScope.Release.results.concat(response.results);
+                  }
+
+                  $rootScope.Release.page = response.page;
+                  $rootScope.Release.next_page = response.next_page;
+                  $rootScope.Release.prev_page = response.prev_page;
+                  $rootScope.Release.total_pages = response.total_pages;
+                  $rootScope.Release.page = response.page;
 
 
-      $rootScope.getArtistType = function(id){
 
-            Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
-                Api.form('everything')
-                    .ref(Api.master())
-                    .query(Prismic.Predicates.at("document.id", id))
-                    .submit(function (err, response) {
+                }else if(type=='journal'){
+                  if(!$rootScope.Journal){
+                    $rootScope.Journal=response;
+                    $scope.$broadcast('journalReady');
+                  }else{
+                    $rootScope.Journal.results=$rootScope.Journal.results.concat(response.results);
+                  }
+
+                  $rootScope.Journal.page = response.page;
+                  $rootScope.Journal.next_page = response.next_page;
+                  $rootScope.Journal.prev_page = response.prev_page;
+                  $rootScope.Journal.total_pages = response.total_pages;
+                  $rootScope.Journal.page = response.page;
+                  console.log("$rootScope.Journal.total_pages: "+$rootScope.Journal.total_pages);
+
+                }
+
+                $rootScope.paginationInProcess=false;
 
 
-                    });
               });
+        });
 
 
-      };
+};
+
+
+
+
+
+
+
+if(!$rootScope.Release.results.length){
+  $rootScope.getPaginatedList('release', 'my.release.date desc', 1);
+}else{
+    console.log("is release:",$rootScope.Release.results.length);
+}
+
+if(!$rootScope.Journal.results.length){
+  $rootScope.getPaginatedList('journal', 'my.journal.date desc', 1);
+}
+
+
+
+
+
+$scope.scrollerFN=()=>{
+
+    setTimeout(function(){
+
+      var home_release_element = angular.element(document.querySelector( '.home-release' ))
+      home_release_element.bind("scroll.release", function() {
+          var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+          // var body = document.body, html = document.documentElement;
+          var docHeight = Math.max(home_release_element[0].scrollTop, home_release_element[0].scrollHeight);
+          // var docHeight = element[0].scrollTop;
+          var windowBottom = windowHeight + home_release_element[0].scrollTop;
+
+          console.log(windowBottom, docHeight);
+
+          if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
+              // alert('bottom reached');
+              if(($rootScope.Release.page +1)<$rootScope.Release.total_pages){
+                var next = $rootScope.Release.page +1;
+                $rootScope.getPaginatedList('release', 'my.release.date', next);
+                console.log($rootScope.Release.next_page);
+              }
+
+          }
+      });
+
+
+
+
+
+
+
+      var journal_element = angular.element(document.querySelector( '.home-journal' ))
+      journal_element.bind("scroll.journal", function() {
+          var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+          // var body = document.body, html = document.documentElement;
+          var docHeight = Math.max(journal_element[0].scrollTop, journal_element[0].scrollHeight);
+          // var docHeight = element[0].scrollTop;
+          var windowBottom = windowHeight + journal_element[0].scrollTop;
+
+          if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
+              if(($rootScope.Journal.page +1)<$rootScope.Journal.total_pages){
+                var next = $rootScope.Journal.page +1;
+                $rootScope.getPaginatedList('journal', 'my.journal.date', next);
+              }
+
+          }
+      });
+
+
+
+
+
+      var release_element = angular.element(document.querySelector( '.release' ))
+      release_element.bind("scroll.releasedetail", function() {
+          var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+          // var body = document.body, html = document.documentElement;
+          var docHeight = Math.max(release_element[0].scrollTop, release_element[0].scrollHeight);
+          // var docHeight = element[0].scrollTop;
+          var windowBottom = windowHeight + release_element[0].scrollTop;
+
+          console.log(windowBottom, docHeight);
+
+          if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
+              // alert('bottom reached');
+              if(($rootScope.Release.page +1)<$rootScope.Release.total_pages){
+                var next = $rootScope.Release.page +1;
+                $rootScope.getPaginatedList('release', 'my.release.date', next);
+                console.log($rootScope.Release.next_page);
+              }
+
+          }
+      });
+
+    }, 1000);
+
+
+}
+
+
+
+
+$rootScope.$on("$routeChangeSuccess", function(){
+  $scope.scrollerFN();
+})
+
+  $scope.scrollerFN();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $rootScope.getArtistType = function(id){
+
+        Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+            Api.form('everything')
+                .ref(Api.master())
+                .query(Prismic.Predicates.at("document.id", id))
+                .submit(function (err, response) {
+
+
+                });
+          });
+
+
+  };
 
 $rootScope.getArtistType("VvppaiMAACUAQUu1");
 
@@ -378,34 +559,21 @@ $rootScope.checkSize = function(){
       }
 
 
-
-
-        if ($rootScope.isDevice){
-
-            $rootScope.mobileLocation = function(url){
-              $location.path(url).search();
-            }
-
-            $rootScope.mobileExternalLocation = function(url){
-              $window.open(url, '_blank');
-            }
-
-
-        } else if (!$rootScope.isDevice){
-
-
-            $rootScope.mobileLocation = function(url){
-              return false;
-            }
-
-            $rootScope.mobileExternalLocation = function(url){
-              return false;
-            }
+      if ($rootScope.isDevice){
+        $rootScope.mobileLocation = function(url){
+          $location.path(url).search();
         }
-
-
-
-
+        $rootScope.mobileExternalLocation = function(url){
+          $window.open(url, '_blank');
+        }
+      } else if (!$rootScope.isDevice){
+        $rootScope.mobileLocation = function(url){
+          return false;
+        }
+        $rootScope.mobileExternalLocation = function(url){
+          return false;
+        }
+      }
 
 
   }//checkSize

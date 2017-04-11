@@ -14,7 +14,7 @@ Release.controller('releaseCtrl', function($scope, $location, $rootScope, $route
   }
 
   $rootScope.thisRelease = function(thisRelease, thisnumber){
-      $rootScope.mainRelease = $rootScope.Release[thisnumber];
+    $rootScope.mainRelease = $rootScope.Release.results[thisnumber];
   }
 
 
@@ -47,7 +47,7 @@ $rootScope.isReleaseVideo = false;
 
 
 
-  if($rootScope.Release){
+  if($rootScope.Release.results.length){
     console.log($routeParams.release);
     $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);
 
