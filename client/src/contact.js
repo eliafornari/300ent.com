@@ -4,7 +4,6 @@ Contact.controller('contactCtrl', ['$scope', '$location', '$rootScope', '$routeP
   if($rootScope.removeSplashMobile == false){
     $rootScope.scrollToHome();
   }
-  console.log("contactCtrl");
 
   $rootScope.isView='contact';
 

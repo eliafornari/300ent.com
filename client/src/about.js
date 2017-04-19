@@ -5,10 +5,8 @@ About.controller('aboutCtrl', ['$scope', '$location', '$rootScope', '$routeParam
   if($rootScope.removeSplashMobile == false){
     $rootScope.scrollToHome();
   }
-  console.log("aboutCtrl");
 
   $rootScope.isView='about';
-  console.log($rootScope.isView);
 
 }]);
 

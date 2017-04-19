@@ -53,9 +53,7 @@ $rootScope.gotoAnchorArtist = function(x) {
 
 
 $rootScope.$on('ArtistChanged', function(){
-  console.log("ArtistChanged");
   $rootScope.gotoAnchorArtist('artist-content-'+$routeParams.artist);
-  console.log("$routeParams.artist:", $routeParams.artist);
 });
 
 
@@ -63,12 +61,10 @@ $rootScope.$on('ArtistChanged', function(){
 
 
 if($rootScope.Artist){
-  console.log($routeParams.artist);
   $rootScope.gotoAnchorArtist('artist-content-'+$routeParams.artist);
 
 }else{
   $rootScope.$on('artistReady' ,function(){
-    console.log("artistReady");
     setTimeout(function(){
       if($routeParams.artist){
         $rootScope.gotoAnchorArtist('artist-content-'+$routeParams.artist);

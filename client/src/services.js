@@ -41,7 +41,6 @@ Service.factory('getService', ['$http', '$q', '$timeout', function($http, $q, $t
                               return response.data;
                           } else {
                               // invalid response
-                              console.log('rejected');
                               return $q.reject(response.data);
                           }
 
@@ -85,7 +84,6 @@ Service.factory('homeService', ['$http', '$q', function($http, $q){
                               return response.data;
                           } else {
                               // invalid response
-                              console.log('rejected');
                               return $q.reject(response.data);
                           }
 
@@ -235,7 +233,6 @@ Service.service('MetaInformation', function() {
                         'easeInOutQuart'
                         // function() {
                         //   // $location.path(section, false);
-                        //   // console.log($location.path());
                         // }
                       );
                     }, 100);
@@ -253,7 +250,6 @@ Service.service('MetaInformation', function() {
             setTimeout(function(){
               var number, element, scroll, scrollPosition, windowheight, scrollLength;
                       number =  jQuery('#'+id).offset().top;
-                      console.log("number: "+number);
 
 
                       // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
@@ -300,8 +296,6 @@ Service.service('MetaInformation', function() {
               setTimeout(function(){
                   var number, element, scroll, scrollPosition, windowheight, scrollLength;
                         number =  jQuery('#'+id).offset().top;
-                        console.log("number: "+number);
-
 
                         // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
                        element = jQuery('.release');

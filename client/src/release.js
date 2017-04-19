@@ -38,9 +38,7 @@ $rootScope.isReleaseVideo = false;
 
 
   $rootScope.$on('ReleaseChanged', function(){
-    console.log("ReleaseChanged");
     $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);
-    console.log("$routeParams.release:", $routeParams.release);
   });
 
 
@@ -48,12 +46,10 @@ $rootScope.isReleaseVideo = false;
 
 
   if($rootScope.Release.results.length){
-    console.log($routeParams.release);
     $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);
 
   }else{
     $rootScope.$on('releaseReady' ,function(){
-      console.log("releaseReady");
       setTimeout(function(){
         if($routeParams.release){
           $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);

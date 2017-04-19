@@ -186,8 +186,6 @@ Press.controller('pressDetailCtrl', ['$scope', '$location', '$rootScope', '$rout
             .ref(Api.master())
             .query(Prismic.Predicates.at(queryString, uid))
             .submit(function (err, response) {
-              console.log(err);
-              console.log(response);
               $scope.pressDetail=response.results[0];
               $scope.pressLoading = false;
 

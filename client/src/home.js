@@ -151,7 +151,6 @@ $rootScope.openArtists = function(artist){
     $location.path('journal/'+journal, false);
     $rootScope.whatJournal = journal;
     $scope.$watch('jorunalReady' ,function(){
-      console.log("jorunalReady");
       setTimeout(function(){
         $rootScope.thisJournal(journal);
       }, 600);
