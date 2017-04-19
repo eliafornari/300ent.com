@@ -101,7 +101,6 @@ $rootScope.swapImage=(url)=>{
 
   if(!$rootScope.Press){
     $scope.getPressList('press', 'my.press.date', 1);
-    // $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
   }else{
     // $scope.getPressList('press', 'my.press.date', 0);
   }

@@ -34,9 +34,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
 // This is the configuration for prismic.io
-/*
- * Initialize prismic context and api
- */
 app.use((req, res, next) => {
   Prismic.api(PrismicConfig.apiEndpoint, { req })
   // accessToken: PrismicConfig.accessToken,
