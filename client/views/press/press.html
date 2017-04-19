@@ -4,7 +4,7 @@
   <ul class="press-ul" >
     <li class="press-li" ng-repeat="p in Press.results" ng-mouseenter="showImage=true" ng-mouseleave="showImage=false">
       <!-- ng-mouseenter="swapImage(p.data['press.cover'].value.main.url)" ng-mouseleave="currentImage=''" -->
-      <a href="/press/{{p.uid}}">
+      <a href="/press/detail/{{p.uid}}">
         <h1 class="press-h1">{{p.data['press.title'].value[0].text}}</h1>
         <img src="{{p.data['press.cover'].value.main.url}}" alt="{{p.data['press.title'].value[0].text}}" class="press-image" ng-show="showImage">
       </a>
@@ -14,9 +14,15 @@
 
 
 
-
   <div class="press-image" ng-if="!isMobile">
     <img src="{{currentImage}}" alt="">
+  </div>
+
+
+
+
+  <div class="press-filter">
+    <a href="/press?filter=artist">artists</a>
   </div>
 
 </div>

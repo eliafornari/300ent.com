@@ -33,44 +33,46 @@ $rootScope.swapImage=(url)=>{
 
 
   $scope.getPressList = function(type, orderField, page){
-
-    console.log("page:", page);
     $rootScope.paginationInProcess=true;
+  var url = '/api/prismic/press/get?order='+orderField+'&type='+type+'&page='+page;
+  if($location.search().filter){
+    url = url + '&filter='+$location.search().filter
+  }
 
-        Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
-            Api.form('everything')
-                .ref(Api.master())
-                .query(Prismic.Predicates.at("document.type", type))
-                .orderings('['+orderField+']')
-                .pageSize(5)
-                .page(page)
-                .submit(function (err, response) {
 
-                    var Data = response;
-                    console.log($rootScope.Press);
-                    if(!$rootScope.Press){
-                      $rootScope.Press=response;
-                    }else{
-                      $rootScope.Press.results=$rootScope.Press.results.concat(response.results);
-                    }
+  $http({
+  method: 'GET',
+  url: url
+  }).then(function(response) {
+      // this callback will be called asynchronously
+      // when the response is available
+          var Data = response.data;
+          if(!$rootScope.Press){
+            $rootScope.Press=Data;
+          }else{
+            $rootScope.Press.results=$rootScope.Press.results.concat(Data.results);
+          }
 
-                    $scope.$broadcast('pressReady');
-                    console.log($rootScope.Press);
-                    $rootScope.paginationInProcess=false;
+          $scope.$broadcast('pressReady');
+          $rootScope.paginationInProcess=false;
 
-                    // The documents object contains a Response object with all documents of type "product".
-                    $rootScope.Press.page = response.page; // The current page number, the first one being 1
-                    var results = response.results; // An array containing the results of the current page;
-                    // you may need to retrieve more pages to get all results
-                    $rootScope.Press.prev_page = response.prev_page; // the URL of the previous page (may be null)
-                    $rootScope.Press.next_page = response.next_page; // the URL of the next page (may be null)
-                    $rootScope.Press.results_per_page = response.results_per_page; // max number of results per page
-                    $rootScope.Press.results_size = response.results_size; // the size of the current page
-                    $rootScope.Press.total_pages = response.total_pages; // the number of pages
-                    $rootScope.Press.total_results_size = response.total_results_size; // the total size of results across all pages
-                      return results;
-                });
-          });
+          // The documents object contains a Response object with all documents of type "product".
+          $rootScope.Press.page = Data.page; // The current page number, the first one being 1
+          var results = Data.results; // An array containing the results of the current page;
+          // you may need to retrieve more pages to get all results
+          $rootScope.Press.prev_page = Data.prev_page; // the URL of the previous page (may be null)
+          $rootScope.Press.next_page = Data.next_page; // the URL of the next page (may be null)
+          $rootScope.Press.results_per_page = Data.results_per_page; // max number of results per page
+          $rootScope.Press.results_size = Data.results_size; // the size of the current page
+          $rootScope.Press.total_pages = Data.total_pages; // the number of pages
+          $rootScope.Press.total_results_size = Data.total_results_size; // the total size of results across all pages
+    }, function(err) {
+      console.log(err);
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
+
+
 
 
   };
@@ -98,7 +100,7 @@ $rootScope.swapImage=(url)=>{
 
 
   if(!$rootScope.Press){
-    $scope.getPressList('press', 'my.press.date', 0);
+    $scope.getPressList('press', 'my.press.date', 1);
     // $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
   }else{
     // $scope.getPressList('press', 'my.press.date', 0);
@@ -112,15 +114,11 @@ $rootScope.swapImage=(url)=>{
           var body = document.body, html = document.documentElement;
           var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
           var windowBottom = windowHeight + window.pageYOffset;
-
-          console.log(windowBottom, docHeight);
-
           if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
               // alert('bottom reached');
               if($rootScope.Press.next_page){
                 var next = $rootScope.Press.page +1;
                 $scope.getPressList('press', 'my.press.date', next);
-                console.log($rootScope.Press.next_page);
               }
 
           }
@@ -211,3 +209,44 @@ Press.controller('pressDetailCtrl', ['$scope', '$location', '$rootScope', '$rout
 
 
 }]);
+
+
+
+
+// Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
+//     Api.form('everything')
+//         .ref(Api.master())
+//         .query(
+//           Prismic.Predicates.at("document.type", type),
+//           Prismic.Predicates.at('document.tags', []) ]
+//           { orderings : '['+orderField+']' }
+//         )
+//         .pageSize(5)
+//         .page(page)
+//         .submit(function (err, response) {
+//
+//             var Data = response;
+//             console.log($rootScope.Press);
+//             if(!$rootScope.Press){
+//               $rootScope.Press=response;
+//             }else{
+//               $rootScope.Press.results=$rootScope.Press.results.concat(response.results);
+//             }
+//
+//             $scope.$broadcast('pressReady');
+//             console.log($rootScope.Press);
+//             $rootScope.paginationInProcess=false;
+//
+//             // The documents object contains a Response object with all documents of type "product".
+//             $rootScope.Press.page = response.page; // The current page number, the first one being 1
+//             var results = response.results; // An array containing the results of the current page;
+//             // you may need to retrieve more pages to get all results
+//             $rootScope.Press.prev_page = response.prev_page; // the URL of the previous page (may be null)
+//             $rootScope.Press.next_page = response.next_page; // the URL of the next page (may be null)
+//             $rootScope.Press.results_per_page = response.results_per_page; // max number of results per page
+//             $rootScope.Press.results_size = response.results_size; // the size of the current page
+//             $rootScope.Press.total_pages = response.total_pages; // the number of pages
+//             $rootScope.Press.total_results_size = response.total_results_size; // the total size of results across all pages
+//               return results;
+//         });
+//   });
