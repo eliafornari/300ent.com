@@ -2,7 +2,7 @@
 var Home = angular.module('myApp');
 
 
-Home.controller('homeCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $templateCache, $route, $window, anchorSmoothScroll){
+Home.controller('homeCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', '$sce', '$templateCache', '$route', '$window', 'anchorSmoothScroll', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, $sce, $templateCache, $route, $window, anchorSmoothScroll){
 
 $scope.isSplash = true;
 
@@ -32,15 +32,6 @@ $rootScope.refreshTemplate = function(){
   var currentPageTemplate = $route.current.templateUrl;
   $templateCache.remove(currentPageTemplate);
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -148,30 +139,21 @@ $rootScope.openArtists = function(artist){
 // $rootScope.openArtists($routeParams.artist);
 
   $rootScope.openRelease = function(release, number){
-
-  $rootScope.isView='release';
-
+    $rootScope.isView='release';
     $location.path('release', false);
     $rootScope.whatRelease = release;
     $rootScope.thisRelease(release, number);
-
     $rootScope.gotoAnchorRelease('release-item-'+release);
-
   }
 
   $rootScope.openJournal = function(journal){
-
     $rootScope.isView='journal';
-
     $location.path('journal/'+journal, false);
     $rootScope.whatJournal = journal;
     $scope.$watch('jorunalReady' ,function(){
       console.log("jorunalReady");
       setTimeout(function(){
-
         $rootScope.thisJournal(journal);
-
-
       }, 600);
     });
 
@@ -301,13 +283,13 @@ $rootScope.channel_statistics;
 
 
 
-});
+}]);
 
 
 
 
 
-Home.directive('splashDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Home.directive('splashDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/splash.html',
@@ -319,7 +301,7 @@ Home.directive('splashDirective', function($rootScope, $location, $window, $rout
 });
 
 
-Home.directive('homeMobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Home.directive('homeMobileDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/homeMobile.html',

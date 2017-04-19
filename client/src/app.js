@@ -621,7 +621,7 @@ $scope.landscapeFunction();
 
 }])//......end of the route controller
 
-.directive('closeRightDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('closeRightDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/close-right.html',
@@ -631,7 +631,7 @@ $scope.landscapeFunction();
     }
   };
 })
-.directive('closeLeftDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('closeLeftDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/close-left.html',
@@ -642,7 +642,7 @@ $scope.landscapeFunction();
   };
 })
 
-.directive('pageLoadingSpinner', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('pageLoadingSpinner', function() {
   return {
     restrict: 'A',
     // templateUrl: 'components/loader.html',

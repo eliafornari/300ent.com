@@ -4,9 +4,7 @@
 var Service = angular.module('myApp');
 
 Service.factory('resourceService', function($resource, $routeParams, $q, $cacheFactory){
-
 // var canceler = $q.defer();
-
 return $resource('/data/:collection/:season.json',{},{get:{method:'GET', isArray: true}})
   // canceler.resolve();  // Aborts the $http request if it isn't finished.
 
@@ -27,15 +25,12 @@ return $resource('/data/:collection/:season.json',{},{get:{method:'GET'}})
 
 });
 
-Service.factory('getService', function($http, $q, $timeout){
+Service.factory('getService', ['$http', '$q', '$timeout', function($http, $q, $timeout){
 
     return {
               get: function(url) {
-
-
               // var dfd = $q.defer();
               // $timeout(function(){
-
                   // the $http API is based on the deferred/promise APIs exposed by the $q service
                   // so it returns a promise for us by default
                   return $http.get(url)
@@ -70,12 +65,12 @@ Service.factory('getService', function($http, $q, $timeout){
     // return $resource('/data/'+url+'.json',{},{get:{method:'GET'}})
 
 
-});
+}]);
 
 
 
 
-Service.factory('homeService', function($http, $q){
+Service.factory('homeService', ['$http', '$q', function($http, $q){
 
     return {
               get: function() {
@@ -102,7 +97,7 @@ Service.factory('homeService', function($http, $q){
           };
 
 
-});
+}]);
 
 
 
@@ -156,7 +151,7 @@ Service.service('MetaInformation', function() {
 
 
 
-    Service.service('anchorSmoothScroll', function($location, $rootScope, $window){
+    Service.service('anchorSmoothScroll', ['$location', '$rootScope', '$window', function($location, $rootScope, $window){
 
         // this.scrollTo = function(eID) {
         //
@@ -383,4 +378,4 @@ Service.service('MetaInformation', function() {
 // easeInOutQuart
 
 
-    });
+    }]);

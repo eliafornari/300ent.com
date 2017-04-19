@@ -100,27 +100,18 @@ $scope.openShare =function(){
 
 
 
-Journal.directive('journalDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Journal.directive('journalDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/journal.html',
-    replace: true,
-    link: function(scope, elem, attrs) {
-
-    }
+    replace: true
   };
 });
 
 
 
-Journal.directive('journalLoaderDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Journal.directive('journalLoaderDirective', function() {
   return {
-    restrict: 'A',
-    link: function(scope, elem, attrs) {
-
-
-
-
-    }
+    restrict: 'A'
   };
 });

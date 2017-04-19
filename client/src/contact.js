@@ -1,7 +1,6 @@
 var Contact = angular.module('myApp');
 
-Contact.controller('contactCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
-
+Contact.controller('contactCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', function($scope, $location, $rootScope, $routeParams, $timeout, $http){
   if($rootScope.removeSplashMobile == false){
     $rootScope.scrollToHome();
   }
@@ -9,13 +8,13 @@ Contact.controller('contactCtrl', function($scope, $location, $rootScope, $route
 
   $rootScope.isView='contact';
 
-});
+}]);
 
 
 
 
 
-Contact.directive('contactDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Contact.directive('contactDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/contact.html',

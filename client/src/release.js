@@ -3,7 +3,7 @@
 var Release = angular.module('myApp');
 
 
-Release.controller('releaseCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll){
+Release.controller('releaseCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll){
 
 
   $rootScope.isView='release';
@@ -67,13 +67,13 @@ $rootScope.isReleaseVideo = false;
 
 
 
-});
+}]);
 
 
 
 
 
-Release.directive('releaseDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Release.directive('releaseDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/release.html',
