@@ -2,7 +2,7 @@
 angular.module('myApp')
 
 
-.controller('navCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
+.controller('navCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$http', function($scope, $location, $rootScope, $routeParams, $timeout,	$http){
 
 $rootScope.isNavOpen = false;
 
@@ -12,7 +12,6 @@ $rootScope.isNavOpen = false;
       $rootScope.scrollToHome();
     }
     $rootScope.removeSplashMobile = true;
-
   }
 
 
@@ -25,6 +24,11 @@ $rootScope.isNavOpen = false;
   }
 
 
+
+$rootScope.isSearch = function(field){
+  var search = $location.search();
+  if(search['filter']){return true}else{return false};
+}
 
 
   $rootScope.navOpenArtist=function(){
@@ -47,7 +51,7 @@ $rootScope.isNavOpen = false;
   $rootScope.navOpen=(path)=>{
     $location.path('/'+path, true);
 
-    // 
+    //
     // if(path=='journal'){
     //   $rootScope.openJournal($rootScope.Journal[0].uid,0);
     // }else if(path=='release'){
@@ -97,10 +101,10 @@ $rootScope.isNavOpen = false;
 
 
 
-})
+}])
 
 
-.directive('logoDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('logoDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/logo.html',
@@ -111,7 +115,7 @@ $rootScope.isNavOpen = false;
   };
 })
 
-.directive('exDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('exDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/ex.html',
@@ -122,7 +126,7 @@ $rootScope.isNavOpen = false;
   };
 })
 
-.directive('arrowDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('arrowDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/icons/arrow.html',
@@ -134,7 +138,7 @@ $rootScope.isNavOpen = false;
 })
 
 
-.directive('mailDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('mailDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/icons/mail.html',
@@ -145,7 +149,7 @@ $rootScope.isNavOpen = false;
   };
 })
 
-.directive('flagDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('flagDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/icons/flag.html',
@@ -156,18 +160,15 @@ $rootScope.isNavOpen = false;
   };
 })
 
-.directive('navMobileDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('navMobileDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/nav-mobile.html',
-    replace: true,
-    link: function(scope, elem, attrs) {
-
-    }
+    replace: true
   };
 })
 
-.directive('navDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('navDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/nav.html',

@@ -4,9 +4,7 @@
 var Service = angular.module('myApp');
 
 Service.factory('resourceService', function($resource, $routeParams, $q, $cacheFactory){
-
 // var canceler = $q.defer();
-
 return $resource('/data/:collection/:season.json',{},{get:{method:'GET', isArray: true}})
   // canceler.resolve();  // Aborts the $http request if it isn't finished.
 
@@ -27,15 +25,12 @@ return $resource('/data/:collection/:season.json',{},{get:{method:'GET'}})
 
 });
 
-Service.factory('getService', function($http, $q, $timeout){
+Service.factory('getService', ['$http', '$q', '$timeout', function($http, $q, $timeout){
 
     return {
               get: function(url) {
-
-
               // var dfd = $q.defer();
               // $timeout(function(){
-
                   // the $http API is based on the deferred/promise APIs exposed by the $q service
                   // so it returns a promise for us by default
                   return $http.get(url)
@@ -46,7 +41,6 @@ Service.factory('getService', function($http, $q, $timeout){
                               return response.data;
                           } else {
                               // invalid response
-                              console.log('rejected');
                               return $q.reject(response.data);
                           }
 
@@ -70,12 +64,12 @@ Service.factory('getService', function($http, $q, $timeout){
     // return $resource('/data/'+url+'.json',{},{get:{method:'GET'}})
 
 
-});
+}]);
 
 
 
 
-Service.factory('homeService', function($http, $q){
+Service.factory('homeService', ['$http', '$q', function($http, $q){
 
     return {
               get: function() {
@@ -90,7 +84,6 @@ Service.factory('homeService', function($http, $q){
                               return response.data;
                           } else {
                               // invalid response
-                              console.log('rejected');
                               return $q.reject(response.data);
                           }
 
@@ -102,7 +95,7 @@ Service.factory('homeService', function($http, $q){
           };
 
 
-});
+}]);
 
 
 
@@ -156,7 +149,7 @@ Service.service('MetaInformation', function() {
 
 
 
-    Service.service('anchorSmoothScroll', function($location, $rootScope, $window){
+    Service.service('anchorSmoothScroll', ['$location', '$rootScope', '$window', function($location, $rootScope, $window){
 
         // this.scrollTo = function(eID) {
         //
@@ -240,7 +233,6 @@ Service.service('MetaInformation', function() {
                         'easeInOutQuart'
                         // function() {
                         //   // $location.path(section, false);
-                        //   // console.log($location.path());
                         // }
                       );
                     }, 100);
@@ -258,7 +250,6 @@ Service.service('MetaInformation', function() {
             setTimeout(function(){
               var number, element, scroll, scrollPosition, windowheight, scrollLength;
                       number =  jQuery('#'+id).offset().top;
-                      console.log("number: "+number);
 
 
                       // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
@@ -305,8 +296,6 @@ Service.service('MetaInformation', function() {
               setTimeout(function(){
                   var number, element, scroll, scrollPosition, windowheight, scrollLength;
                         number =  jQuery('#'+id).offset().top;
-                        console.log("number: "+number);
-
 
                         // $('.div1').get(0).scrollTop($('.div1 div.active').position().top);
                        element = jQuery('.release');
@@ -383,4 +372,4 @@ Service.service('MetaInformation', function() {
 // easeInOutQuart
 
 
-    });
+    }]);

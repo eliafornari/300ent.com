@@ -3,7 +3,7 @@
 var Artist = angular.module('myApp');
 
 
-Artist.controller('artistCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $window){
+Artist.controller('artistCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', '$window', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $window){
 
 
   $rootScope.mainArtist = "";
@@ -11,21 +11,11 @@ Artist.controller('artistCtrl', function($scope, $location, $rootScope, $routePa
   if($rootScope.removeSplashMobile == false){
     $rootScope.scrollToHome();
   }
-  console.log("artistCtrl");
-
-  // $rootScope.thisArtist = function(thisArtist){
-  //   $rootScope.mainArtist = thisArtist;
-  // }
-
-
-
-
-var scroll,windowheight;
-windowheight = window.innerHeight;
+  var scroll,windowheight;
+  windowheight = window.innerHeight;
 
 setTimeout(function(){
-
-$scope.artistPositions=[];
+  $scope.artistPositions=[];
   for (var i in $rootScope.Artist){
     var artistPosition =  jQuery('#artist-content-'+$rootScope.Artist[i].uid).offset().top;
     artistPosition = windowheight*i;
@@ -40,7 +30,6 @@ $scope.artistPositions=[];
     jQuery('.artist').bind("scroll.artist", function(event) {
 
         scroll =  jQuery('.artist').scrollTop();
-
         for (i in $scope.artistPositions){
           if((scroll > ($scope.artistPositions[i].offset - 1)) && (scroll < ($scope.artistPositions[i].offset + windowheight -1 ))){
             $rootScope.mainArtist = $scope.artistPositions[i].name;
@@ -64,9 +53,7 @@ $rootScope.gotoAnchorArtist = function(x) {
 
 
 $rootScope.$on('ArtistChanged', function(){
-  console.log("ArtistChanged");
   $rootScope.gotoAnchorArtist('artist-content-'+$routeParams.artist);
-  console.log("$routeParams.artist:", $routeParams.artist);
 });
 
 
@@ -74,12 +61,10 @@ $rootScope.$on('ArtistChanged', function(){
 
 
 if($rootScope.Artist){
-  console.log($routeParams.artist);
   $rootScope.gotoAnchorArtist('artist-content-'+$routeParams.artist);
 
 }else{
   $rootScope.$on('artistReady' ,function(){
-    console.log("artistReady");
     setTimeout(function(){
       if($routeParams.artist){
         $rootScope.gotoAnchorArtist('artist-content-'+$routeParams.artist);
@@ -92,30 +77,16 @@ if($rootScope.Artist){
 
 
 
+}]);
 
 
 
 
 
-
-
-
-
-
-
-});
-
-
-
-
-
-Artist.directive('artistDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Artist.directive('artistDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/artist.html',
-    replace: true,
-    link: function(scope, elem, attrs) {
-
-    }
+    replace: true
   };
 });

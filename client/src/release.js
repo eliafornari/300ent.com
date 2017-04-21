@@ -3,7 +3,7 @@
 var Release = angular.module('myApp');
 
 
-Release.controller('releaseCtrl', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll){
+Release.controller('releaseCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll){
 
 
   $rootScope.isView='release';
@@ -38,9 +38,7 @@ $rootScope.isReleaseVideo = false;
 
 
   $rootScope.$on('ReleaseChanged', function(){
-    console.log("ReleaseChanged");
     $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);
-    console.log("$routeParams.release:", $routeParams.release);
   });
 
 
@@ -48,12 +46,10 @@ $rootScope.isReleaseVideo = false;
 
 
   if($rootScope.Release.results.length){
-    console.log($routeParams.release);
     $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);
 
   }else{
     $rootScope.$on('releaseReady' ,function(){
-      console.log("releaseReady");
       setTimeout(function(){
         if($routeParams.release){
           $rootScope.gotoAnchorRelease('release-item-'+$routeParams.release);
@@ -67,13 +63,13 @@ $rootScope.isReleaseVideo = false;
 
 
 
-});
+}]);
 
 
 
 
 
-Release.directive('releaseDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Release.directive('releaseDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/release.html',

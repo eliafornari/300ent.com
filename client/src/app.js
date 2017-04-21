@@ -97,12 +97,14 @@ angular.module('myApp', [
 
         .when('/press/:press', {
           templateUrl: 'views/press/detail-press.html',
-          controller: 'pressDetailCtrl'
+          controller: 'pressDetailCtrl',
+          reloadOnSearch: true
         })
 
         .when('/press', {
           templateUrl: 'views/press/press.html',
-          controller: 'pressCtrl'
+          controller: 'pressCtrl',
+          reloadOnSearch: true
         })
 
         .when('/journal/:journal', {
@@ -296,7 +298,6 @@ $rootScope.getContentType('artist', 'my.artist.index');
 
 $rootScope.getPaginatedList = function(type, orderField, page){
 
-  console.log("page:", page);
   $rootScope.paginationInProcess=true;
 
       Prismic.Api('https://threehundred.cdn.prismic.io/api', function (err, Api) {
@@ -309,8 +310,6 @@ $rootScope.getPaginatedList = function(type, orderField, page){
               .submit(function (err, response) {
 
                 if (type =='release'){
-                  console.log("release");
-                  console.log($rootScope.Release);
 
                   if(!$rootScope.Release){
                     $rootScope.Release=response;
@@ -340,7 +339,6 @@ $rootScope.getPaginatedList = function(type, orderField, page){
                   $rootScope.Journal.prev_page = response.prev_page;
                   $rootScope.Journal.total_pages = response.total_pages;
                   $rootScope.Journal.page = response.page;
-                  console.log("$rootScope.Journal.total_pages: "+$rootScope.Journal.total_pages);
 
                 }
 
@@ -362,7 +360,6 @@ $rootScope.getPaginatedList = function(type, orderField, page){
 if(!$rootScope.Release.results.length){
   $rootScope.getPaginatedList('release', 'my.release.date desc', 1);
 }else{
-    console.log("is release:",$rootScope.Release.results.length);
 }
 
 if(!$rootScope.Journal.results.length){
@@ -385,14 +382,11 @@ $scope.scrollerFN=()=>{
           // var docHeight = element[0].scrollTop;
           var windowBottom = windowHeight + home_release_element[0].scrollTop;
 
-          console.log(windowBottom, docHeight);
-
           if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
               // alert('bottom reached');
               if(($rootScope.Release.page +1)<$rootScope.Release.total_pages){
                 var next = $rootScope.Release.page +1;
                 $rootScope.getPaginatedList('release', 'my.release.date', next);
-                console.log($rootScope.Release.next_page);
               }
 
           }
@@ -433,14 +427,11 @@ $scope.scrollerFN=()=>{
           // var docHeight = element[0].scrollTop;
           var windowBottom = windowHeight + release_element[0].scrollTop;
 
-          console.log(windowBottom, docHeight);
-
           if ((windowBottom >= docHeight) &&($rootScope.paginationInProcess==false)) {
               // alert('bottom reached');
               if(($rootScope.Release.page +1)<$rootScope.Release.total_pages){
                 var next = $rootScope.Release.page +1;
                 $rootScope.getPaginatedList('release', 'my.release.date', next);
-                console.log($rootScope.Release.next_page);
               }
 
           }
@@ -621,7 +612,7 @@ $scope.landscapeFunction();
 
 }])//......end of the route controller
 
-.directive('closeRightDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('closeRightDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/close-right.html',
@@ -631,7 +622,7 @@ $scope.landscapeFunction();
     }
   };
 })
-.directive('closeLeftDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('closeLeftDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/components/close-left.html',
@@ -642,7 +633,7 @@ $scope.landscapeFunction();
   };
 })
 
-.directive('pageLoadingSpinner', function($rootScope, $location, $window, $routeParams, $timeout) {
+.directive('pageLoadingSpinner', function() {
   return {
     restrict: 'A',
     // templateUrl: 'components/loader.html',

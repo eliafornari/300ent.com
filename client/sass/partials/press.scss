@@ -3,6 +3,17 @@
   height: auto;
 }
 
+.press-filter{
+  position: fixed;
+  bottom: $margin-sides;
+  left: $margin-sides;
+  a{
+    display: block;
+    @include subtitle();
+    @include hover-effect-color($black, $red);
+  }
+}
+
 
 .press-ul{
   .press-li{

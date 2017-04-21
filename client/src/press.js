@@ -5,7 +5,6 @@ var Press = angular.module('myApp');
 
 Press.controller('pressCtrl', ['$scope', '$location', '$rootScope', '$routeParams',	'$http', 'anchorSmoothScroll', '$route', '$window', function($scope, $location, $rootScope, $routeParams, $http, anchorSmoothScroll, $route, $window){
 
-
   $rootScope.mainPress = {};
   $rootScope.isView='press';
 
@@ -98,12 +97,14 @@ $rootScope.swapImage=(url)=>{
   // }
 
 
-
   if(!$rootScope.Press){
     $scope.getPressList('press', 'my.press.date', 1);
-    // $rootScope.getProductsFN($rootScope.Pagination.offsets.next);
   }else{
     // $scope.getPressList('press', 'my.press.date', 0);
+    if($location.search()){
+      $rootScope.Press.results=[];
+      $scope.getPressList('press', 'my.press.date', 1);
+    }
   }
 
 
@@ -187,8 +188,6 @@ Press.controller('pressDetailCtrl', ['$scope', '$location', '$rootScope', '$rout
             .ref(Api.master())
             .query(Prismic.Predicates.at(queryString, uid))
             .submit(function (err, response) {
-              console.log(err);
-              console.log(response);
               $scope.pressDetail=response.results[0];
               $scope.pressLoading = false;
 

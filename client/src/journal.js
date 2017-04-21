@@ -5,9 +5,6 @@ var Journal = angular.module('myApp');
 
 Journal.controller('journalCtrl', ['$scope', '$location', '$rootScope', '$routeParams', '$timeout',	'$http', 'anchorSmoothScroll', '$route' ,function($scope, $location, $rootScope, $routeParams, $timeout,	$http, anchorSmoothScroll, $route){
 
-
-console.log("journalCtrl");
-
   $rootScope.mainJournal = {};
   $scope.isShare = false;
   $scope.journalLength;
@@ -40,12 +37,8 @@ console.log("journalCtrl");
             .ref(Api.master())
             .query(Prismic.Predicates.at(queryString, uid))
             .submit(function (err, response) {
-              console.log(err);
-              // console.log(response);
               $rootScope.mainJournal=response.results[0];
               $scope.pressLoading = false;
-              console.log(response.results[0]);
-
             });
       });
   }
@@ -100,27 +93,18 @@ $scope.openShare =function(){
 
 
 
-Journal.directive('journalDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Journal.directive('journalDirective', function() {
   return {
     restrict: 'E',
     templateUrl: 'views/journal.html',
-    replace: true,
-    link: function(scope, elem, attrs) {
-
-    }
+    replace: true
   };
 });
 
 
 
-Journal.directive('journalLoaderDirective', function($rootScope, $location, $window, $routeParams, $timeout) {
+Journal.directive('journalLoaderDirective', function() {
   return {
-    restrict: 'A',
-    link: function(scope, elem, attrs) {
-
-
-
-
-    }
+    restrict: 'A'
   };
 });
