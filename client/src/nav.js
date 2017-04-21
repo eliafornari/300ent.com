@@ -27,9 +27,7 @@ $rootScope.isNavOpen = false;
 
 $rootScope.isSearch = function(field){
   var search = $location.search();
-
   if(search['filter']){return true}else{return false};
-
 }
 
 

@@ -5,7 +5,6 @@ var Press = angular.module('myApp');
 
 Press.controller('pressCtrl', ['$scope', '$location', '$rootScope', '$routeParams',	'$http', 'anchorSmoothScroll', '$route', '$window', function($scope, $location, $rootScope, $routeParams, $http, anchorSmoothScroll, $route, $window){
 
-console.log("press ctrl");
   $rootScope.mainPress = {};
   $rootScope.isView='press';
 
