@@ -5,7 +5,7 @@ var Press = angular.module('myApp');
 
 Press.controller('pressCtrl', ['$scope', '$location', '$rootScope', '$routeParams',	'$http', 'anchorSmoothScroll', '$route', '$window', function($scope, $location, $rootScope, $routeParams, $http, anchorSmoothScroll, $route, $window){
 
-
+console.log("press ctrl");
   $rootScope.mainPress = {};
   $rootScope.isView='press';
 
@@ -98,11 +98,14 @@ $rootScope.swapImage=(url)=>{
   // }
 
 
-
   if(!$rootScope.Press){
     $scope.getPressList('press', 'my.press.date', 1);
   }else{
     // $scope.getPressList('press', 'my.press.date', 0);
+    if($location.search()){
+      $rootScope.Press.results=[];
+      $scope.getPressList('press', 'my.press.date', 1);
+    }
   }
 
 

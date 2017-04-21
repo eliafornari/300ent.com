@@ -97,12 +97,14 @@ angular.module('myApp', [
 
         .when('/press/:press', {
           templateUrl: 'views/press/detail-press.html',
-          controller: 'pressDetailCtrl'
+          controller: 'pressDetailCtrl',
+          reloadOnSearch: true
         })
 
         .when('/press', {
           templateUrl: 'views/press/press.html',
-          controller: 'pressCtrl'
+          controller: 'pressCtrl',
+          reloadOnSearch: true
         })
 
         .when('/journal/:journal', {
