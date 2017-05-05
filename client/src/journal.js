@@ -37,6 +37,7 @@ Journal.controller('journalCtrl', ['$scope', '$location', '$rootScope', '$routeP
             .ref(Api.master())
             .query(Prismic.Predicates.at(queryString, uid))
             .submit(function (err, response) {
+              console.log(response);
               $rootScope.mainJournal=response.results[0];
               $scope.pressLoading = false;
             });

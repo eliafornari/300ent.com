@@ -15,7 +15,7 @@
     "angular-loader": "^1.6.3",
     "angular-resource": "^1.6.3",
     "angular-route": "^1.5.7",
-    "angular-sanitize": "^1.6.1",
+    "angular-sanitize": "^1.6.4",
     "angular-touch": "^1.6.3",
     "body-parser": "~1.5.2",
     "ejs": "^2.4.2",

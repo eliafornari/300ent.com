@@ -5,6 +5,7 @@ import 'angular-route'
 import 'angular-animate'
 import 'angular-resource'
 import 'angular-touch'
+import 'angular-sanitize'
 import 'angular-loader'
 import Prismic from 'prismic.io'
 import jQuery from "jquery"
@@ -13,6 +14,7 @@ angular.module('myApp', [
   'ngRoute',
   'ngResource',
   'ngAnimate',
+  'ngSanitize',
   'ngTouch',
   'infinite-scroll'
 ])
