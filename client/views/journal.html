@@ -29,14 +29,16 @@
             </td></tr></table>
           </div>
 
-          <div class="slice-li-text" ng-if="j.slice_type == 'text'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}">
+          <div class="slice-li-text" ng-if="j.slice_type == 'text'" ng-show="!journalLoading" ng-class="{'chromium': isChrome}" id="slice-li-text-p-{{$index}}">
             <table><tr><td>
               <div class="" ng-repeat="t in j.value.value">
-                <h2 class="slice-li-text-header">
+                <h2 class="slice-li-text-header" >
                   {{t.heading2.value[0].text}}
                 </h2>
-                <p class="slice-li-text-paragraph" ng-bind-html="t.paragraph.value[0].text | linky">
+                <!-- ng-bind-html=" | linky" -->
 
+                <p class="slice-li-text-paragraph">
+                  {{t.paragraph.value[0].text}}
                 </p>
               </div>
 
