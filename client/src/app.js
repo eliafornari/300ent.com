@@ -227,12 +227,27 @@ jQuery($window).resize(function(){
 
 
 
+//function that will set the height depending on whether it is a mobile device or not
+if(window.matchMedia("(max-width:400px)").matches){
+  $scope.height = window.innerHeight;
+}
+else{
+  $scope.height = '100vh';
+}
+
+$scope.fullHeight = {
+  "height": $scope.height
+}
 
 
+//Added a new variable to separate the desktop & mobile functionality of the animation
 $rootScope.removeSplashMobile = false;
+$rootScope.removeSplashMobile2 = false;
 
 $rootScope.scrollToHome = function(){
   anchorSmoothScroll.scrollOneViewport();
+  $rootScope.removeSplashMobile2 = true;
+
   setTimeout(function(){
     $rootScope.removeSplashMobile = true;
   }, 1000)

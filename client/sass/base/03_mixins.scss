@@ -36,6 +36,12 @@ $break-desktop: 50000px;
   @else if $media == tablet-portrait {
     @media only screen and (min-width: $break-phone + 1) and (max-width: $break-tablet) and (orientation: portrait) { @content; }
   }
+  @else if $media == phone-5 {
+    @media only screen and (min-width: 320px) and (max-width: 568px) { @content; }
+  }
+  @else if $media == phone-6 {
+    @media only screen and (min-width: 375px) and (max-width: 667px) { @content; }
+  }
   @else if $media == phone {
     @media only screen and (min-width: 0px) and (max-width: $break-phone) { @content; }
   }
@@ -316,6 +322,17 @@ $break-desktop: 50000px;
   font-family: $font-family-title;
   @include respond-to(phone){
     font-size: $font-size-title-mobile;
+    line-height: $line-height-title-mobile;
+
+  }
+}
+
+@mixin artist-title(){
+  font-size: $font-size-title;
+  line-height: $line-height-title;
+  font-family: $font-family-title;
+  @include respond-to(phone){
+    font-size: $font-size-subtitle-mobile;
     line-height: $line-height-title-mobile;
 
   }

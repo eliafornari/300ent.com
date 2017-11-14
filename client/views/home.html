@@ -1,4 +1,4 @@
-<div class="home" summary="home" ng-controller="homeCtrl" ng-class="{'chromium': isChrome}">
+<div class="home" summary="home" ng-controller="homeCtrl" ng-class="{'chromium': isChrome}" ng-style = "fullHeight">
 
 
 
@@ -7,7 +7,8 @@
     <splash-directive></splash-directive>
   </div>
 
-  <div class="splash" ng-class="{'splash_gone':removeSplashMobile}" ng-if="isMobile && isDevice && !removeSplashMobile">
+  <!-- Changed ng-if to ng-show -->
+  <div class="splash" ng-class="{'splash_gone':removeSplashMobile2}" ng-style = "fullHeight" ng-show="isMobile && isDevice && !removeSplashMobile2">
     <splash-directive></splash-directive>
   </div>
 <!-- ng-class="{'splash_gone':!firstLoading;}" -->
@@ -16,9 +17,9 @@
 
 
 
-<div class="home-content">
+<div class="home-content" ng-style = "fullHeight">
 
-  <div class="home-artists" ng-hide="isMobile && hideHomeArtist" ng-class="{'chromium': isChrome}">
+  <div class="home-artists" ng-style = "fullHeight" ng-hide="isMobile && hideHomeArtist" ng-class="{'chromium': isChrome}">
     <div class="home-artists-table">
           <ul class="home-artists-ul">
             <li class="home-artists-li" ng-repeat="a in Artist | orderBy:'artist.index' track by a.uid" ng-class="{artistSelected: a.uid == mainArtist}">
@@ -30,7 +31,7 @@
     </div>
   </div>
 
-  <div class="home-release" ng-init="r_placeholder = false" ng-class="{blockScroll: firstLoading, 'chromium': isChrome}" ng-hide="isMobile && hideHomeRelease">
+  <div class="home-release" ng-style = "fullHeight" ng-init="r_placeholder = false" ng-class="{blockScroll: firstLoading, 'chromium': isChrome}" ng-hide="isMobile && hideHomeRelease">
     <div class="home-release-placeholder" ng-mouseover="r_placeholder = false" ng-show="r_placeholder">
       <p>RELEASES</p>
     </div>
@@ -60,7 +61,7 @@
 
 
 
-  <div class="home-journal" ng-class="{blockScroll: firstLoading, 'chromium': isChrome}" ng-hide="isMobile && hideHomeJournal">
+  <div class="home-journal" ng-style = "fullHeight" ng-class="{blockScroll: firstLoading, 'chromium': isChrome}" ng-hide="isMobile && hideHomeJournal">
     <ul class="home-journal-ul">
       <li class="home-journal-li" ng-repeat="j in Journal.results">
         <a href="/journal/{{j.uid}}">

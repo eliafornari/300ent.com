@@ -35,8 +35,7 @@
   width: 50vw;
   margin: auto;
   @include respond-to(phone){
-    width:70vw;
-    margin-left: 15vw;
+    width:80vw;
   }
   h1{
     color: $red;

@@ -290,7 +290,7 @@ table{
     position: relative;
     bottom:initial;
     left:initial;
-    margin-bottom:70px;
+    margin-bottom:20px;
     -webkit-transition-delay: 2s; /* Safari */
     transition-delay: 2s;
   }
@@ -322,6 +322,9 @@ table{
   bottom: $margin-sides;
   &.slice-share-journal{
     left: 10vw;
+    @include respond-to(phone){
+      left: 0px;
+    }
   }
   @include respond-to(phone){
     left: 0;
@@ -347,9 +350,14 @@ table{
     left:0;
     &.slice-share-ul-journal{
       left: 10vw;
+      @include respond-to(phone){
+        left: 0;
+      }
     }
     @include respond-to(phone){
       left: 0;
+      bottom: 0;
+      position: relative;
     }
     .slice-share-li{
       width:100%;

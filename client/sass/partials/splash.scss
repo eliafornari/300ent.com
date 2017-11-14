@@ -451,8 +451,8 @@
 
 
 
-$animation-bezier: linear;
-$animation-speed: 0.8s;
+$animation-bezier: ease-in;
+$animation-speed: 0.6s;
 
 .splash{
   position: fixed;
@@ -471,6 +471,16 @@ $animation-speed: 0.8s;
   // @include transform-element(translate3d(0, 0, 0));
 
 }
+
+//Added the animation for ng-show
+// .splash.ng-show{
+//   -webkit-animation: splash_slideUp $animation-speed-fast $animation-bezier;
+//   -moz-animation: splash_slideUp $animation-speed-fast $animation-bezier;
+//   -ms-animation: splash_slideUp $animation-speed-fast $animation-bezier;
+//   -o-animation: splash_slideUp $animation-speed-fast $animation-bezier;
+//   animation: splash_slideUp $animation-speed-fast $animation-bezier;
+// }
+
 
 .splash.splash_gone{
   top: -100vh !important;
